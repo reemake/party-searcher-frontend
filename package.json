@@ -6,6 +6,7 @@
     "npm": "8.3.2"
   },
   "scripts": {
+    "heroku-postbuild": "ng build — prod",
     "ng": "ng",
     "start": "npm install -g @angular/cli  && ng serve",
     "build": "ng build",
