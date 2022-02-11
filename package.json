@@ -1,6 +1,9 @@
 {
   "name": "event-teammates-search-app",
-  "version": "16.13.0",
+  "version": "1.0.0",
+  "engines": {
+    "node": "16.13.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
