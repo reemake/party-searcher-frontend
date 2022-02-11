@@ -19,7 +19,6 @@ before_script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - npm link @angular/cli
 
 stages:
     - staging
