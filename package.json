@@ -2,13 +2,13 @@
   "name": "event-teammates-search-app",
   "version": "1.0.0",
   "engines": {
-    "node": "16.13.0",
+    "node": "16.14.0",
     "npm": "8.3.2"
   },
   "scripts": {
     "heroku-postbuild": "ng build --aot --prod ",
     "ng": "ng",
-    "start": "node src/server.js",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -23,15 +23,19 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "@types/ol": "^6.5.3",
+    "@types/proj4": "^2.5.2",
     "express": "^4.17.2",
+    "ol": "^6.12.0",
     "path": "^0.12.7",
+    "proj4": "^2.7.5",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.3",
-    "@angular/cli": "~13.2.3",
+    "@angular/cli": "^13.2.3",
     "@angular/compiler-cli": "~13.0.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
