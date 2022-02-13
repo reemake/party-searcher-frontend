@@ -9,6 +9,7 @@ import {get as GetProjection, transform} from 'ol/proj'
 import {Extent} from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
+import {MapService} from "../../services/map.service";
 
 @Component({
   selector: 'app-map-page',
@@ -17,7 +18,9 @@ import OSM from 'ol/source/OSM';
 })
 export class MapPageComponent implements AfterViewInit {
   map: Map | undefined;
-  private lat: number = 54;
+
+
+  private userLocation: Coordinate = [54, 54]; //[Lon,Lat] // https://cdn.britannica.com/04/64904-050-D2054D06/cutaway-drawing-latitude-place-longitude-sizes-angles.jpg
 
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
@@ -25,10 +28,10 @@ export class MapPageComponent implements AfterViewInit {
   projection: Projection | undefined;
   extent: Extent = [-20026376.39, -20048966.10,
     20026376.39, 20048966.10];
-  private lon: number = 54;
+
   @Output() mapReady = new EventEmitter<Map>();
 
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef, private mapService: MapService) {
   }
 
   ngAfterViewInit(): void {
@@ -37,16 +40,20 @@ export class MapPageComponent implements AfterViewInit {
     }
     setTimeout(() => this.mapReady.emit(this.map));
     this.setUserLocation();
+    this.view?.on('change:center', () => {
+
+    })
   }
 
+
   private setUserLocation(): void {
+
     navigator.geolocation.getCurrentPosition((position) => {
       console.log("Got position", position.coords);
-      this.lat = position.coords.latitude;
-      this.lon = position.coords.longitude;
-      this.center = [this.lat, this.lon];
+      this.center = [position.coords.longitude, position.coords.latitude];
+      this.userLocation = [position.coords.longitude, position.coords.latitude];
       if (this.map !== undefined)
-        this.map.getView().setCenter(transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857'));
+        this.map.getView().setCenter(transform([this.center[0], this.center[1]], 'EPSG:4326', 'EPSG:3857'));
     }, () => {
     }, {enableHighAccuracy: true});
   }
@@ -72,5 +79,6 @@ export class MapPageComponent implements AfterViewInit {
       ]),
     });
   }
+
 
 }
