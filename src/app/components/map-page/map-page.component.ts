@@ -5,7 +5,7 @@ import {defaults as DefaultControls, ScaleLine} from 'ol/control';
 import proj4 from 'proj4';
 import Projection from 'ol/proj/Projection';
 import {register} from 'ol/proj/proj4';
-import {get as GetProjection} from 'ol/proj'
+import {get as GetProjection, transform} from 'ol/proj'
 import {Extent} from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
@@ -16,6 +16,8 @@ import OSM from 'ol/source/OSM';
   styleUrls: ['./map-page.component.css']
 })
 export class MapPageComponent implements AfterViewInit {
+  map: Map | undefined;
+  private lat: number = 54;
 
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
@@ -23,18 +25,30 @@ export class MapPageComponent implements AfterViewInit {
   projection: Projection | undefined;
   extent: Extent = [-20026376.39, -20048966.10,
     20026376.39, 20048966.10];
-  Map: Map | undefined;
+  private lon: number = 54;
   @Output() mapReady = new EventEmitter<Map>();
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {
   }
 
-
   ngAfterViewInit(): void {
-    if (!this.Map) {
+    if (!this.map) {
       this.zone.runOutsideAngular(() => this.initMap())
     }
-    setTimeout(() => this.mapReady.emit(this.Map));
+    setTimeout(() => this.mapReady.emit(this.map));
+    this.setUserLocation();
+  }
+
+  private setUserLocation(): void {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log("Got position", position.coords);
+      this.lat = position.coords.latitude;
+      this.lon = position.coords.longitude;
+      this.center = [this.lat, this.lon];
+      if (this.map !== undefined)
+        this.map.getView().setCenter(transform([this.lon, this.lat], 'EPSG:4326', 'EPSG:3857'));
+    }, () => {
+    }, {enableHighAccuracy: true});
   }
 
   private initMap(): void {
@@ -47,7 +61,7 @@ export class MapPageComponent implements AfterViewInit {
       zoom: this.zoom,
       projection: this.projection,
     });
-    this.Map = new Map({
+    this.map = new Map({
       layers: [new TileLayer({
         source: new OSM({})
       })],
@@ -58,4 +72,5 @@ export class MapPageComponent implements AfterViewInit {
       ]),
     });
   }
+
 }
