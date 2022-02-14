@@ -5,11 +5,11 @@ import {defaults as DefaultControls, ScaleLine} from 'ol/control';
 import proj4 from 'proj4';
 import Projection from 'ol/proj/Projection';
 import {register} from 'ol/proj/proj4';
-import {get as GetProjection, transform} from 'ol/proj'
+import {get as GetProjection, transform, transformExtent} from 'ol/proj'
 import {Extent} from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
-import {MapService} from "../../services/map.service";
+import {EventService} from "../../services/event.service";
 
 @Component({
   selector: 'app-map-page',
@@ -17,6 +17,8 @@ import {MapService} from "../../services/map.service";
   styleUrls: ['./map-page.component.css']
 })
 export class MapPageComponent implements AfterViewInit {
+  mapBoundingBox: Array<Coordinate> = [[]]  // границы карты, которую в данный момент видит пользователь.Format: (4)**(3)
+  //                                                                                            (1)**(2)
   map: Map | undefined;
 
 
@@ -31,7 +33,7 @@ export class MapPageComponent implements AfterViewInit {
 
   @Output() mapReady = new EventEmitter<Map>();
 
-  constructor(private zone: NgZone, private cd: ChangeDetectorRef, private mapService: MapService) {
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef, private mapService: EventService) {
   }
 
   ngAfterViewInit(): void {
@@ -41,8 +43,17 @@ export class MapPageComponent implements AfterViewInit {
     setTimeout(() => this.mapReady.emit(this.map));
     this.setUserLocation();
     this.view?.on('change:center', () => {
-
+      this.setMapBounds();
     })
+  }
+
+  private setMapBounds(): void {
+    let extent: number[] | undefined = this.map?.getView().calculateExtent(this.map.getSize())
+    if (extent != undefined) {
+      let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+      this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
+      console.log(this.mapBoundingBox)
+    }
   }
 
 
