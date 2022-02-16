@@ -95,8 +95,6 @@ export class MapComponent implements AfterViewInit {
       return feature;
     });
 
-    console.log("UPDATE POINTS ON MAP!!!!!" + JSON.stringify(features.length));
-
     this.map?.removeLayer(this.previousLayer);
 
     let vectorSource: VectorSource<any> = new VectorSource({
@@ -125,9 +123,7 @@ export class MapComponent implements AfterViewInit {
 
 
   private setUserLocation(): void {
-
     navigator.geolocation.getCurrentPosition((position) => {
-      //console.log("Got position", position.coords);
       this.center = [position.coords.longitude, position.coords.latitude];
       this.userLocation = [position.coords.longitude, position.coords.latitude];
       if (this.map !== undefined)
