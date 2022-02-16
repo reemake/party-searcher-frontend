@@ -2,9 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone
 import {Feature, Map, View} from 'ol';
 import {Coordinate} from 'ol/coordinate';
 import {defaults as DefaultControls, ScaleLine} from 'ol/control';
-import proj4 from 'proj4';
 import Projection from 'ol/proj/Projection';
-import {register} from 'ol/proj/proj4';
 import {fromLonLat, get as GetProjection, transform, transformExtent} from 'ol/proj'
 import {Extent} from 'ol/extent';
 import TileLayer from 'ol/layer/Tile';
@@ -59,10 +57,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-    proj4.defs("EPSG:3857", "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs");
-    register(proj4);
     this.projection = GetProjection('EPSG:3857');
-    this.projection.setExtent(this.extent);
     this.view = new View({
       center: this.center,
       zoom: this.zoom,
@@ -83,22 +78,24 @@ export class MapComponent implements AfterViewInit {
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
-    console.log("UPDATE POINTS ON MAP!!!!!" + JSON.stringify(events));
+
     let features: Array<any> = events.map(event => {
       let feature: any = new Feature({
-        geometry: new Point(fromLonLat([event.location.lon, event.location.lat])),
+        geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857'))
       });
 
       feature.setStyle(new Style({
         image: new Icon(({
           crossOrigin: 'anonymous',
-          src: 'assets/img/mapImages/landmark.png',
-          imgSize: [2700, 3000]
+          src: '../assets/img/mapImages/landmark.png',
+          imgSize: [27, 30]
         }))
       }));
 
       return feature;
     });
+
+    console.log("UPDATE POINTS ON MAP!!!!!" + JSON.stringify(features.length));
 
     this.map?.removeLayer(this.previousLayer);
 
@@ -110,6 +107,7 @@ export class MapComponent implements AfterViewInit {
     });
 
     this.map?.addLayer(this.previousLayer);
+
   }
 
 
@@ -129,7 +127,7 @@ export class MapComponent implements AfterViewInit {
   private setUserLocation(): void {
 
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log("Got position", position.coords);
+      //console.log("Got position", position.coords);
       this.center = [position.coords.longitude, position.coords.latitude];
       this.userLocation = [position.coords.longitude, position.coords.latitude];
       if (this.map !== undefined)

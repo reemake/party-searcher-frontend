@@ -23,8 +23,8 @@ export class EventsIndexComponent implements OnInit {
         isOnline: true,
         location: {
           name: "vrn",
-          lat: 39.184,
-          lon: 51.672
+          lat: 51.68405100623913,
+          lon: 39.26342010498047
         },
         dateTimeStart: new Date(),
         dateTimeEnd: new Date(),
