@@ -1,5 +1,6 @@
 import {ThemeTag} from "./ThemeTag";
 import {EventOwner} from "./EventOwner";
+import {Location} from "../Location";
 
 export interface Event {
   id: number

@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {MapPageComponent} from './map-page.component';
+import {EventsIndexComponent} from './events-index.component';
 
-describe('MapPageComponent', () => {
-  let component: MapPageComponent;
-  let fixture: ComponentFixture<MapPageComponent>;
+describe('EventsIndexComponent', () => {
+  let component: EventsIndexComponent;
+  let fixture: ComponentFixture<EventsIndexComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MapPageComponent]
+      declarations: [EventsIndexComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapPageComponent);
+    fixture = TestBed.createComponent(EventsIndexComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
