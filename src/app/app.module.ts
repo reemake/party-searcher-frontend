@@ -12,10 +12,10 @@ import {EventDescriptionComponent} from './components/events/event-description/e
 import {RouterModule, Routes} from "@angular/router";
 
 
-export const ROUTES: Routes = [
-  {path: 'events', component: EventsIndexComponent}
+const ROUTES: Routes = [
+  {path: 'events', component: EventsIndexComponent},
+  {path: '', component: AppComponent}
 ];
-
 
 @NgModule({
   declarations: [
@@ -29,13 +29,13 @@ export const ROUTES: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule,
-    RouterModule.forRoot(ROUTES)
+    HttpClientModule, RouterModule.forRoot(ROUTES)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
+
 
 export const BACKEND_URL = "http://localhost:8080";

@@ -26,16 +26,15 @@ export class MapComponent implements AfterViewInit {
   /**
    * границы карты, которую в данный момент видит пользователь.Начиная с левой нижней и  далее против часовой стрелки
    */
-  mapBoundingBox: Array<Coordinate> = [[]]  //
+  mapBoundingBox: Array<Coordinate> = [[]];
   map: Map | undefined;
   @Input() events: Observable<Event[]> = scheduled([], asyncScheduler);
-  @Output() mapChanged = new EventEmitter<Array<Coordinate>>();
+  @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
   view: View | undefined;
   projection: Projection | undefined;
-  extent: Extent = [-20026376.39, -20048966.10,
-    20026376.39, 20048966.10];
+  extent: Extent = [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
   /**
    * [Lon,Lat] // https://cdn.britannica.com/04/64904-050-D2054D06/cutaway-drawing-latitude-place-longitude-sizes-angles.jpg
    * @private
@@ -50,18 +49,18 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (!this.map) {
-      this.zone.runOutsideAngular(() => this.initMap())
+      this.zone.runOutsideAngular(() => this.initMap());
     }
     setTimeout(() => this.mapReady.emit(this.map));
     this.setUserLocation();
     this.view?.on('change:center', () => {
       this.setMapBounds();
-    })
+    });
   }
 
   private initMap(): void {
     proj4.defs("EPSG:3857", "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs");
-    register(proj4)
+    register(proj4);
     this.projection = GetProjection('EPSG:3857');
     this.projection.setExtent(this.extent);
     this.view = new View({
@@ -76,14 +75,15 @@ export class MapComponent implements AfterViewInit {
       target: 'map',
       view: this.view,
       controls: DefaultControls().extend([
-        new ScaleLine({}),
-      ]),
+        new ScaleLine({})
+      ])
     });
     this.events.subscribe(events => this.updateEventsOnMap(events));
 
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
+    console.log("UPDATE POINTS ON MAP!!!!!" + JSON.stringify(events));
     let features: Array<any> = events.map(event => {
       let feature: any = new Feature({
         geometry: new Point(fromLonLat([event.location.lon, event.location.lat])),
@@ -93,7 +93,7 @@ export class MapComponent implements AfterViewInit {
         image: new Icon(({
           crossOrigin: 'anonymous',
           src: 'assets/img/mapImages/landmark.png',
-          imgSize: [27, 30]
+          imgSize: [2700, 3000]
         }))
       }));
 
@@ -121,7 +121,7 @@ export class MapComponent implements AfterViewInit {
     if (extent != undefined) {
       let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
       this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
-      console.log(this.mapBoundingBox)
+      console.log(this.mapBoundingBox);
     }
   }
 
@@ -137,6 +137,5 @@ export class MapComponent implements AfterViewInit {
     }, () => {
     }, {enableHighAccuracy: true});
   }
-
-
 }
+

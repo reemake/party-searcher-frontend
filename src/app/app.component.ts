@@ -8,7 +8,4 @@ import {Component} from '@angular/core';
 export class AppComponent {
   title = 'eventTeammatesSearchApp';
 
-  public onMapReady(event: any): void {
-    console.log("Map Ready")
-  }
 }
