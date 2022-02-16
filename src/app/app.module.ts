@@ -7,18 +7,30 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {LocationBtnComponent} from './components/map/location-btn/location-btn.component';
 import {EventsIndexComponent} from './components/pages/events/events-index/events-index.component';
+import {EventSearchComponent} from './components/events/event-search/event-search.component';
+import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
+import {RouterModule, Routes} from "@angular/router";
+
+
+export const ROUTES: Routes = [
+  {path: 'events', component: EventsIndexComponent}
+];
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     LocationBtnComponent,
-    EventsIndexComponent
+    EventsIndexComponent,
+    EventSearchComponent,
+    EventDescriptionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(ROUTES)
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -26,4 +38,4 @@ import {EventsIndexComponent} from './components/pages/events/events-index/event
 export class AppModule {
 }
 
-export const BACKEND_URL = "http://localhost:8080"
+export const BACKEND_URL = "http://localhost:8080";
