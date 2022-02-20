@@ -111,13 +111,15 @@ export class MapComponent implements AfterViewInit {
 
 
     this.map?.on("click", (evt: any) => {
+      console.log("source = " + evt.coordinate);
       let lonlat = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
       let lon = lonlat[0];
       let lat = lonlat[1];
       let coordinate = fromLonLat([lon, lat]);
       console.log(coordinate);
       this.eventsArray.map(e => {
-        let coor = fromLonLat([e.location.lon, e.location.lat]);
+        let coor = transform([e.location.lon, e.location.lat], 'EPSG:4326', 'EPSG:3857');
+        coor = fromLonLat([coor[0], coor[1]]);
         console.log("evets coord " + coor);
         e.location.lon = coor[0];
         e.location.lat = coor[1];
