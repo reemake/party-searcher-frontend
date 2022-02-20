@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Subject} from "rxjs";
 import {Event} from "../../../../entity/Event/Event";
+import {EventAttendance} from "../../../../entity/Event/EventAttendance";
 
 @Component({
   selector: 'app-events-index',
@@ -38,7 +39,7 @@ export class EventsIndexComponent implements OnInit {
         chatId: 300,
         currentUserEntered: true,
         tags: [],
-        participationCount: 400,
+        guests: new Array<EventAttendance>(),
         url: null
 
       }]);

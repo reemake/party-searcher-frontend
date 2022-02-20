@@ -15,4 +15,17 @@ export class EventDescriptionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  assignOnEvent(): void {
+
+  }
+
+  callEventOwner(): void {
+
+  }
+
+
+  complainOnEvent(): void {
+
+  }
+
 }
