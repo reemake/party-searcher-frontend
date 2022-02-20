@@ -80,6 +80,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
+
     this.eventsArray = events;
     let features: Array<any> = events.map(event => {
       let feature: any = new Feature({
@@ -108,18 +109,33 @@ export class MapComponent implements AfterViewInit {
 
     this.map?.addLayer(this.previousLayer);
 
-    this.map?.on("click", this.checkUserClick)
+
+    this.map?.on("click", (evt: any) => {
+      let lonlat = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+      let lon = lonlat[0];
+      let lat = lonlat[1];
+      let coordinate = fromLonLat([lon, lat]);
+      console.log(coordinate);
+      this.eventsArray.map(e => {
+        let coor = fromLonLat([e.location.lon, e.location.lat]);
+        console.log("evets coord " + coor);
+        e.location.lon = coor[0];
+        e.location.lat = coor[1];
+        return e;
+      })
+        .filter(e => {
+          this.checkPointInCycle(e.location.lon, e.location.lat, lon, lat);
+        })
+        .forEach(e => {
+          console.log("you click on" + e);
+        })
+    });
   }
 
-  private checkUserClick(evt: any) {
-    let lonlat = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-    let lon = lonlat[0];
-    let lat = lonlat[1];
-    let coordinate = fromLonLat([lon, lat]);
-    console.log(coordinate);
-    this.eventsArray.map(e => {
 
-    })
+  private checkPointInCycle(x: number, y: number, x1: number, y1: number): boolean {
+    let R: number = 10000;
+    return (Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= R * R;
   }
 
 
@@ -131,7 +147,7 @@ export class MapComponent implements AfterViewInit {
     if (extent != undefined) {
       let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
       this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
-      console.log(this.mapBoundingBox);
+//      console.log(this.mapBoundingBox);
     }
   }
 
