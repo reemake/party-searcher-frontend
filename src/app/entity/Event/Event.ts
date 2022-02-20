@@ -1,6 +1,7 @@
 import {ThemeTag} from "./ThemeTag";
 import {EventOwner} from "./EventOwner";
 import {Location} from "../Location";
+import {EventAttendance} from "./EventAttendance";
 
 export interface Event {
   id: number
@@ -17,6 +18,6 @@ export interface Event {
   chatId: number
   currentUserEntered: boolean
   tags: Array<ThemeTag>
-  participationCount: number
+  guests: Array<EventAttendance>
 
 }
