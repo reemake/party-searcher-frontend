@@ -26,6 +26,8 @@ export class MapComponent implements AfterViewInit {
    */
   mapBoundingBox: Array<Coordinate> = [[]];
   map: Map | undefined;
+  private eventsArray: Array<Event> = new Array<Event>();
+
   @Input() events: Observable<Event[]> = scheduled([], asyncScheduler);
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Input() center: Coordinate | undefined;
@@ -78,7 +80,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
-
+    this.eventsArray = events;
     let features: Array<any> = events.map(event => {
       let feature: any = new Feature({
         geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857'))
@@ -106,6 +108,18 @@ export class MapComponent implements AfterViewInit {
 
     this.map?.addLayer(this.previousLayer);
 
+    this.map?.on("click", this.checkUserClick)
+  }
+
+  private checkUserClick(evt: any) {
+    let lonlat = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+    let lon = lonlat[0];
+    let lat = lonlat[1];
+    let coordinate = fromLonLat([lon, lat]);
+    console.log(coordinate);
+    this.eventsArray.map(e => {
+
+    })
   }
 
 
