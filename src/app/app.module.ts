@@ -13,8 +13,7 @@ import {RouterModule, Routes} from "@angular/router";
 
 
 const ROUTES: Routes = [
-  {path: 'events', component: EventsIndexComponent},
-  {path: '', component: AppComponent}
+  {path: '', component: EventsIndexComponent}
 ];
 
 
