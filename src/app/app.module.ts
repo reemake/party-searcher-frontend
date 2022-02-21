@@ -10,6 +10,7 @@ import {EventsIndexComponent} from './components/pages/events/events-index/event
 import {EventSearchComponent} from './components/events/event-search/event-search.component';
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
 import {RouterModule, Routes} from "@angular/router";
+import {ListComponent} from './components/events/list/list.component';
 
 
 const ROUTES: Routes = [
@@ -24,7 +25,8 @@ const ROUTES: Routes = [
     LocationBtnComponent,
     EventsIndexComponent,
     EventSearchComponent,
-    EventDescriptionComponent
+    EventDescriptionComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,

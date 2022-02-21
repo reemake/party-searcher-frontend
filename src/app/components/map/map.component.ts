@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output} from '@angular/core';
-import {Feature, Map, View} from 'ol';
+import {Feature, Map as MyMap, View} from 'ol';
 import {Coordinate} from 'ol/coordinate';
 import {defaults as DefaultControls, ScaleLine} from 'ol/control';
 import Projection from 'ol/proj/Projection';
@@ -25,11 +25,12 @@ export class MapComponent implements AfterViewInit {
    * границы карты, которую в данный момент видит пользователь.Начиная с левой нижней и  далее против часовой стрелки
    */
   mapBoundingBox: Array<Coordinate> = [[]];
-  map: Map | undefined;
-  private eventsArray: Array<Event> = new Array<Event>();
+  map: MyMap | undefined;
+  @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
   @Input() events: Observable<Event[]> = scheduled([], asyncScheduler);
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
+  @Output() mapReady = new EventEmitter<MyMap>();
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
   view: View | undefined;
@@ -40,8 +41,7 @@ export class MapComponent implements AfterViewInit {
    * @private
    */
   private userLocation: Coordinate = [54, 54];
-
-  @Output() mapReady = new EventEmitter<Map>();
+  private eventsMap: Map<Feature<any>, Event[]> = new Map<Feature<any>, Event[]>();
   private previousLayer: VectorLayer<any> = new VectorLayer({});
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef, private mapService: EventService) {
@@ -65,7 +65,7 @@ export class MapComponent implements AfterViewInit {
       zoom: this.zoom,
       projection: this.projection,
     });
-    this.map = new Map({
+    this.map = new MyMap({
       layers: [new TileLayer({
         source: new OSM({})
       })],
@@ -77,14 +77,32 @@ export class MapComponent implements AfterViewInit {
     });
     this.events.subscribe(events => this.updateEventsOnMap(events));
 
+    this.map?.on('click', (evt) => {
+      let arr: Array<Event> = [];
+      this.previousLayer.getFeatures(evt.pixel).then(value => {
+        value.forEach(e => {
+          if (this.eventsMap.get(e) !== undefined) {
+            this.eventsMap.get(e)?.map(e => {
+              arr.push(e);
+            })
+          }
+        })
+        console.log(arr);
+        if (arr.length > 0)
+          this.selectEvents.emit(arr);
+      });
+
+    })
+
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
 
-    this.eventsArray = events;
+
     let features: Array<any> = events.map(event => {
       let feature: any = new Feature({
-        geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857'))
+        geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857')),
+        event: event
       });
 
       feature.setStyle(new Style({
@@ -95,6 +113,12 @@ export class MapComponent implements AfterViewInit {
         }))
       }));
 
+      if (this.eventsMap.get(feature) === undefined) {
+        let arr: Array<Event> = new Array<Event>(event);
+        this.eventsMap.set(feature, arr);
+      } else {
+        this.eventsMap.get(feature)?.push(event);
+      }
       return feature;
     });
 
@@ -108,30 +132,6 @@ export class MapComponent implements AfterViewInit {
     });
 
     this.map?.addLayer(this.previousLayer);
-
-
-    this.map?.on("click", (evt: any) => {
-      console.log("source = " + evt.coordinate);
-      let lonlat = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-      let lon = lonlat[0];
-      let lat = lonlat[1];
-      let coordinate = fromLonLat([lon, lat]);
-      console.log(coordinate);
-      this.eventsArray.map(e => {
-        let coor = transform([e.location.lon, e.location.lat], 'EPSG:4326', 'EPSG:3857');
-        coor = fromLonLat([coor[0], coor[1]]);
-        console.log("evets coord " + coor);
-        e.location.lon = coor[0];
-        e.location.lat = coor[1];
-        return e;
-      })
-        .filter(e => {
-          this.checkPointInCycle(e.location.lon, e.location.lat, lon, lat);
-        })
-        .forEach(e => {
-          console.log("you click on" + e);
-        })
-    });
   }
 
 

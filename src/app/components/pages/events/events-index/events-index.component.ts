@@ -9,10 +9,22 @@ import {EventAttendance} from "../../../../entity/Event/EventAttendance";
   styleUrls: ['./events-index.component.css']
 })
 export class EventsIndexComponent implements OnInit {
+  public events: Array<Event> = new Array();
+  public currentActiveEvent: Event | null = null;
   public subject: Subject<Array<Event>> = new Subject();
+  public isList: boolean = false;
 
   constructor() {
 
+  }
+
+
+  public userEventSelectHandler(eventsArray: Array<Event>) {
+    console.log("set events " + JSON.stringify(eventsArray));
+    if (eventsArray.length > 1) {
+      this.isList = true;
+      this.events = eventsArray;
+    } else this.currentActiveEvent = eventsArray[0];
   }
 
   public onMapReady(event: any) {
