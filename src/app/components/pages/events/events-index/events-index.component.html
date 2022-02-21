@@ -2,7 +2,7 @@
   <app-event-description [event]="currentActiveEvent"></app-event-description>
 
   <app-map (mapReady)="onMapReady($event)" (selectEvents)="userEventSelectHandler($event)"
-           *ngIf="currentActiveEvent==null" [center]="[-483281,6904172]" [events]="subject"
+           *ngIf="currentActiveEvent===null" [center]="[-483281,6904172]" [events]="subject"
            [zoom]="8.5"
            class="map"></app-map>
   <app-event-search></app-event-search>

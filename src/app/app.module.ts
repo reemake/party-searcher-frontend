@@ -11,6 +11,7 @@ import {EventSearchComponent} from './components/events/event-search/event-searc
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
 import {RouterModule, Routes} from "@angular/router";
 import {ListComponent} from './components/events/list/list.component';
+import {CommonModule} from "@angular/common";
 
 
 const ROUTES: Routes = [
@@ -31,7 +32,9 @@ const ROUTES: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule, RouterModule.forRoot(ROUTES)
+    CommonModule,
+    HttpClientModule,
+    RouterModule.forRoot(ROUTES)
   ],
   providers: [],
   bootstrap: [AppComponent]
