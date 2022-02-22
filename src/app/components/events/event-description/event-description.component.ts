@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Event} from "../../../entity/Event/Event";
 
 @Component({
@@ -7,6 +7,7 @@ import {Event} from "../../../entity/Event/Event";
   styleUrls: ['./event-description.component.css']
 })
 export class EventDescriptionComponent implements OnInit {
+  @Output() public closeDescription: EventEmitter<any> = new EventEmitter<any>();
   @Input() public event: Event | null = null;
 
   constructor() {
@@ -28,8 +29,9 @@ export class EventDescriptionComponent implements OnInit {
 
   }
 
-  closeDescription(): void {
+  closeDescriptionFun(): void {
     this.event = null;
+    this.closeDescription.next({});
   }
 
 }

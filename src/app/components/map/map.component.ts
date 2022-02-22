@@ -103,7 +103,6 @@ export class MapComponent implements AfterViewInit {
             })
           }
         })
-        console.log(arr);
         if (arr.length > 0)
           this.selectEvents.emit(arr);
       });

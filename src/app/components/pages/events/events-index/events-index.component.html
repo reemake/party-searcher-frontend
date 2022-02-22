@@ -1,5 +1,6 @@
 <div>
-  <app-event-description [event]="currentActiveEvent"></app-event-description>
+  <app-event-description (closeDescription)="currentActiveEvent=null"
+                         [event]="currentActiveEvent"></app-event-description>
 
   <app-map (mapReady)="onMapReady($event)" (selectEvents)="userEventSelectHandler($event)"
            *ngIf="showMap" [center]="[-483281,6904172]" [events]="events"

@@ -8,6 +8,7 @@ import {EventAttendance} from "../../../../entity/Event/EventAttendance";
   styleUrls: ['./events-index.component.css']
 })
 export class EventsIndexComponent implements OnInit {
+
   public showMap: boolean = true;
   public events: Array<Event> = new Array();
   public currentActiveEvent: Event | null = null;
@@ -19,7 +20,6 @@ export class EventsIndexComponent implements OnInit {
 
 
   public userEventSelectHandler(eventsArray: Array<Event>) {
-    console.log("set events " + JSON.stringify(eventsArray));
     if (eventsArray.length > 1) {
       this.isList = true;
       this.showMap = false;
