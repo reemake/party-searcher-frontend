@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Subject} from "rxjs";
 import {Event} from "../../../../entity/Event/Event";
 import {EventAttendance} from "../../../../entity/Event/EventAttendance";
 
@@ -9,9 +8,9 @@ import {EventAttendance} from "../../../../entity/Event/EventAttendance";
   styleUrls: ['./events-index.component.css']
 })
 export class EventsIndexComponent implements OnInit {
+  public showMap: boolean = true;
   public events: Array<Event> = new Array();
   public currentActiveEvent: Event | null = null;
-  public subject: Subject<Array<Event>> = new Subject();
   public isList: boolean = false;
 
   constructor() {
@@ -23,12 +22,13 @@ export class EventsIndexComponent implements OnInit {
     console.log("set events " + JSON.stringify(eventsArray));
     if (eventsArray.length > 1) {
       this.isList = true;
+      this.showMap = false;
       this.events = eventsArray;
     } else this.currentActiveEvent = eventsArray[0];
   }
 
   public onMapReady(event: any) {
-    this.subject.next([
+    this.events = [
       {
         id: 1,
         description: "abcd",
@@ -54,7 +54,7 @@ export class EventsIndexComponent implements OnInit {
         guests: new Array<EventAttendance>(),
         url: null
 
-      }]);
+      }];
   }
 
   ngOnInit(): void {

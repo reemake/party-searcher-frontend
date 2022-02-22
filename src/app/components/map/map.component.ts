@@ -9,7 +9,6 @@ import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import {EventService} from "../../services/event.service";
 import {Event} from "../../entity/Event/Event";
-import {asyncScheduler, Observable, scheduled} from "rxjs";
 import {Point} from "ol/geom";
 import {Icon, Style} from "ol/style";
 import VectorLayer from "ol/layer/Vector";
@@ -28,7 +27,18 @@ export class MapComponent implements AfterViewInit {
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
-  @Input() events: Observable<Event[]> = scheduled([], asyncScheduler);
+  _events: Event[] = [];
+
+  public get events(): Event[] {
+    return this._events;
+  }
+
+  @Input()
+  public set events(events: Event[]) {
+    this._events = events;
+    this.updateEventsOnMap(this._events);
+  }
+
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Output() mapReady = new EventEmitter<MyMap>();
   @Input() center: Coordinate | undefined;
@@ -83,8 +93,6 @@ export class MapComponent implements AfterViewInit {
   }
 
   private setHandlers():void{
-    this.events.subscribe(events => this.updateEventsOnMap(events));
-
     this.map?.on('click', (evt) => {
       let arr: Array<Event> = [];
       this.previousLayer.getFeatures(evt.pixel).then(value => {

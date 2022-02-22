@@ -28,4 +28,8 @@ export class EventDescriptionComponent implements OnInit {
 
   }
 
+  closeDescription(): void {
+    this.event = null;
+  }
+
 }
