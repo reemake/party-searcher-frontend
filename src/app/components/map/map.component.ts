@@ -49,14 +49,19 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (!this.map) {
-      this.zone.runOutsideAngular(() => this.initMap());
+      this.zone.run(()=>{
+        this.initMap();
+        this.setHandlers();
+      });
     }
     setTimeout(() => this.mapReady.emit(this.map));
     this.setUserLocation();
     this.view?.on('change:center', () => {
       this.setMapBounds();
     });
+
   }
+
 
   private initMap(): void {
     this.projection = GetProjection('EPSG:3857');
@@ -75,6 +80,9 @@ export class MapComponent implements AfterViewInit {
         new ScaleLine({})
       ])
     });
+  }
+
+  private setHandlers():void{
     this.events.subscribe(events => this.updateEventsOnMap(events));
 
     this.map?.on('click', (evt) => {
@@ -93,7 +101,6 @@ export class MapComponent implements AfterViewInit {
       });
 
     })
-
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
