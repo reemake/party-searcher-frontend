@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.survey-container {
+    display: block;
+    position: absolute;
+    width: 1000px;
+    height: 500px;
+    background: #FFFFFF;
+    mix-blend-mode: normal;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    z-index: 5;
+    padding-top: 75px;
+    margin-left: calc(50% - 500px);
+    margin-top: 7%;
+}
+
+.survey-container-text {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+}
+
+.survey-button {
+    position: absolute;
+    width: 250px;
+    height: 100px;
+    background: #D15D55;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    transition: .7s;
+}
+
+#survey-button-yes {
+    margin-bottom: 75px;
+    margin-right: 75px;
+    bottom: 0;
+    right: 0;
+}
+
+#survey-button-no {
+    margin-bottom: 75px;
+    margin-left: 75px;
+    bottom: 0;
+    left: 0;
+}
+
+.survey-button:hover {
+    background: #FF0000;
+    transition: .7s;
+}

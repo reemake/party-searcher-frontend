@@ -8,6 +8,9 @@ import {HttpClientModule} from "@angular/common/http";
 import {LocationBtnComponent} from './components/map/location-btn/location-btn.component';
 import {EventsIndexComponent} from './components/pages/events/events-index/events-index.component';
 import {EventSearchComponent} from './components/events/event-search/event-search.component';
+
+import {SurveyComponent} from './components/survey/survey.component';
+
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
 import {RouterModule, Routes} from "@angular/router";
 import {CommonModule} from "@angular/common";
@@ -25,7 +28,8 @@ const ROUTES: Routes = [
     LocationBtnComponent,
     EventsIndexComponent,
     EventSearchComponent,
-    EventDescriptionComponent
+    EventDescriptionComponent,
+    SurveyComponent
   ],
   imports: [
     BrowserModule,
