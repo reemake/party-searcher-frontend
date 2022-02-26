@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {MapComponent} from './components/map/map.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {LocationBtnComponent} from './components/map/location-btn/location-btn.component';
 import {EventsIndexComponent} from './components/pages/events/events-index/events-index.component';
@@ -12,6 +12,7 @@ import {EventDescriptionComponent} from './components/events/event-description/e
 import {RouterModule, Routes} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {HeaderComponent} from './components/header/header.component';
+import {EventCreateComponent} from './components/events/event-create/event-create.component';
 
 
 const ROUTES: Routes = [
@@ -28,14 +29,16 @@ const ROUTES: Routes = [
     EventsIndexComponent,
     EventSearchComponent,
     EventDescriptionComponent,
-    HeaderComponent
+    HeaderComponent,
+    EventCreateComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
