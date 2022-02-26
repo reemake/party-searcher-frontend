@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'survey-component',
@@ -6,12 +7,8 @@ import { Component } from "@angular/core";
     styleUrls: ['./survey.component.css']
 })
 export class SurveyComponent {
-    reaction(event: Event): void {
-        let buttonId = (event.target as Element).id
-        if (buttonId === "survey-button-no") {
-            document.getElementById("survey")!.remove();
-        } else if (buttonId === "survey-button-yes") {
-            console.log("yes");
-        }
+    surveyButton: boolean = true;
+    public surveyButtonPress(): void {
+      this.surveyButton = !this.surveyButton;
     }
 }

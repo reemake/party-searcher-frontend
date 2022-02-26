@@ -10,14 +10,16 @@ import {EventsIndexComponent} from './components/pages/events/events-index/event
 import {EventSearchComponent} from './components/events/event-search/event-search.component';
 
 import {SurveyComponent} from './components/survey/survey.component';
+import { SurveyTest } from './components/pages/survey-test/survey.test';
 
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule, Routes, Router } from "@angular/router";
 import {CommonModule} from "@angular/common";
 
 
 const ROUTES: Routes = [
-  {path: '', component: EventsIndexComponent}
+  {path: '', component: EventsIndexComponent},
+  {path: 'pages/survey-test', component: SurveyTest}
 ];
 
 
@@ -29,7 +31,8 @@ const ROUTES: Routes = [
     EventsIndexComponent,
     EventSearchComponent,
     EventDescriptionComponent,
-    SurveyComponent
+    SurveyComponent,
+    SurveyTest
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
-<div class="survey-container" id="survey">
+<div class="survey-container" id="survey" *ngIf="surveyButton">
     <h1 class="survey-container-text">Добро пожаловать в Teammates search!<br>Для определения мероприятий, подходящих конкретно вам,<br>рекомендуется пройти опрос.<br>Желаете пройти его?</h1>
-    <button (click)="reaction($event)" class="survey-button" id="survey-button-no">Нет</button>
-    <button (click)="reaction($event)" class="survey-button" id="survey-button-yes">Да</button>
+    <button class="survey-button" id="survey-button-no" (click)="surveyButtonPress()">Нет</button>
+    <button routerLink="../pages/survey-test" class="survey-button" id="survey-button-yes" (click)="surveyButtonPress()">Да</button>
 </div>
