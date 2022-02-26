@@ -33,7 +33,7 @@ export class EventsIndexComponent implements OnInit {
         id: 1,
         description: "abcd",
         name: "aecd",
-        isOnline: true,
+        isOnline: false,
         location: {
           name: "vrn",
           lat: 51.68405100623913,

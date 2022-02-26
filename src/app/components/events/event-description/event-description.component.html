@@ -1,29 +1,36 @@
-<div *ngIf="event!=null">
+<div *ngIf="event!=null" id="description">
   <div class="description-row header">
-
-    <p class="title">{{event.name}}</p>
-    <button (click)="closeDescriptionFun()" class="exit-btn"><img src="./assets/img/mapImages/buttons/close-btn.png"/>
+    <button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
+                                                                  src="./assets/img/mapImages/buttons/close-btn.png"/>
     </button>
+  </div>
+  <div class="description-row">
+
+    <h2 class="title">{{event.name}}</h2>
   </div>
 
   <div class="description-row">
     <div class="locationImage">
       <img *ngIf="event.isOnline" src="./assets/img/mapImages/online location.png"/>
-      <img *ngIf="!event.isOnline" src="./assets/img/mapImages/getLocation.png"/>
-      <p>{{event.url || event.location.name}}</p>
+      <img *ngIf="!event.isOnline" src="./assets/img/mapImages/event location.png"/>
     </div>
+    <p>{{event.url || event.location.name}}</p>
+
   </div>
   <div class="description-row owner">
     <p>Организатор</p>
-    <p>{{event.owner.login}}</p>
-    <img src="./assets/img/rating-star-icon.png"/>
-    <p>{{event.owner.rating}}</p>
+    <div class="owner-container">
+      <p>{{event.owner.login}}</p>
+      <img src="./assets/img/rating-star-icon.png"/>
+      <p>{{event.owner.rating}}</p>
+    </div>
   </div>
   <div class="description-row">
     <p>Участники</p>
     <p>{{event.guests.length}}</p>
   </div>
-  <div class="description-row">
+  <div class="description-row description">
+    <p>Доп информация</p>
     <pre>
       {{event.description}}
     </pre>

@@ -1,12 +1,67 @@
+#description {
+  width: 100%;
+}
+
 .description-row {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+
+
+}
+
+
+.description-row {
+  margin-bottom: 40px;
 }
 
 .header {
-  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+
+.description-row * {
+  margin-left: 10px;
+}
+
+.header {
+  justify-content: end;
+}
+
+.description-row h2 {
+  margin: 0 auto;
 }
 
 .exit-btn {
-
+  height: 30px;
+  width: 30px;
+  background: none;
+  border: none;
 }
+
+.exit-btn:hover {
+  background-color: red;
+}
+
+.description, .description-buttons {
+  display: block;
+}
+
+.description-button, .owner div {
+  display: flex;
+}
+
+.owner-container img {
+  height: 20px;
+  width: 20px;
+}
+
+.description-button button {
+  background: none;
+  border: none;
+}
+
+.description-button button:hover {
+  background: red;
+}
+

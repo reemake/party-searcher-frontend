@@ -11,9 +11,11 @@ import {EventSearchComponent} from './components/events/event-search/event-searc
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
 import {RouterModule, Routes} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {HeaderComponent} from './components/header/header.component';
 
 
 const ROUTES: Routes = [
+  {path: 'events/map', component: EventsIndexComponent},
   {path: '', component: EventsIndexComponent}
 ];
 
@@ -25,7 +27,8 @@ const ROUTES: Routes = [
     LocationBtnComponent,
     EventsIndexComponent,
     EventSearchComponent,
-    EventDescriptionComponent
+    EventDescriptionComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
