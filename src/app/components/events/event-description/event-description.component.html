@@ -1,7 +1,11 @@
 <div *ngIf="event!=null">
-  <button (click)="closeDescriptionFun()" class="exit-btn"><img src="./assets/img/mapImages/buttons/close-btn.png"/>
-  </button>
-  <p class="title">{{event.name}}</p>
+  <div class="description-row header">
+
+    <p class="title">{{event.name}}</p>
+    <button (click)="closeDescriptionFun()" class="exit-btn"><img src="./assets/img/mapImages/buttons/close-btn.png"/>
+    </button>
+  </div>
+
   <div class="description-row">
     <div class="locationImage">
       <img *ngIf="event.isOnline" src="./assets/img/mapImages/online location.png"/>

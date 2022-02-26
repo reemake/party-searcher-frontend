@@ -1,0 +1,12 @@
+.description-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.header {
+  justify-content: space-between;
+}
+
+.exit-btn {
+
+}
