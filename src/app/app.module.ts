@@ -8,18 +8,16 @@ import {HttpClientModule} from "@angular/common/http";
 import {LocationBtnComponent} from './components/map/location-btn/location-btn.component';
 import {EventsIndexComponent} from './components/pages/events/events-index/events-index.component';
 import {EventSearchComponent} from './components/events/event-search/event-search.component';
-
-import {SurveyComponent} from './components/survey/survey.component';
-import { SurveyTest } from './components/pages/survey-test/survey.test';
-
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
 import {RouterModule, Routes, Router } from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {SurveyComponent} from './components/survey/survey.component';
+import { SurveyTest } from './components/pages/survey.test/survey.test.component';
 
 
 const ROUTES: Routes = [
   {path: '', component: EventsIndexComponent},
-  {path: 'pages/survey-test', component: SurveyTest}
+  {path: 'pages/survey.test', component: SurveyTest}
 ];
 
 

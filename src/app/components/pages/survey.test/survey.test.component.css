@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.surveyTest {
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 1500px;
+    background: #D15D55;
+    left: calc(50% - 750px);
+    top: 0;
+}
+
+.surveyTest-text {
+    display: block;
+    padding: 50px 0 0 50px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.surveyTest-text-caption{
+    width: 100%;
+    margin-top: 50px;
+}
+
+.radio-area {
+    display: inline-block;
+    margin: 34px 50px 0 0;
+}
+
+.surveyTest-button {
+    position: absolute;
+    width: 315px;
+    height: 50px;
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    text-align: center;
+    bottom: 50px;
+    line-height: 50px;
+}
+
+.surveyTest-textarea {
+    margin-top: 50px;
+    resize: none;
+    width: 500px;
+    height: 50px;
+    background: #FFFFFF;
+    border: 2px solid #000000;
+    box-sizing: border-box;
+}
+
+#surveyTest-text-captionType {
+    margin-top: 0;
+}
+
+#surveyTest-button-end {
+    left: 50px;
+}
+
+#surveyTest-button-cancel {
+    right: 50px;
+}
