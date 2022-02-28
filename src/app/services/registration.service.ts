@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {User} from './entity/User';
-import {BACKEND_URL} from "./app.module";
+import {User} from '../entity/User';
+import {BACKEND_URL} from "../app.module";
 
 @Injectable({
   providedIn: 'root'

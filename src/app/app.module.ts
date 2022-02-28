@@ -12,8 +12,8 @@ import {EventDescriptionComponent} from './components/events/event-description/e
 import {RouterModule, Routes} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {HeaderComponent} from './components/header/header.component';
-import { LoginComponent } from './login/login.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 
 const ROUTES: Routes = [
