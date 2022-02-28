@@ -9,6 +9,7 @@ import {User} from '../entity/User';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
   user = new User();
 
   constructor(private _service: RegistrationService) { }

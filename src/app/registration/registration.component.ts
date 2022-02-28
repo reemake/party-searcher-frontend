@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {User} from '../entity/User';
+import {RegistrationService} from '../registration.service'
 
 @Component({
   selector: 'app-registration',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor() { }
+  user = new User();
+
+  constructor(private _service: RegistrationService) { }
 
   ngOnInit(): void {
+  }
+
+  registerUser() {
+    this._service.registerUserFromRemote(this.user).subscribe(
+      data => console.log("response recieved"),
+      error => console.log("exception occured")
+    )
   }
 
 }

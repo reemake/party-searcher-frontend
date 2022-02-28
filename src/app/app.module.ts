@@ -19,6 +19,7 @@ import { RegistrationComponent } from './registration/registration.component';
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: 'profile/login', component: LoginComponent},
+  {path: 'profile/registration', component: RegistrationComponent},
   {path: '', component: EventsIndexComponent},
 ];
 

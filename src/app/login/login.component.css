@@ -8,27 +8,27 @@
 .container {
   position: absolute;
   width: 500px;
-  height: 420px;
+  height: 500px;
   margin: 0 auto;
   background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
   border-radius: 5px;
 }
 
-.checkbox {
-  padding-left: 30px;
-}
-
 #title {
-  padding: 30px;
-}
-
-#login-form {
+  padding-top: 30px;
   padding-left: 30px;
   padding-right: 30px;
 }
 
-#password-form {
-  padding: 30px;
+.form-group {
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.checkbox {
+  padding-left: 30px;
+  padding-top: 20px;
 }
 
 #submit-button {
@@ -50,4 +50,9 @@
 #submit-button:hover {
   background: #FF0000;
   transition: .7s;
+}
+
+#toRegistry-button {
+  margin-top: 100px;
+  float: right;
 }
