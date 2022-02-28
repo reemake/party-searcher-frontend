@@ -7,8 +7,8 @@
 
 .container {
   position: absolute;
-  width: 500px;
-  height: 850px;
+  width: 550px;
+  height: 845px;
   margin: 0 auto;
   background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
   border-radius: 5px;
@@ -21,7 +21,7 @@
 }
 
 .form-group {
-  padding-top: 15px;
+  padding-top: 20px;
   padding-left: 30px;
   padding-right: 30px;
 }

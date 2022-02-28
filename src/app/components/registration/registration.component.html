@@ -45,9 +45,6 @@
       >
       <small class="text-danger" [class.d-none]="(cpassword.value == password.value) || cpassword.untouched">Пароли не совпадают!</small>
     </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="remember"> Запомнить меня</label>
-    </div>
     <button [disabled]="registerForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">Зарегистрироваться</button>
     <small id="toLogin-button">
       Уже зарегистрированы?
