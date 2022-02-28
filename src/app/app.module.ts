@@ -12,11 +12,14 @@ import {EventDescriptionComponent} from './components/events/event-description/e
 import {RouterModule, Routes} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {HeaderComponent} from './components/header/header.component';
+import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
-  {path: '', component: EventsIndexComponent}
+  {path: 'profile/login', component: LoginComponent},
+  {path: '', component: EventsIndexComponent},
 ];
 
 
@@ -28,7 +31,9 @@ const ROUTES: Routes = [
     EventsIndexComponent,
     EventSearchComponent,
     EventDescriptionComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

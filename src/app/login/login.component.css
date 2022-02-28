@@ -1,0 +1,53 @@
+.page {
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  position: absolute;
+  width: 500px;
+  height: 420px;
+  margin: 0 auto;
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+  border-radius: 5px;
+}
+
+.checkbox {
+  padding-left: 30px;
+}
+
+#title {
+  padding: 30px;
+}
+
+#login-form {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+#password-form {
+  padding: 30px;
+}
+
+#submit-button {
+  position: absolute;
+  width: 200px;
+  height: 43px;
+  margin-top: 30px;
+  margin-left: 145px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: white;
+}
+
+#submit-button:hover {
+  background: #FF0000;
+  transition: .7s;
+}
