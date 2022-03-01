@@ -7,7 +7,6 @@
       <input type="email" class="form-control" placeholder="Введите адрес электронной почты" name="email" [(ngModel)]="user.email" #email="ngModel" required
              [class.is-invalid]="email.invalid && email.touched" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
       >
-      <!-- <small class="text-danger" [class.d-none]="email.valid || email.untouched">Email - обязательное поле!</small>-->
       <div *ngIf="email.errors && (email.invalid && email.touched)">
         <small class="text-danger" *ngIf="email.errors?.['required']">Email - обязательное поле!</small>
         <small class="text-danger" *ngIf="email.errors?.['pattern']">Email введён некорректно!</small>
@@ -46,10 +45,9 @@
       <small class="text-danger" [class.d-none]="(cpassword.value == password.value) || cpassword.untouched">Пароли не совпадают!</small>
     </div>
     <button [disabled]="registerForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">Зарегистрироваться</button>
-    <small id="toLogin-button">
+    <small class="float-right btextual" id="toLogin-button">
       Уже зарегистрированы?
       <button type="button" class="btn btn-link" [routerLink]="['/profile/login']">Войти</button>
     </small>
   </form>
 </div>
-</body>

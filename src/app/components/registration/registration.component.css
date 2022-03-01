@@ -1,15 +1,14 @@
 .page {
-  height: 94vh;
+  height: 93vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .container {
-  position: absolute;
-  width: 550px;
-  height: 845px;
-  margin: 0 auto;
+  max-width: 550px;
+  min-height: 730px;
+  max-height: 855px;
   background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
   border-radius: 5px;
 }
@@ -32,7 +31,6 @@
 }
 
 #submit-button {
-  position: absolute;
   width: 200px;
   height: 43px;
   margin-top: 30px;
@@ -52,6 +50,7 @@
   transition: .7s;
 }
 #toLogin-button {
-  margin-top: 100px;
+  margin-top: 25px;
+  margin-bottom: 20px;
   float: right;
 }
