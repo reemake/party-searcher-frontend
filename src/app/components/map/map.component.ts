@@ -114,26 +114,29 @@ export class MapComponent implements AfterViewInit {
 
 
     let features: Array<any> = events.map(event => {
-      let feature: any = new Feature({
-        geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857')),
-        event: event
-      });
+      if (event.location) {
+        let feature: any = new Feature({
+          geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857')),
+          event: event
+        });
 
-      feature.setStyle(new Style({
-        image: new Icon(({
-          crossOrigin: 'anonymous',
-          src: '../assets/img/mapImages/landmark.png',
-          imgSize: [27, 30]
-        }))
-      }));
 
-      if (this.eventsMap.get(feature) === undefined) {
-        let arr: Array<Event> = new Array<Event>(event);
-        this.eventsMap.set(feature, arr);
-      } else {
-        this.eventsMap.get(feature)?.push(event);
+        feature.setStyle(new Style({
+          image: new Icon(({
+            crossOrigin: 'anonymous',
+            src: '../assets/img/mapImages/landmark.png',
+            imgSize: [27, 30]
+          }))
+        }));
+
+        if (this.eventsMap.get(feature) === undefined) {
+          let arr: Array<Event> = new Array<Event>(event);
+          this.eventsMap.set(feature, arr);
+        } else {
+          this.eventsMap.get(feature)?.push(event);
+        }
+        return feature;
       }
-      return feature;
     });
 
     this.map?.removeLayer(this.previousLayer);

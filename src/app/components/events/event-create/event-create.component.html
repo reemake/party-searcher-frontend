@@ -1,6 +1,30 @@
-<form>
-
+<form (submit)="submit()" [formGroup]="formGroup">
+  <label for="name">Название мероприятия</label>
+  <input [formControl]="nameInput" id="name" required type="text"/>
+  <label for="theme">Тема мероприятия</label>
+  <input [formControl]="eventThemeInput" id="theme" required type="text"/>
+  <label for="description">Описание</label>
+  <textarea [formControl]="descriptionInput" id="description"></textarea>
+  <label for="begin">Время начала мероприятия</label>
+  <input [formControl]="startTimeInput" id="begin" required type="datetime-local"/>
+  <label for="end">Время</label>
+  <input [formControl]="endTimeInput" id="end" type="datetime-local"/>
+  <label for="maxCount">Максимальное кол-во участников</label>
+  <input [formControl]="maxGuestsCountInput" id="maxCount" type="number"/>
+  <label for="price">Цена</label>
+  <input [formControl]="priceInput" id="price" type="number"/>
+  <label for="private">Приватное мероприятие</label>
+  <input [formControl]="isPrivateInput" id="private" type="checkbox"/>
+  <label for="online">Онлайн</label>
+  <input [formControl]="isOnlineInput" id="online" type="checkbox"/>
+  <input type="submit" value="Создать">
+  <div *ngFor="let theme of tagsInputs">
+    <label for="tags">Тег</label>
+    <input [formControl]="theme" id="tags" type="text"/>
+  </div>
+  <p *ngIf="error!==''">{{error}}</p>
 </form>
+<button (click)="addTag()">add tag</button>
 <app-map>
 
 </app-map>

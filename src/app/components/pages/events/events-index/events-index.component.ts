@@ -33,6 +33,7 @@ export class EventsIndexComponent implements OnInit {
         id: 1,
         description: "abcd",
         name: "aecd",
+        theme: "tennis",
         isOnline: false,
         location: {
           name: "vrn",
@@ -52,7 +53,7 @@ export class EventsIndexComponent implements OnInit {
         currentUserEntered: true,
         tags: [],
         guests: new Array<EventAttendance>(),
-        url: null
+        isPrivate: false
 
       }];
   }

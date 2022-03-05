@@ -1,23 +1,25 @@
-import {ThemeTag} from "./ThemeTag";
 import {EventOwner} from "./EventOwner";
 import {Location} from "../Location";
 import {EventAttendance} from "./EventAttendance";
+import {Tag} from "./Tag";
 
 export interface Event {
-  id: number
+  id?: number
   description: string
   name: string
   isOnline: boolean
-  location: Location
-  url: string | null
+  isPrivate: boolean
+  location?: Location
+  url?: string
   dateTimeStart: Date
   dateTimeEnd: Date
   maxNumberOfGuests: number
   price: number
-  owner: EventOwner
-  chatId: number
-  currentUserEntered: boolean
-  tags: Array<ThemeTag>
+  owner?: EventOwner
+  chatId?: number
+  currentUserEntered?: boolean,
+  theme: string,
+  tags: Array<Tag>
   guests: Array<EventAttendance>
 
 }

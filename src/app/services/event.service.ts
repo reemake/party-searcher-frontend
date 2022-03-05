@@ -22,10 +22,14 @@ export class EventService {
     });
   }
 
-  public getEventsAtUserMap(userMapBoundingBox: Coordinate[]): Observable<Array<Event>> {
-    return this.httpClient.post<Array<Event>>(BACKEND_URL + "/events", {
-      'userMapBoundingBox': userMapBoundingBox
-    });
+  /*  public getEventsAtUserMap(userMapBoundingBox: Coordinate[]): Observable<Array<Event>> {
+      return this.httpClient.get<Array<Event>>(BACKEND_URL + "/events", {
+        'userMapBoundingBox': userMapBoundingBox
+      });
+    }*/
+
+  public add(event: Event): Observable<any> {
+    return this.httpClient.post(BACKEND_URL + "/events", event);
   }
 
 }

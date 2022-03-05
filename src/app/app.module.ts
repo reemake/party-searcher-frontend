@@ -17,6 +17,7 @@ import {EventCreateComponent} from './components/events/event-create/event-creat
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
+  {path: "events/add", component: EventCreateComponent},
   {path: '', component: EventsIndexComponent}
 ];
 
