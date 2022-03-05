@@ -4,23 +4,23 @@
             1. Какие типы мероприятий вам интересны?
         </div>
         <label class="radio-area">
-            <input type="radio" name="type" value="business">
+            <input type="checkbox" name="type" value="business">
             Деловые
         </label>
         <label class="radio-area">
-            <input type="radio" name="type" value="educational">
+            <input type="checkbox" name="type" value="educational">
             Учебные
         </label>
         <label class="radio-area">
-            <input type="radio" name="type" value="entertaining">
+            <input type="checkbox" name="type" value="entertaining">
             Развлекательные
         </label>
         <label class="radio-area">
-            <input type="radio" name="type" value="sport">
+            <input type="checkbox" name="type" value="sport">
             Спортивные
         </label>
         <label class="radio-area">
-            <input type="radio" name="type" value="another">
+            <input type="checkbox" name="type" value="another">
             Другое
         </label>
         <div class="surveyTest-text-caption">
@@ -37,6 +37,7 @@
         <div class="surveyTest-text-caption">
             3. Когда вы желаете посетить мероприятие?
         </div>
+    <!--
         <label class="radio-area">
             <input type="radio" name="time" value="soon">
             В ближайшее время
@@ -49,12 +50,19 @@
             <input type="radio" name="time" value="noMater">
             Не важно
         </label>
+    -->
+        <div class="radio-area">
+            С
+            <input type="datetime-local" class="radio-area-time">
+        </div>
+        <div class="radio-area">
+            По
+            <input type="datetime-local" class="radio-area-time">
+        </div>
         <div class="surveyTest-text-caption">
             4. Мероприятия какого города вас интересуют?
         </div>
         <textarea class="surveyTest-textarea"></textarea>
-
-
         <div class="surveyTest-button" id="surveyTest-button-end" routerLink="/">Завершить прохождение</div>
         <div class="surveyTest-button" id="surveyTest-button-cancel" routerLink="/">Отменить прохождение</div>
     </div>

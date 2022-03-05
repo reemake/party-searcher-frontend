@@ -50,7 +50,20 @@
     background: #FFFFFF;
     border: 2px solid #000000;
     box-sizing: border-box;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    padding: 7px;
 }
+
+.radio-area-time {
+    height: 28px;
+    margin: 0 0 0 10px;
+}
+
+
 
 #surveyTest-text-captionType {
     margin-top: 0;
