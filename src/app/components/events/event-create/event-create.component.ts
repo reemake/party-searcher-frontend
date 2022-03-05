@@ -24,10 +24,12 @@ export class EventCreateComponent implements OnInit {
   public urlInput: FormControl = new FormControl();
   public eventThemeInput: FormControl = new FormControl();
   public error: string = "";
+  public currentLocation: number[] = [];
 
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
   constructor(private eventService: EventService) {
+    this.locationInput.disable();
     this.formGroup = new FormGroup({
       name: this.nameInput,
       description: this.descriptionInput,
@@ -42,6 +44,10 @@ export class EventCreateComponent implements OnInit {
       theme: this.eventThemeInput
     });
 
+  }
+
+  setLocation(event: any): void {
+    this.currentLocation = [event[0], event[1]];
   }
 
   addTag(): void {
@@ -65,6 +71,12 @@ export class EventCreateComponent implements OnInit {
       tags: [],
       guests: []
     };
+
+    if (!event.isOnline) {
+      var location = this.locationInput.value;
+      let split: number[] = location.split(";");
+      event.location = {name: "ostuzheva", geom: {X: split[0], Y: split[1]}}
+    }
     this.tagsInputs.forEach(val => {
       let tag: Tag = {name: String(val.value).trim().toUpperCase()};
       event.tags.push(tag);
@@ -75,6 +87,10 @@ export class EventCreateComponent implements OnInit {
     }, error => {
       this.error = error;
     });
+  }
+
+  remove(control: FormControl): void {
+    this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
   }
 
 

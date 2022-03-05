@@ -5,6 +5,11 @@
   <input [formControl]="eventThemeInput" id="theme" required type="text"/>
   <label for="description">Описание</label>
   <textarea [formControl]="descriptionInput" id="description"></textarea>
+
+  <label *ngIf="!isOnlineInput.value" for="location">Местоположение</label>
+  <input *ngIf="!isOnlineInput.value" [formControl]="locationInput" id="location" type="text"
+         value="lon={{currentLocation[0]}}  lat={{currentLocation[1]}}"/>
+
   <label for="begin">Время начала мероприятия</label>
   <input [formControl]="startTimeInput" id="begin" required type="datetime-local"/>
   <label for="end">Время</label>
@@ -17,14 +22,25 @@
   <input [formControl]="isPrivateInput" id="private" type="checkbox"/>
   <label for="online">Онлайн</label>
   <input [formControl]="isOnlineInput" id="online" type="checkbox"/>
+
+
+  <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
+  <input *ngIf="isOnlineInput.value===true" [formControl]="eventThemeInput" id="urlInput" type="text"/>
+
   <input type="submit" value="Создать">
   <div *ngFor="let theme of tagsInputs">
     <label for="tags">Тег</label>
     <input [formControl]="theme" id="tags" type="text"/>
+    <button (click)="remove(theme)" class="remove-btn"><img alt="remove" height="15" src="./assets/img/remove-icon.png"
+                                                            width="25"/></button>
   </div>
   <p *ngIf="error!==''">{{error}}</p>
 </form>
 <button (click)="addTag()">add tag</button>
-<app-map>
+<app-map
+  (changeLocation)="setLocation($event)"
+  [center]="[-483281,6904172]"
+  [zoom]="14.5"
+  class="map">
 
 </app-map>

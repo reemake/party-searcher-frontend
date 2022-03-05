@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output} from '@angular/core';
 import {Feature, Map as MyMap, View} from 'ol';
 import {Coordinate} from 'ol/coordinate';
-import {defaults as DefaultControls, ScaleLine} from 'ol/control';
+import {Control, defaults as DefaultControls, ScaleLine} from 'ol/control';
 import Projection from 'ol/proj/Projection';
 import {fromLonLat, get as GetProjection, transform, transformExtent} from 'ol/proj'
 import {Extent} from 'ol/extent';
@@ -41,6 +41,7 @@ export class MapComponent implements AfterViewInit {
 
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Output() mapReady = new EventEmitter<MyMap>();
+  @Output() changeLocation = new EventEmitter<number[]>();
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
   view: View | undefined;
@@ -51,15 +52,18 @@ export class MapComponent implements AfterViewInit {
    * @private
    */
   private userLocation: Coordinate = [54, 54];
+  private clickedLocation: number[] = [];
   private eventsMap: Map<Feature<any>, Event[]> = new Map<Feature<any>, Event[]>();
-  private previousLayer: VectorLayer<any> = new VectorLayer({});
+  private previousEventsMarkersLayer: VectorLayer<any> = new VectorLayer({});
+  private previousCurrentUserLocationICON: VectorLayer<any> = new VectorLayer<any>();
+  private previousClickedLocationICON: VectorLayer<any> = new VectorLayer<any>();
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef, private mapService: EventService) {
   }
 
   ngAfterViewInit(): void {
     if (!this.map) {
-      this.zone.run(()=>{
+      this.zone.run(() => {
         this.initMap();
         this.setHandlers();
       });
@@ -70,8 +74,33 @@ export class MapComponent implements AfterViewInit {
       this.setMapBounds();
     });
 
+
   }
 
+  public addLocationMarket(points: number[]): void {
+    let feature: any = new Feature({
+      geometry: new Point(fromLonLat(points, 'EPSG:3857'))
+    });
+
+
+    feature.setStyle(new Style({
+      image: new Icon(({
+        crossOrigin: 'anonymous',
+        src: '../assets/img/mapImages/clicked-locationICON.png'
+      }))
+    }));
+
+    this.map?.removeLayer(this.previousClickedLocationICON);
+
+    let vectorSource: VectorSource<any> = new VectorSource({
+      features: [feature]
+    });
+    this.previousClickedLocationICON = new VectorLayer<any>({
+      source: vectorSource
+    });
+
+    this.map?.addLayer(this.previousClickedLocationICON);
+  }
 
   private initMap(): void {
     this.projection = GetProjection('EPSG:3857');
@@ -90,12 +119,28 @@ export class MapComponent implements AfterViewInit {
         new ScaleLine({})
       ])
     });
+
+    let buttonElement: any = document.createElement('button');
+    buttonElement.innerHTML = ' <img alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/>';
+    buttonElement.addEventListener('click', () => {
+      this.setUserLocation();
+    })
+    let control = new Control({element: buttonElement});
+    this.map.addControl(control);
   }
 
-  private setHandlers():void{
+  private setHandlers(): void {
     this.map?.on('click', (evt) => {
+      var lonlat = transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+      var lon = lonlat[0];
+      var lat = lonlat[1];
+
+      this.addLocationMarket(lonlat);
+
+      this.changeLocation.emit([lon, lat]);
+
       let arr: Array<Event> = [];
-      this.previousLayer.getFeatures(evt.pixel).then(value => {
+      this.previousEventsMarkersLayer.getFeatures(evt.pixel).then(value => {
         value.forEach(e => {
           if (this.eventsMap.get(e) !== undefined) {
             this.eventsMap.get(e)?.map(e => {
@@ -110,13 +155,32 @@ export class MapComponent implements AfterViewInit {
     })
   }
 
+
+  private checkPointInCycle(x: number, y: number, x1: number, y1: number): boolean {
+    let R: number = 10000;
+    return (Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= R * R;
+  }
+
+
+  /**
+   * ОПРЕДЕЛИТЬ ГРАНИЦЫ КАРТЫ, КОТОРУЮ В ДАННЫЙ МОМЕНТ ВИДИТ ПОЛЬЗОВАТЕЛЬ.
+   */
+  private setMapBounds(): void {
+    let extent: number[] | undefined = this.map?.getView().calculateExtent(this.map.getSize())
+    if (extent != undefined) {
+      let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+      this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
+//      console.log(this.mapBoundingBox);
+    }
+  }
+
   private updateEventsOnMap(events: Array<Event>): void {
 
 
     let features: Array<any> = events.map(event => {
       if (event.location) {
         let feature: any = new Feature({
-          geometry: new Point(fromLonLat([event.location.lon, event.location.lat], 'EPSG:3857')),
+          geometry: new Point(fromLonLat([event.location.X, event.location.Y], 'EPSG:3857')),
           event: event
         });
 
@@ -139,37 +203,17 @@ export class MapComponent implements AfterViewInit {
       }
     });
 
-    this.map?.removeLayer(this.previousLayer);
+    this.map?.removeLayer(this.previousEventsMarkersLayer);
 
     let vectorSource: VectorSource<any> = new VectorSource({
       features: features
     });
-    this.previousLayer = new VectorLayer<any>({
+    this.previousEventsMarkersLayer = new VectorLayer<any>({
       source: vectorSource
     });
 
-    this.map?.addLayer(this.previousLayer);
+    this.map?.addLayer(this.previousEventsMarkersLayer);
   }
-
-
-  private checkPointInCycle(x: number, y: number, x1: number, y1: number): boolean {
-    let R: number = 10000;
-    return (Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= R * R;
-  }
-
-
-  /**
-   * ОПРЕДЕЛИТЬ ГРАНИЦЫ КАРТЫ, КОТОРУЮ В ДАННЫЙ МОМЕНТ ВИДИТ ПОЛЬЗОВАТЕЛЬ.
-   */
-  private setMapBounds(): void {
-    let extent: number[] | undefined = this.map?.getView().calculateExtent(this.map.getSize())
-    if (extent != undefined) {
-      let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
-      this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
-//      console.log(this.mapBoundingBox);
-    }
-  }
-
 
   private setUserLocation(): void {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -177,8 +221,39 @@ export class MapComponent implements AfterViewInit {
       this.userLocation = [position.coords.longitude, position.coords.latitude];
       if (this.map !== undefined)
         this.map.getView().setCenter(transform([this.center[0], this.center[1]], 'EPSG:4326', 'EPSG:3857'));
+
+      this.printLocationMarker();
+
+      this.changeLocation.emit(this.userLocation);
     }, () => {
     }, {enableHighAccuracy: true});
   }
+
+  private printLocationMarker(): void {
+    let feature: any = new Feature({
+      geometry: new Point(fromLonLat([this.userLocation[0], this.userLocation[1]], 'EPSG:3857'))
+    });
+
+
+    feature.setStyle(new Style({
+      image: new Icon(({
+        crossOrigin: 'anonymous',
+        src: '../assets/img/mapImages/currentPosition.png'
+      }))
+    }));
+
+    this.map?.removeLayer(this.previousCurrentUserLocationICON);
+
+    let vectorSource: VectorSource<any> = new VectorSource({
+      features: [feature]
+    });
+    this.previousCurrentUserLocationICON = new VectorLayer<any>({
+      source: vectorSource
+    });
+
+    this.map?.addLayer(this.previousCurrentUserLocationICON);
+  }
+
+
 }
 
