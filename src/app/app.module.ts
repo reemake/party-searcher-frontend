@@ -13,6 +13,7 @@ import {RouterModule, Routes, Router } from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {SurveyComponent} from './components/survey/survey.component';
 import { SurveyTest } from './components/pages/survey.test/survey.test.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 const ROUTES: Routes = [
@@ -37,7 +38,8 @@ const ROUTES: Routes = [
     FormsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
