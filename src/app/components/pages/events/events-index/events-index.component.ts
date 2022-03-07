@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Event} from "../../../../entity/Event/Event";
-import {EventAttendance} from "../../../../entity/Event/EventAttendance";
+import {EventService} from "../../../../services/event.service";
 
 @Component({
   selector: 'app-events-index',
@@ -14,7 +14,7 @@ export class EventsIndexComponent implements OnInit {
   public currentActiveEvent: Event | null = null;
   public isList: boolean = false;
 
-  constructor() {
+  constructor(private eventService: EventService) {
 
   }
 
@@ -28,34 +28,9 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public onMapReady(event: any) {
-    this.events = [
-      {
-        id: 1,
-        description: "abcd",
-        name: "aecd",
-        theme: "tennis",
-        isOnline: false,
-        location: {
-          name: "vrn",
-          Y: 51.68405100623913,
-          X: 39.26342010498047
-        },
-        dateTimeStart: new Date(),
-        dateTimeEnd: new Date(),
-        maxNumberOfGuests: 30,
-        price: 1000,
-        owner: {
-          login: "pupkin",
-          id: 1,
-          rating: 2
-        },
-        chatId: 300,
-        currentUserEntered: true,
-        tags: [],
-        guests: new Array<EventAttendance>(),
-        isPrivate: false
-
-      }];
+    this.eventService.getEvents().subscribe(events => {
+      this.events = events;
+    })
   }
 
   ngOnInit(): void {

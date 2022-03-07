@@ -1,6 +1,6 @@
-import {Point} from "./Event/Point";
+import {Point} from "./Event/Location";
 
 export interface Location {
   name: string
-  geom: Point
+  location: Point
 }

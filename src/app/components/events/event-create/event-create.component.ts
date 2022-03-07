@@ -73,15 +73,16 @@ export class EventCreateComponent implements OnInit {
     };
 
     if (!event.isOnline) {
-      var location = this.locationInput.value;
-      let split: number[] = location.split(";");
-      event.location = {name: "ostuzheva", geom: {X: split[0], Y: split[1]}}
+      event.location = {
+        name: "ostuzheva",
+        location: {type: "Point", coordinates: [this.currentLocation[0], this.currentLocation[1]]}
+      }
     }
     this.tagsInputs.forEach(val => {
-      let tag: Tag = {name: String(val.value).trim().toUpperCase()};
+      let tag: Tag = {name: String(val.value).toUpperCase()};
       event.tags.push(tag);
     });
-    console.log("add");
+    console.log("add" + JSON.stringify(event));
     this.eventService.add(event).subscribe(event => {
 
     }, error => {

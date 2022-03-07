@@ -180,7 +180,7 @@ export class MapComponent implements AfterViewInit {
     let features: Array<any> = events.map(event => {
       if (event.location) {
         let feature: any = new Feature({
-          geometry: new Point(fromLonLat([event.location.X, event.location.Y], 'EPSG:3857')),
+          geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
           event: event
         });
 

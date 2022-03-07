@@ -16,10 +16,16 @@ export class EventService {
 
 
   public getEventsWithinRadius(location: Coordinate, radius: number): Observable<Array<Event>> {
-    return this.httpClient.post<Array<Event>>(BACKEND_URL + "/events", {
-      location: location,
-      radius: radius
+    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/events/getEventsWithinRadius", {
+      params: {
+        location: location,
+        radius: radius
+      }
     });
+  }
+
+  public getEvents(): Observable<Array<Event>> {
+    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/events/getEvents");
   }
 
   /*  public getEventsAtUserMap(userMapBoundingBox: Coordinate[]): Observable<Array<Event>> {
