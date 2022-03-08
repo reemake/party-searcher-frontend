@@ -1,0 +1,61 @@
+h3 {
+  margin: 0 auto;
+  font-weight: normal;
+  text-align: center;
+}
+
+.form-row-2 {
+  display: flex;
+
+}
+
+div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+form * {
+  margin-bottom: 15px;
+}
+
+input[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  font-weight: bold;
+  border-radius: 25px;
+  background-color: aqua;
+  width: 30%;
+}
+
+input[type="submit"]:hover {
+  background-color: red;
+}
+
+.header {
+  align-items: end;
+  justify-content: end;
+}
+
+.header button {
+  border: none;
+  background: none;
+}
+
+.header button:hover {
+  background: red;
+}
+
+ol {
+  list-style: none;
+}
+
+ol li {
+  background: gray;
+  margin: 0 0;
+  padding: 10px 10px;
+}
+
+ol li:hover {
+  background: burlywood;
+}

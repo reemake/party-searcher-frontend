@@ -42,6 +42,7 @@ export class MapComponent implements AfterViewInit {
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Output() mapReady = new EventEmitter<MyMap>();
   @Output() changeLocation = new EventEmitter<number[]>();
+  @Output() callSearch = new EventEmitter<boolean>();
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
   view: View | undefined;
@@ -127,6 +128,14 @@ export class MapComponent implements AfterViewInit {
     })
     let control = new Control({element: buttonElement});
     this.map.addControl(control);
+
+    let buttonSearchElement: any = document.createElement('button');
+    buttonSearchElement.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/getLocatio.png"/>';
+    buttonSearchElement.addEventListener('click', () => {
+      this.callSearch.emit(true);
+    })
+    let searchControl = new Control({element: buttonSearchElement});
+    this.map.addControl(searchControl);
   }
 
   private setHandlers(): void {

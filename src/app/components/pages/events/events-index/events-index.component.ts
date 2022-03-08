@@ -13,6 +13,9 @@ export class EventsIndexComponent implements OnInit {
   public events: Array<Event> = new Array();
   public currentActiveEvent: Event | null = null;
   public isList: boolean = false;
+  public mapSize: string = "100%";
+  public isSearchActive: boolean = true;
+  private prevMapSize: string = "100%";
 
   constructor(private eventService: EventService) {
 
@@ -31,6 +34,16 @@ export class EventsIndexComponent implements OnInit {
     this.eventService.getEvents().subscribe(events => {
       this.events = events;
     })
+  }
+
+  public onCallSearch(event: any): void {
+    if (event) {
+      this.isSearchActive = true;
+      this.mapSize = "70%";
+    } else {
+      this.isSearchActive = false;
+      this.mapSize = this.prevMapSize;
+    }
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import {Point} from "./Event/Location";
+import {Point} from "./Event/Point";
 
 export interface Location {
   name: string

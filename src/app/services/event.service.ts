@@ -38,4 +38,8 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/events", event);
   }
 
+  public getWords(wordPart: string): Observable<string[]> {
+    return this.httpClient.get<Array<string>>(BACKEND_URL + "/events/getKeyWords", {params: {wordPart: wordPart}});
+  }
+
 }
