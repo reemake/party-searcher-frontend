@@ -36,6 +36,7 @@ export class EventService {
     }*/
 
   public add(event: Event): Observable<any> {
+
     return this.httpClient.post(BACKEND_URL + "/events", event);
   }
 
@@ -47,13 +48,47 @@ export class EventService {
     return this.httpClient.get<Array<EventType>>(BACKEND_URL + "/eventTypes");
   }
 
-  public getAddressByLonLat(lon: number, lat: number): Observable<any> {
-    return this.httpClient.get<any>("https://nominatim.openstreetmap.org/reverse", {
-      params: {
-        lon: lon,
-        lat: lat
+  public setAddressByLonLat(event: Event, func: Function): void {
+    console.log("open xml")
+    var lon = event.location?.location.coordinates[0];
+    var lat = event.location?.location.coordinates[1];
+    var xhr = new XMLHttpRequest();
+
+    xhr.setRequestHeader("lon", String(lon));
+    xhr.setRequestHeader("lat", String(lat));
+
+    xhr.onload = () => {
+      console.log("secomd \n" + event);
+      var document = xhr.responseXML;
+
+      var fullAddress = [];
+      if (event.location !== undefined) {
+        if (document != null) {
+          var city = document.getElementsByName("city");
+          var road = document.getElementsByName("road");
+          var house = document.getElementsByName("house_number");
+          if (city.length != 0) {
+            fullAddress.push(city[0]);
+          }
+          if (road.length != 0) {
+            fullAddress.push(road[0]);
+          }
+          if (house.length != 0) {
+            fullAddress.push(house[0]);
+          }
+
+          event.location.name = fullAddress.join(",");
+        } else {
+          event.location.name = "";
+        }
       }
-    });
+
+      func();
+    }
+    xhr.open('GET', "https://nominatim.openstreetmap.org/reverse", true);
+    xhr.send();
+
+
   }
 
 }

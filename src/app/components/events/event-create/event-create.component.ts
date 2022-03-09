@@ -82,17 +82,22 @@ export class EventCreateComponent implements OnInit {
     if (!event.isOnline) {
       event.location = {
         name: "",
-        location: {type: "Point", coordinates: [this.currentLocation[0], this.currentLocation[1]]}
-      }
-      this.eventService.getAddressByLonLat(this.currentLocation[0], this.currentLocation[1]).subscribe(address => {
-        ////////////////////////////////////ADD ADDRESS
+        location: {
+          type: "Point",
+          coordinates: this.currentLocation
+        }
+      };
+      console.log("first \n" + event);
+      this.eventService.setAddressByLonLat(event, () => {
+        console.log(event);
         this.eventService.add(event).subscribe(event => {
 
         }, error => {
           this.error = error;
         });
-      })
+      });
     } else
+
       this.eventService.add(event).subscribe(event => {
 
       }, error => {
