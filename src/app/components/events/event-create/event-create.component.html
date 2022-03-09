@@ -3,6 +3,11 @@
   <input [formControl]="nameInput" id="name" required type="text"/>
   <label for="theme">Тема мероприятия</label>
   <input [formControl]="eventThemeInput" id="theme" required type="text"/>
+  <label for="type">Тип мероприятия</label>
+  <select [formControl]="eventTypeInput" id="type" required>
+    <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
+  </select>
+
   <label for="description">Описание</label>
   <textarea [formControl]="descriptionInput" id="description"></textarea>
 

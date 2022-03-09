@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {BACKEND_URL} from "../app.module";
 import {Coordinate} from "ol/coordinate";
 import {Event} from "../entity/Event/Event";
+import {EventType} from "../entity/Event/EventType";
 
 
 @Injectable({
@@ -40,6 +41,19 @@ export class EventService {
 
   public getWords(wordPart: string): Observable<string[]> {
     return this.httpClient.get<Array<string>>(BACKEND_URL + "/events/getKeyWords", {params: {wordPart: wordPart}});
+  }
+
+  public getTypes(): Observable<EventType[]> {
+    return this.httpClient.get<Array<EventType>>(BACKEND_URL + "/eventTypes");
+  }
+
+  public getAddressByLonLat(lon: number, lat: number): Observable<any> {
+    return this.httpClient.get<any>("https://nominatim.openstreetmap.org/reverse", {
+      params: {
+        lon: lon,
+        lat: lat
+      }
+    });
   }
 
 }

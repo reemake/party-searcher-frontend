@@ -14,7 +14,7 @@ export class EventsIndexComponent implements OnInit {
   public currentActiveEvent: Event | null = null;
   public isList: boolean = false;
   public mapSize: string = "100%";
-  public isSearchActive: boolean = true;
+  public isSearchActive: boolean = false;
   private prevMapSize: string = "100%";
 
   constructor(private eventService: EventService) {

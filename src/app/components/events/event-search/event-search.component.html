@@ -14,8 +14,8 @@
 
   <div class="form-row">
     <label for="eventTypeInput">Тип события</label>
-    <select *ngFor="let type of eventTypes" [formControl]="eventTypeInput" id="eventTypeInput">
-      <option value="{{type}}">{{type}}</option>
+    <select [formControl]="eventTypeInput" id="eventTypeInput">
+      <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
     </select>
 
   </div>

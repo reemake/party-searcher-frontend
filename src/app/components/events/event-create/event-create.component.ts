@@ -23,8 +23,10 @@ export class EventCreateComponent implements OnInit {
   public locationInput: FormControl = new FormControl();
   public urlInput: FormControl = new FormControl();
   public eventThemeInput: FormControl = new FormControl();
+  public eventTypeInput: FormControl = new FormControl();
   public error: string = "";
   public currentLocation: number[] = [];
+  public eventTypes: string[] = [];
 
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
@@ -41,7 +43,8 @@ export class EventCreateComponent implements OnInit {
       isOnline: this.isOnlineInput,
       location: this.locationInput,
       url: this.urlInput,
-      theme: this.eventThemeInput
+      theme: this.eventThemeInput,
+      type: this.eventTypeInput
     });
 
   }
@@ -61,6 +64,7 @@ export class EventCreateComponent implements OnInit {
       description: this.descriptionInput.value,
       theme: this.eventThemeInput.value,
       name: this.nameInput.value,
+      eventType: {name: this.eventTypeInput.value},
       isOnline: this.isOnlineInput.value,
       isPrivate: this.isPrivateInput.value,
       url: this.isOnlineInput.value ? this.urlInput.value : null,
@@ -71,23 +75,29 @@ export class EventCreateComponent implements OnInit {
       tags: [],
       guests: []
     };
-
-    if (!event.isOnline) {
-      event.location = {
-        name: "ostuzheva",
-        location: {type: "Point", coordinates: [this.currentLocation[0], this.currentLocation[1]]}
-      }
-    }
     this.tagsInputs.forEach(val => {
       let tag: Tag = {name: String(val.value).toUpperCase()};
       event.tags.push(tag);
     });
-    console.log("add" + JSON.stringify(event));
-    this.eventService.add(event).subscribe(event => {
+    if (!event.isOnline) {
+      event.location = {
+        name: "",
+        location: {type: "Point", coordinates: [this.currentLocation[0], this.currentLocation[1]]}
+      }
+      this.eventService.getAddressByLonLat(this.currentLocation[0], this.currentLocation[1]).subscribe(address => {
+        ////////////////////////////////////ADD ADDRESS
+        this.eventService.add(event).subscribe(event => {
 
-    }, error => {
-      this.error = error;
-    });
+        }, error => {
+          this.error = error;
+        });
+      })
+    } else
+      this.eventService.add(event).subscribe(event => {
+
+      }, error => {
+        this.error = error;
+      });
   }
 
   remove(control: FormControl): void {
@@ -96,6 +106,9 @@ export class EventCreateComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.eventService.getTypes().subscribe(types => {
+      this.eventTypes = types.map(event => event.name);
+    });
   }
 
 }

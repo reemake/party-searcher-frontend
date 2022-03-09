@@ -11,7 +11,7 @@ export class EventSearchComponent implements OnInit {
 
   @Output() closeSearch: EventEmitter<boolean> = new EventEmitter<boolean>();
   public words: string[] = ["artyom", "kok"];
-  public eventTypes: string[] = ["all"];
+  public eventTypes: string[] = [];
 
   public wordsInput: FormControl = new FormControl();
   public eventLengthFromInput: FormControl = new FormControl();
@@ -35,6 +35,9 @@ export class EventSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.eventService.getTypes().subscribe(types => {
+      this.eventTypes = types.map(event => event.name);
+    });
   }
 
   search(): void {
