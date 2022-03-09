@@ -1,8 +1,9 @@
 export class User {
   login:string;
-  firstname:string;
-  lastname:string;
+  firstName:string;
+  lastName:string;
   email:string;
   password:string;
+  phone:string;
   constructor(){}
 }

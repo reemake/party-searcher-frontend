@@ -17,10 +17,10 @@ import { RegistrationComponent } from './components/registration/registration.co
 
 
 const ROUTES: Routes = [
+  {path: '', component: EventsIndexComponent},
   {path: 'events/map', component: EventsIndexComponent},
   {path: 'profile/login', component: LoginComponent},
   {path: 'profile/registration', component: RegistrationComponent},
-  {path: '', component: EventsIndexComponent},
 ];
 
 
@@ -34,7 +34,8 @@ const ROUTES: Routes = [
     EventDescriptionComponent,
     HeaderComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+
   ],
   imports: [
     BrowserModule,

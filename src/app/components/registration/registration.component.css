@@ -1,5 +1,5 @@
 .page {
-  height: 93vh;
+  height: 97vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,7 +8,7 @@
 .container {
   max-width: 550px;
   min-height: 730px;
-  max-height: 855px;
+  max-height: 890px;
   background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
   border-radius: 5px;
 }
@@ -20,7 +20,7 @@
 }
 
 .form-group {
-  padding-top: 20px;
+  padding-top: 15px;
   padding-left: 30px;
   padding-right: 30px;
 }
@@ -34,7 +34,7 @@
   width: 200px;
   height: 43px;
   margin-top: 30px;
-  margin-left: 145px;
+  margin-left: 160px;
   background: #D15D55;
   border-radius: 10px;
   font-style: normal;
@@ -51,6 +51,6 @@
 }
 #toLogin-button {
   margin-top: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   float: right;
 }

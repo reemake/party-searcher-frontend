@@ -1,7 +1,11 @@
 <body class="page">
+
 <div class="container">
+
   <h3 id="title">Регистрация аккаунта</h3>
   <form #registerForm="ngForm" (ngSubmit)="registerUser()">
+    <small class="text-danger">{{msg}}</small>
+
     <div class="form-group" id="email-form">
       <label for="email">Email:</label>
       <input type="email" class="form-control" placeholder="Введите адрес электронной почты" name="email" [(ngModel)]="user.email" #email="ngModel" required
@@ -12,24 +16,42 @@
         <small class="text-danger" *ngIf="email.errors?.['pattern']">Email введён некорректно!</small>
       </div>
     </div>
+
     <div class="form-group" id="login-form">
       <label for="login">Логин:</label>
       <input type="text" class="form-control" placeholder="Введите логин" name="login" [(ngModel)]="user.login" #login="ngModel" required
-             [class.is-invalid]="login.invalid && login.touched"
+      [class.is-invalid]="login.invalid && login.touched" pattern="^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$"
       >
-      <small class="text-danger" [class.d-none]="login.valid || login.untouched">Логин - обязательное поле!</small>
+      <div *ngIf="login.errors && (login.invalid && login.touched)">
+        <small class="text-danger" *ngIf="login.errors?.['required']">Логин - обязательное поле!</small>
+        <small class="text-danger" *ngIf="login.errors?.['pattern']">Логин введён некорректно!</small>
+      </div>
     </div>
+
     <div class="form-group" id="firstname-form">
-      <label for="firstname">Имя:</label>
-      <input type="text" class="form-control" placeholder="Введите имя" name="firstname" [(ngModel)]="user.firstname" #firstname="ngModel" required
-             [class.is-invalid]="firstname.invalid && firstname.touched"
+      <label for="firstName">Имя:</label>
+      <input type="text" class="form-control" placeholder="Введите имя" name="firstName" [(ngModel)]="user.firstName" #firstName="ngModel" required
+             [class.is-invalid]="firstName.invalid && firstName.touched"
       >
-      <small class="text-danger" [class.d-none]="firstname.valid || firstname.untouched">Имя - обязательное поле!</small>
+      <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">Имя - обязательное поле!</small>
     </div>
+
     <div class="form-group" id="lastname-form">
-      <label for="lastname">Фамилия:</label>
-      <input type="text" class="form-control" placeholder="Введите фамилию" name="lastname" [(ngModel)]="user.lastname" #lastname="ngModel">
+      <label for="lastName">Фамилия:</label>
+      <input type="text" class="form-control" placeholder="Введите фамилию" name="lastName" [(ngModel)]="user.lastName" #lastName="ngModel">
     </div>
+
+    <div class="form-group" id="phone-form">
+      <label for="phone">Номер телефона:</label>
+      <input type="tel" class="form-control" placeholder="Введите Ваш номер телефона" name="phone" [(ngModel)]="user.phone" #phone="ngModel" required
+             [class.is-invalid]="phone.invalid && phone.touched" pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$"
+      >
+      <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+        <small class="text-danger" *ngIf="phone.errors?.['required']">Номер телефона - обязательное поле!</small>
+        <small class="text-danger" *ngIf="phone.errors?.['pattern']">Номер телефона введён некорректно!</small>
+      </div>
+    </div>
+
     <div class="form-group" id="password-form">
       <label for="pwd">Пароль:</label>
       <input type="password" class="form-control" placeholder="Введите пароль" name="password" [(ngModel)]="user.password" #password="ngModel" required
@@ -37,6 +59,7 @@
       >
       <small class="text-danger" [class.d-none]="password.valid || password.untouched">Пароль - обязательное поле!</small>
     </div>
+
     <div class="form-group" id="cpassword-form">
       <label for="cpwd">Подтвердите пароль:</label>
       <input type="password" class="form-control" placeholder="Введите пароль ещё раз" name="cpassword" (ngModel)="user.password" #cpassword="ngModel" required
@@ -44,10 +67,13 @@
       >
       <small class="text-danger" [class.d-none]="(cpassword.value == password.value) || cpassword.untouched">Пароли не совпадают!</small>
     </div>
+
     <button [disabled]="registerForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">Зарегистрироваться</button>
     <small class="float-right btextual" id="toLogin-button">
       Уже зарегистрированы?
       <button type="button" class="btn btn-link" [routerLink]="['/profile/login']">Войти</button>
     </small>
   </form>
+
 </div>
+</body>

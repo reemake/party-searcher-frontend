@@ -17,11 +17,14 @@
 #title {
   padding-top: 30px;
   padding-left: 30px;
-  padding-right: 30px;
+}
+
+#incorrect-credentials {
+  padding-left: 30px;
 }
 
 .form-group {
-  padding-top: 30px;
+  padding-top: 20px;
   padding-left: 30px;
   padding-right: 30px;
 }

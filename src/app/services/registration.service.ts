@@ -12,10 +12,10 @@ export class RegistrationService {
   constructor(private httpClient: HttpClient) { }
 
   public loginUserFromRemote(user: User):Observable<any> {
-    return this.httpClient.post(BACKEND_URL + "/profile/login", user);
+    return this.httpClient.post<any>(BACKEND_URL + "/profile/login", user);
   }
 
   public registerUserFromRemote(user: User):Observable<any> {
-      return this.httpClient.post(BACKEND_URL + "/profile/registration", user);
+      return this.httpClient.post<any>(BACKEND_URL + "/profile/registration", user);
     }
 }
