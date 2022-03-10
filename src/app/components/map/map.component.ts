@@ -78,9 +78,11 @@ export class MapComponent implements AfterViewInit {
 
   }
 
-  public addLocationMarket(points: number[]): void {
+  public addLocationMarker(points: number[]): void {
+    console.log("MARKER " + points);
+    points = transform(points, 'EPSG:4326', 'EPSG:3857')
     let feature: any = new Feature({
-      geometry: new Point(fromLonLat(points, 'EPSG:3857'))
+      geometry: new Point(fromLonLat(points, 'EPSG:4326'))
     });
 
 
@@ -144,7 +146,7 @@ export class MapComponent implements AfterViewInit {
       var lon = lonlat[0];
       var lat = lonlat[1];
 
-      this.addLocationMarket(lonlat);
+      this.addLocationMarker(lonlat);
 
       this.changeLocation.emit([lon, lat]);
 
@@ -177,15 +179,13 @@ export class MapComponent implements AfterViewInit {
   private setMapBounds(): void {
     let extent: number[] | undefined = this.map?.getView().calculateExtent(this.map.getSize())
     if (extent != undefined) {
-      let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+      let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:3857');
       this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
 //      console.log(this.mapBoundingBox);
     }
   }
 
   private updateEventsOnMap(events: Array<Event>): void {
-
-
     let features: Array<any> = events.map(event => {
       if (event.location) {
         let feature: any = new Feature({
@@ -240,7 +240,7 @@ export class MapComponent implements AfterViewInit {
 
   private printLocationMarker(): void {
     let feature: any = new Feature({
-      geometry: new Point(fromLonLat([this.userLocation[0], this.userLocation[1]], 'EPSG:3857'))
+      geometry: new Point(transform([this.userLocation[0], this.userLocation[1]], 'EPSG:4326', 'EPSG:3857'))
     });
 
 

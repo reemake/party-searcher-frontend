@@ -32,7 +32,6 @@ export class EventsIndexComponent implements OnInit {
 
   public onMapReady(event: any) {
     this.eventService.getEvents().subscribe(events => {
-      console.log(events);
       this.events = events;
     })
   }

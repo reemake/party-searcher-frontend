@@ -49,44 +49,53 @@ export class EventService {
   }
 
   public setAddressByLonLat(event: Event, func: Function): void {
-    console.log("open xml")
+
     var lon = event.location?.location.coordinates[0];
     var lat = event.location?.location.coordinates[1];
-    var xhr = new XMLHttpRequest();
-
-    xhr.setRequestHeader("lon", String(lon));
-    xhr.setRequestHeader("lat", String(lat));
-
-    xhr.onload = () => {
-      console.log("secomd \n" + event);
-      var document = xhr.responseXML;
-
-      var fullAddress = [];
-      if (event.location !== undefined) {
-        if (document != null) {
-          var city = document.getElementsByName("city");
-          var road = document.getElementsByName("road");
-          var house = document.getElementsByName("house_number");
-          if (city.length != 0) {
-            fullAddress.push(city[0]);
+    var url = `https://nominatim.openstreetmap.org/reverse?lon=${lon}&lat=${lat}`;
+    var response = fetch(url);
+    response.then((value) => {
+      value.text().then((val) => {
+        var parser = new DOMParser();
+        var fullAddress = [];
+        var document = parser.parseFromString(val, "application/xml");
+        if (event.location !== undefined && document !== undefined) {
+          var city = document.evaluate("reversegeocode/addressparts/city", document, null, XPathResult.STRING_TYPE).stringValue;
+          var road = document.evaluate("reversegeocode/addressparts/road", document, null, XPathResult.STRING_TYPE).stringValue;
+          var house = document.evaluate("reversegeocode/addressparts/house_number", document, null, XPathResult.STRING_TYPE).stringValue;
+          var state = document.evaluate("reversegeocode/addressparts/state", document, null, XPathResult.STRING_TYPE).stringValue;
+          var neigbourhood = document.evaluate("reversegeocode/addressparts/neighbourhood", document, null, XPathResult.STRING_TYPE).stringValue;
+          if (city !== "") {
+            fullAddress.push(city);
+          } else {
+            if (state !== "")
+              fullAddress.push(state);
           }
-          if (road.length != 0) {
-            fullAddress.push(road[0]);
+
+          if (road != "") {
+            fullAddress.push(road);
+          } else {
+            if (neigbourhood != "") {
+              fullAddress.push(neigbourhood);
+            }
           }
-          if (house.length != 0) {
-            fullAddress.push(house[0]);
+          if (house != "") {
+            fullAddress.push(house);
+          }
+          if (fullAddress.length <= 1) {
+            var district = document.evaluate("reversegeocode/addressparts/city_district", document, null, XPathResult.STRING_TYPE).stringValue;
+            var county = document.evaluate("reversegeocode/addressparts/county", document, null, XPathResult.STRING_TYPE).stringValue;
+            if (county != "")
+              fullAddress.push(county);
+            if (district != "")
+              fullAddress.push(district);
           }
 
           event.location.name = fullAddress.join(",");
-        } else {
-          event.location.name = "";
         }
-      }
-
-      func();
-    }
-    xhr.open('GET', "https://nominatim.openstreetmap.org/reverse", true);
-    xhr.send();
+        func();
+      })
+    });
 
 
   }
