@@ -3,7 +3,7 @@
 .surveyTest {
     display: block;
     position: absolute;
-    height: 100vh;
+    height: 1130px;
     width: 1500px;
     background: #D15D55;
     left: calc(50% - 750px);
@@ -22,6 +22,7 @@
 
 .surveyTest-text-caption{
     width: 100%;
+    margin-top: 50px;
     margin-top: 50px;
 }
 
@@ -43,7 +44,7 @@
 }
 
 .surveyTest-textarea {
-    margin-top: 50px;
+    margin: 50px 25px 0 25px;
     resize: none;
     width: 500px;
     height: 50px;
@@ -75,4 +76,8 @@
 
 #surveyTest-button-cancel {
     right: 50px;
+}
+
+#text-city {
+    margin-left: 0;
 }
