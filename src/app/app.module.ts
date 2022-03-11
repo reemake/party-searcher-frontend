@@ -15,7 +15,7 @@ import {SurveyComponent} from './components/survey/survey.component';
 import { SurveyTest } from './components/pages/survey.test/survey.test.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TypeComponent } from './components/type/type.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 const ROUTES: Routes = [
   {path: '', component: EventsIndexComponent},
@@ -41,7 +41,8 @@ const ROUTES: Routes = [
     CommonModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
