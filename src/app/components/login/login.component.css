@@ -1,0 +1,61 @@
+.page {
+  height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 500px;
+  min-height: 460px;
+  max-height: 500px;
+  margin: 0 auto;
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+  border-radius: 5px;
+}
+
+#title {
+  padding-top: 30px;
+  padding-left: 30px;
+}
+
+#incorrect-credentials {
+  padding-left: 30px;
+}
+
+.form-group {
+  padding-top: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.checkbox {
+  padding-left: 30px;
+  padding-top: 20px;
+}
+
+#submit-button {
+  width: 200px;
+  height: 43px;
+  margin-top: 30px;
+  margin-left: 145px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: white;
+}
+
+#submit-button:hover {
+  background: #FF0000;
+  transition: .7s;
+}
+
+#toRegistry-button {
+  margin-top: 25px;
+  margin-bottom: 20px;
+  float: right;
+}
