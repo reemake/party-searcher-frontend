@@ -1,6 +1,6 @@
 <div class="container">
 
-  <app-event-description (closeDescription)="currentActiveEvent=null"
+  <app-event-description (closeDescription)="userEventSelectHandler([])"
                          [event]="currentActiveEvent"></app-event-description>
 
   <app-map (callSearch)="onCallSearch($event)" (mapReady)="onMapReady($event)"

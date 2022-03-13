@@ -27,7 +27,14 @@ export class EventsIndexComponent implements OnInit {
       this.isList = true;
       this.showMap = false;
       this.events = eventsArray;
-    } else this.currentActiveEvent = eventsArray[0];
+    } else if (eventsArray.length == 1) {
+      this.currentActiveEvent = eventsArray[0];
+      this.prevMapSize = this.mapSize;
+      this.mapSize = "80%";
+    } else {
+      this.mapSize = this.prevMapSize;
+      this.currentActiveEvent = null;
+    }
   }
 
   public onMapReady(event: any) {
@@ -39,6 +46,7 @@ export class EventsIndexComponent implements OnInit {
   public onCallSearch(event: any): void {
     if (event) {
       this.isSearchActive = true;
+      this.prevMapSize = this.mapSize;
       this.mapSize = "70%";
     } else {
       this.isSearchActive = false;

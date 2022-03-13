@@ -166,13 +166,6 @@ export class MapComponent implements AfterViewInit {
     })
   }
 
-
-  private checkPointInCycle(x: number, y: number, x1: number, y1: number): boolean {
-    let R: number = 10000;
-    return (Math.pow(x - x1, 2) + Math.pow(y - y1, 2)) <= R * R;
-  }
-
-
   /**
    * ОПРЕДЕЛИТЬ ГРАНИЦЫ КАРТЫ, КОТОРУЮ В ДАННЫЙ МОМЕНТ ВИДИТ ПОЛЬЗОВАТЕЛЬ.
    */
