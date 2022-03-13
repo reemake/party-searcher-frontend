@@ -13,12 +13,16 @@ import {RouterModule, Routes} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {HeaderComponent} from './components/header/header.component';
 import {EventCreateComponent} from './components/events/event-create/event-create.component';
+import {LoginComponent} from "./components/login/login.component";
+import {RegistrationComponent} from "./components/registration/registration.component";
 
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: "events/add", component: EventCreateComponent},
-  {path: '', component: EventsIndexComponent}
+  {path: '', component: EventsIndexComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegistrationComponent}
 ];
 
 
@@ -31,7 +35,9 @@ const ROUTES: Routes = [
     EventSearchComponent,
     EventDescriptionComponent,
     HeaderComponent,
-    EventCreateComponent
+    EventCreateComponent,
+    RegistrationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

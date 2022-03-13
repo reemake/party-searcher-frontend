@@ -1,4 +1,4 @@
-.container {
+.mycontainer {
   display: flex;
   justify-content: space-between;
   background-color: #D15D55;
@@ -9,7 +9,7 @@ img:hover {
   background-color: red;
 }
 
-.container div a {
+.mycontainer div a {
   margin-right: 20px;
 }
 
