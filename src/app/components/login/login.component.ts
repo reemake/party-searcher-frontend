@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 import {RegistrationService} from '../../services/registration.service'
 import {User} from '../../entity/User';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   user = new User();
-  msg='';
+  msg = '';
 
   constructor(private _service: RegistrationService, private _router: Router) { }
 
@@ -21,15 +21,20 @@ export class LoginComponent implements OnInit {
 
   loginUser() {
     this._service.loginUserFromRemote(this.user).subscribe(
-      data => {
+      (resp: HttpResponse<any>) => {
+        var headers = resp.headers;
+        if (headers.get("token") !== null && headers.get("refreshToken") !== null) {
+          localStorage.setItem("token", <string>headers.get("token"));
+          localStorage.setItem("refreshToken", <string>headers.get("refreshToken"));
+        }
         console.log("response recieved");
         this._router.navigate(['/'])
       },
       error => {
         console.log("exception occured");
-        this.msg="Неправильный логин или пароль";
+        this.msg = "Неправильный логин или пароль";
       }
-      )
+    )
   }
 
 }

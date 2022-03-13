@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {User} from '../../entity/User';
 import {RegistrationService} from '../../services/registration.service'
 
@@ -22,6 +21,7 @@ export class RegistrationComponent implements OnInit {
   registerUser() {
     this._service.registerUserFromRemote(this.user).subscribe(
       data => {
+
         console.log("response recieved");
         this.msg="Регистрация прошла успешно!";
         this._router.navigate(['/profile/login']);
