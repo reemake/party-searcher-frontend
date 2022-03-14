@@ -132,7 +132,7 @@ export class MapComponent implements AfterViewInit {
     this.map.addControl(control);
 
     let buttonSearchElement: any = document.createElement('button');
-    buttonSearchElement.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/getLocatio.png"/>';
+    buttonSearchElement.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/search-btn.png"/>';
     buttonSearchElement.addEventListener('click', () => {
       this.callSearch.emit(true);
     })
