@@ -17,7 +17,7 @@ export class EventService {
 
 
   public getEventsWithinRadius(location: Coordinate, radius: number): Observable<Array<Event>> {
-    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/events/getEventsWithinRadius", {
+    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEventsWithinRadius", {
       params: {
         location: location,
         radius: radius
@@ -26,7 +26,7 @@ export class EventService {
   }
 
   public getEvents(): Observable<Array<Event>> {
-    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/events/getEvents");
+    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEvents");
   }
 
   /*  public getEventsAtUserMap(userMapBoundingBox: Coordinate[]): Observable<Array<Event>> {
@@ -37,15 +37,15 @@ export class EventService {
 
   public add(event: Event): Observable<any> {
 
-    return this.httpClient.post(BACKEND_URL + "/events", event);
+    return this.httpClient.post(BACKEND_URL + "/api/events", event);
   }
 
   public getWords(wordPart: string): Observable<string[]> {
-    return this.httpClient.get<Array<string>>(BACKEND_URL + "/events/getKeyWords", {params: {wordPart: wordPart}});
+    return this.httpClient.get<Array<string>>(BACKEND_URL + "/api/events/getKeyWords", {params: {wordPart: wordPart}});
   }
 
   public getTypes(): Observable<EventType[]> {
-    return this.httpClient.get<Array<EventType>>(BACKEND_URL + "/eventTypes");
+    return this.httpClient.get<Array<EventType>>(BACKEND_URL + "/api/eventTypes");
   }
 
   public setAddressByLonLat(event: Event, func: Function): void {

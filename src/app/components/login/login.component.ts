@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RegistrationService} from '../../services/registration.service'
+import {RegistrationService} from '../../services/auth/registration.service'
 import {User} from '../../entity/User';
 import {Router} from '@angular/router';
 import {HttpResponse} from "@angular/common/http";
