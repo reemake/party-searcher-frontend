@@ -31,7 +31,7 @@
       <button [disabled]="loginForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">Войти</button>
       <small id="toRegistry-button">
         Ещё не зарегистрированы?
-        <button type="button" class="btn btn-link" [routerLink]="['/profile/registration']">Зарегистрироваться</button>
+        <a [routerLink]="['/register']" class="btn btn-link">Зарегистрироваться</a>
       </small>
 
     </form>
