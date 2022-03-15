@@ -1,0 +1,1 @@
+import {SurveyComponent} from './survey.component'

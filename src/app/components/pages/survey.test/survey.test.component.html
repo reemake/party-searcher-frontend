@@ -1,0 +1,57 @@
+<form class="surveyTest" id="surveyTest-container">
+    <div class="surveyTest-text">
+        <div class="surveyTest-text-caption" id="surveyTest-text-captionType">
+            1. Какие типы мероприятий вам интересны?
+        </div>
+        <div [formControl]="typeCheck">
+        <td *ngFor = "let type of types">
+            <label class="radio-area">
+                <input type="checkbox" name="type" value={{type.name}}>
+                {{ type.name}}
+            </label>
+        </td>
+    </div>
+        <div class="surveyTest-text-caption">
+            2. Мероприятия какого формата вас интересуют?
+        </div>
+        <label class="radio-area">
+            <input type="checkbox" name="format" value="online" id="chekc">
+            Online
+        </label>
+        <label class="radio-area">
+            <input type="checkbox" name="format" value="offline">
+            Offline
+        </label>
+        <div class="surveyTest-text-caption">
+            3. Когда вы желаете посетить мероприятие?
+        </div>
+        <div class="radio-area">
+            С
+            <input type="datetime-local" class="radio-area-time">
+        </div>
+        <div class="radio-area">
+            По
+            <input type="datetime-local" class="radio-area-time">
+        </div>
+        <div class="surveyTest-text-caption">
+            4. Какое количество участников должно быть на мероприятии?
+        </div>
+        От
+        <input type="searsch" class="surveyTest-textarea">
+        До
+        <input type="searsch" class="surveyTest-textarea">
+        <div class="surveyTest-text-caption">
+            5. Какова стоимость участия на мероприятии?
+        </div>
+        От
+        <input type="searsch" class="surveyTest-textarea">
+        До
+        <input type="searsch" class="surveyTest-textarea">
+        <div class="surveyTest-text-caption">
+            7. Мероприятия какого города вас интересуют?
+        </div>
+        <input type="searsch" class="surveyTest-textarea" id="text-city">
+        <button class="surveyTest-button" id="surveyTest-button-end" (click)="click()">Завершить прохождение</button>
+        <button class="surveyTest-button" id="surveyTest-button-cancel" routerLink="/">Отменить прохождение</button>
+    </div>
+</form>
