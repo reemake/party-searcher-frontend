@@ -17,10 +17,9 @@ import {LoginComponent} from "./components/login/login.component";
 import {RegistrationComponent} from "./components/registration/registration.component";
 import {AuthInterceptor} from "./services/auth/auth.interceptor";
 import {SurveyComponent} from './components/survey/survey.component';
-import { SurveyTest } from './components/pages/survey.test/survey.test.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TypeComponent } from './components/type/type.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import {SurveyTest} from './components/pages/survey.test/survey.test.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TypeComponent} from './components/type/type.component';
 
 
 const ROUTES: Routes = [
