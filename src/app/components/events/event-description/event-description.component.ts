@@ -30,6 +30,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   closeDescriptionFun(): void {
+    console.log(this.event);
     this.event = null;
     this.closeDescription.next({});
   }

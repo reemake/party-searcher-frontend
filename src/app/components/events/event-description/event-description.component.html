@@ -1,12 +1,13 @@
 <div *ngIf="event!=null" id="description" style="width: 100%;">
   <div class="description-row header">
+    <h2 class="title">{{event.name}}</h2>
     <button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
                                                                   src="./assets/img/mapImages/buttons/close-btn.png"/>
     </button>
   </div>
   <div class="description-row">
 
-    <h2 class="title">{{event.name}}</h2>
+
   </div>
 
   <div class="description-row">
@@ -53,7 +54,7 @@
     </div>
   </div>
 
-  <div *ngFor="let tag of event.tags" class="description-row">
-    <p class="description-tag">{{tag.name}}</p>
+  <div class="description-row tags">
+    <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}}</h3>
   </div>
 </div>
