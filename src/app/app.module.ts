@@ -21,6 +21,10 @@ import {SurveyTest} from './components/pages/survey.test/survey.test.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
 
+export const BACKEND_URL: string = "http://localhost:8080";
+declare global {
+  var HAS_AUTH: boolean;
+}
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
@@ -69,5 +73,4 @@ const ROUTES: Routes = [
 export class AppModule {
 }
 
-export const BACKEND_URL: string = "http://localhost:8080";
 
