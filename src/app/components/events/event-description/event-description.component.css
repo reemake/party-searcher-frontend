@@ -77,9 +77,9 @@
 
 .price {
   display: flex;
-  align-content: end;
-  justify-content: end;
-  justify-items: end;
+  align-content: flex-end;
+  justify-content: flex-end;
+  justify-items: flex-end;
 }
 
 .price p {
