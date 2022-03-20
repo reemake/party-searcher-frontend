@@ -7,12 +7,12 @@
     width: 1500px;
     background: #D15D55;
     left: calc(50% - 750px);
-    top: 0;
+    top: 55px;
 }
 
 .surveyTest-text {
     display: block;
-    padding: 50px 0 0 50px;
+    padding: 5px 0 0 50px;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;

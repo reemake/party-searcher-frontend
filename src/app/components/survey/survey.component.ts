@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { Router } from "@angular/router";
 
 @Component({
     selector: 'survey-component',
@@ -7,7 +6,13 @@ import { Router } from "@angular/router";
     styleUrls: ['./survey.component.css']
 })
 export class SurveyComponent {
-    surveyButton: boolean = true;
+    surveyButton: boolean;
+
+    constructor() {
+      if (globalThis.HAS_AUTH) { this.surveyButton = true; }
+      else { this.surveyButton = false; }
+    }
+
     public surveyButtonPress(): void {
       this.surveyButton = !this.surveyButton;
     }

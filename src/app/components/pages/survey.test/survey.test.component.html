@@ -15,11 +15,11 @@
             2. Мероприятия какого формата вас интересуют?
         </div>
         <label class="radio-area">
-            <input type="checkbox" name="format" value="online" id="chekc">
+            <input type="checkbox" name="format" value="Online">
             Online
         </label>
         <label class="radio-area">
-            <input type="checkbox" name="format" value="offline">
+            <input type="checkbox" name="format" value="Offline">
             Offline
         </label>
         <div class="surveyTest-text-caption">
@@ -27,30 +27,30 @@
         </div>
         <div class="radio-area">
             С
-            <input type="datetime-local" class="radio-area-time">
+            <input type="datetime-local" class="radio-area-time" id="timeStart">
         </div>
         <div class="radio-area">
             По
-            <input type="datetime-local" class="radio-area-time">
+            <input type="datetime-local" class="radio-area-time" id="timeEnd">
         </div>
         <div class="surveyTest-text-caption">
             4. Какое количество участников должно быть на мероприятии?
         </div>
         От
-        <input type="searsch" class="surveyTest-textarea">
+        <input type="search" class="surveyTest-textarea" id="memberStart">
         До
-        <input type="searsch" class="surveyTest-textarea">
+        <input type="search" class="surveyTest-textarea" id="memberEnd">
         <div class="surveyTest-text-caption">
             5. Какова стоимость участия на мероприятии?
         </div>
         От
-        <input type="searsch" class="surveyTest-textarea">
+        <input type="search" class="surveyTest-textarea" id="moneyStart">
         До
-        <input type="searsch" class="surveyTest-textarea">
+        <input type="search" class="surveyTest-textarea" id="moneyEnd">
         <div class="surveyTest-text-caption">
             7. Мероприятия какого города вас интересуют?
         </div>
-        <input type="searsch" class="surveyTest-textarea" id="text-city">
+        <input type="search" class="surveyTest-textarea" id="text-city" id="city">
         <button class="surveyTest-button" id="surveyTest-button-end" (click)="click()">Завершить прохождение</button>
         <button class="surveyTest-button" id="surveyTest-button-cancel" routerLink="/">Отменить прохождение</button>
     </div>

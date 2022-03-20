@@ -32,7 +32,8 @@ const ROUTES: Routes = [
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
-  {path: 'pages/survey.test', component: SurveyTest}
+  {path: 'pages/survey.test', component: SurveyTest},
+  {path: 'api/survey', component: SurveyTest}
 ];
 
 

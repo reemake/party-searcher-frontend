@@ -8,7 +8,7 @@ import { TypeComponent } from './type/type.component';
 })
 export class TypesService {
 
-  private baseUrl = "http://localhost:8080/eventTypes";
+  private baseUrl = "http://localhost:8080/api/eventTypes";
   constructor(private http: HttpClient) { }
   getTypes(): Observable<TypeComponent[]>{
     return this.http.get<TypeComponent[]>(`${this.baseUrl}`);
