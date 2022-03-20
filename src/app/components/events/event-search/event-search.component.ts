@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {EventService} from "../../../services/event.service";
 import {FilterData} from "../../../entity/filterData";
+import {Event} from "../../../entity/Event/Event";
 
 @Component({
   selector: 'app-event-search',
@@ -12,6 +13,7 @@ export class EventSearchComponent implements OnInit {
 
   @Input() userLocation: number[] = [];
   @Output() closeSearch: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() eventsSearched: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
   public words: string[] = ["artyom", "kok"];
   public eventTypes: string[] = [];
 
@@ -86,10 +88,8 @@ export class EventSearchComponent implements OnInit {
       userLocation: this.userLocation,
       eventFormats: formats
     };
-    console.log(JSON.stringify(filterData));
     this.eventService.filter(filterData).subscribe(e =>
-      console.log(JSON.stringify(e)));
-
+      this.eventsSearched.emit(e));
   }
 
   changeWords(): void {

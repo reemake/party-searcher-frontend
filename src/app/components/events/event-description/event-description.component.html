@@ -34,6 +34,10 @@
     <p>Время окончания мероприятия</p>
     <p>{{event.dateTimeEnd | date:'dd.MM.YY HH:mm'}}</p>
   </div>
+  <div *ngIf="event.maxNumberOfGuests!==0" class="description-row owner">
+    <p>Макс кол-во участников</p>
+    <p>{{event.maxNumberOfGuests}}</p>
+  </div>
   <div class="description-row">
     <p>Участники</p>
     <p>{{event.guests?.length}}</p>

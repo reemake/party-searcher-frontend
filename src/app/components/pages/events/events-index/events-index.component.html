@@ -8,6 +8,6 @@
            *ngIf="showMap" [center]="[-483281,6904172]" [events]="events"
            [zoom]="14.5"
            class="map"></app-map>
-  <app-event-search (closeSearch)="onCallSearch($event)" *ngIf="isSearchActive"
+  <app-event-search (closeSearch)="onCallSearch($event)" (eventsSearched)="events=$event" *ngIf="isSearchActive"
                     [userLocation]="currentLocation"></app-event-search>
 </div>
