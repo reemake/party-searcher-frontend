@@ -12,7 +12,7 @@
 
 
 .description-row {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .header {
@@ -73,4 +73,16 @@
 
 .tags h3 {
   font-weight: bold;
+}
+
+.price {
+  display: flex;
+  align-content: end;
+  justify-content: end;
+  justify-items: end;
+}
+
+.price p {
+  font-weight: bold;
+  font-size: 40px;
 }

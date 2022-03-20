@@ -69,4 +69,9 @@
   <div class="description-row tags">
     <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}}</h3>
   </div>
+  <div class="price">
+    <img *ngIf="event.price==0" alt="free event" src="./assets/img/FREE%20PRICE.png"/>
+    <p *ngIf="event.price !==0">{{event.price}}</p>
+    <img *ngIf="event.price!==0" alt="paid event" src="./assets/img/ruble.png"/>
+  </div>
 </div>
