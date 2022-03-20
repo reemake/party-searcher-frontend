@@ -68,7 +68,10 @@
   <div class="form-row">
     <label for="maxDistanceInput">max расстояние</label>
     <input [formControl]="maxDistanceInput" id="maxDistanceInput" type="number"/>
-    <span>метров</span>
+    <select [formControl]="distanceMeasureInput">
+      <option value="METRES">М</option>
+      <option selected value="KILOMETERS">КМ</option>
+    </select>
   </div>
 
   <div class="form-row">
@@ -78,7 +81,8 @@
 
   <div class="form-row">
     <label>Формат</label>
-    <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="offline"/>Offline</label>
+    <label> <input [formControl]="eventFormatInput" checked name="formatInput" type="radio"
+                   value="offline"/>Offline</label>
     <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="online"/>Online</label>
     <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="all"/>ALL</label>
   </div>

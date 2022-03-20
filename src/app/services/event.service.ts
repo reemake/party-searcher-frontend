@@ -5,6 +5,7 @@ import {BACKEND_URL} from "../app.module";
 import {Coordinate} from "ol/coordinate";
 import {Event} from "../entity/Event/Event";
 import {EventType} from "../entity/Event/EventType";
+import {FilterData} from "../entity/filterData";
 
 
 @Injectable({
@@ -46,6 +47,10 @@ export class EventService {
 
   public getTypes(): Observable<EventType[]> {
     return this.httpClient.get<Array<EventType>>(BACKEND_URL + "/api/eventTypes");
+  }
+
+  public filter(filter: FilterData): Observable<Event[]> {
+    return this.httpClient.post<Array<Event>>(BACKEND_URL + "/api/events/filter", filter);
   }
 
   public setAddressByLonLat(event: Event, func: Function): void {
