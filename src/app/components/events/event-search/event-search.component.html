@@ -60,6 +60,10 @@
     <input [formControl]="priceToInput" id="priceToInput" type="number"/>
     <p>рублей</p>
   </div>
+  <div class="free-btn">
+    <label for="freeRadio">бесплатно</label>
+    <input [formControl]="freeEventInput" id="freeRadio" type="radio" value="true"/>
+  </div>
   <div class="form-row">
     <label for="themeInput">Тематика мероприятия</label>
     <input [formControl]="eventThemeInput" id="themeInput" type="text"/>

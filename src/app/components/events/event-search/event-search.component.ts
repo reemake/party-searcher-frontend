@@ -34,7 +34,7 @@ export class EventSearchComponent implements OnInit {
   public eventFormatInput: FormControl = new FormControl();
   public eventTypeInput: FormControl = new FormControl();
   public distanceMeasureInput: FormControl = new FormControl();
-
+  public freeEventInput: FormControl = new FormControl();
 
   constructor(private eventService: EventService) {
   }
@@ -46,8 +46,6 @@ export class EventSearchComponent implements OnInit {
   }
 
   search(): void {
-    var lengthFrom = 0;
-    var lengthTo = 0;
     var numbers = this.setTimeLength();
     var formats = [];
     switch (this.eventFormatInput.value) {
@@ -71,6 +69,7 @@ export class EventSearchComponent implements OnInit {
         break;
     }
     console.log("WORD=" + this.wordsInput.value);
+    console.log(this.freeEventInput.value);
     var filterData: FilterData = {
       keyWords: this.wordsInput.value !== null ? (String(this.wordsInput.value).trim().split(" ")) : [],
       eventType: this.eventTypeInput.value ? {name: this.eventTypeInput.value} : null,
@@ -86,7 +85,8 @@ export class EventSearchComponent implements OnInit {
       maxDistance: distance / Math.pow(10, 5),
       eventOwnerRating: this.ratingInput.value,
       userLocation: this.userLocation,
-      eventFormats: formats
+      eventFormats: formats,
+      freeEvents: this.freeEventInput.value
     };
     this.eventService.filter(filterData).subscribe(e =>
       this.eventsSearched.emit(e));

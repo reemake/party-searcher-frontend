@@ -16,6 +16,7 @@ export interface FilterData {
   eventOwnerRating: number
   eventFormats: Array<string>
   userLocation: number[]
+  freeEvents: boolean
 
 
 }
