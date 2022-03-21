@@ -45,7 +45,7 @@ export class SurveyTest implements OnInit {
     for (var i = 0; i < textFields.length; i++) if ((<HTMLInputElement> (textFields[i])).value === "") this.checkTextFields = false;
     if (this.checkType && this.checkFormat && this.checkDate && this.checkTextFields) {
       this.getResult();
-      //location.href = "/";
+      location.href = "/";
     }
     else alert("Необходимо заполнить все поля")
   }
