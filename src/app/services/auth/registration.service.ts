@@ -16,6 +16,7 @@ export class RegistrationService {
     var headers = new HttpHeaders();
     headers = headers.set("username", user.login);
     headers = headers.set("password", user.password);
+    localStorage.setItem("username", user.login);
     return this.httpClient.post<any>(BACKEND_URL + "/login", {}, {observe: 'response', headers: headers});
   }
 

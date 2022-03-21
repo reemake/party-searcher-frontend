@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
 
         console.log("response recieved");
         this.msg="Регистрация прошла успешно!";
-        this._router.navigate(['/profile/login']);
+        this._router.navigate(['login']);
       },
       error => {
         console.log("exception occured");

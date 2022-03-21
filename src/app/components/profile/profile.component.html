@@ -1,0 +1,55 @@
+<div class="container">
+    <h1 id="title">Личный кабинет</h1>
+
+    <div class="menu">
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
+            <p><a href="/profile" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myReviews" src="./assets/img/profile/Pencil.png"/>Мои отзывы</a></p>
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
+    </div>
+
+    <div class="account-data">
+        <div class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+                <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+                <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div class="rightPart">{{user.login}}
+            <hr class="accLine">
+            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
+            <button [disabled]="!hasAuth" type="button" class="btn btn-lg btn-danger accBtn2">Выйти</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2 id="commercialAcc-title">Коммерческий аккаунт</h2>
+        <div class="notification">
+            <img class="excMark" alt="excMark" src="./assets/img/profile/ExclamationMark.png"/>  
+            <br>
+            <p>При подключении коммерческого аккаунта, Вам открывается доступ к следующим возможностям, не доступных ранее на уровне личного аккаунта:</p>
+            <ul>
+                <li>cоздание платных мероприятий;</li>
+                <br>
+                <li>продвижение собственных мероприятий (созданные Вами мероприятия будут выделены особой меткой на карте и отображаться первыми в общем списке мероприятий у пользователей).</li>
+            </ul>
+            <p><u>Замечание:</u> используя коммерческий аккаунт, Вы не сможете принимать приглашения от организаторов других мероприятий, а также посещать данные мероприятия.</p>
+        </div>
+
+        <h2 id="control-title">Управление</h2>
+        <div class="control">
+            <img class="excMark1" alt="excMark" src="./assets/img/profile/ExclamationMark1.png"/>
+            <p *ngIf="this.user.commercialUserCreated" style="text-indent:40px">Текущий статус коммерческого аккаунта: <b>подключен</b></p>
+            <p *ngIf="!this.user.commercialUserCreated" style="text-indent:40px">Текущий статус коммерческого аккаунта: <b>не подключен</b></p>
+            <p *ngIf="this.user.commercialUser" style="text-indent:40px">В данный момент, Вы находитесь на <b>коммерческом</b> аккаунте.</p>
+            <p *ngIf="!this.user.commercialUser" style="text-indent:40px">В данный момент, Вы находитесь на <b>личном</b> аккаунте.</p>
+            <p>
+                <button [disabled]="this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn">Создать коммерческий аккаунт</button>
+                <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn">Перейти на коммерческий аккаунт</button>
+                <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn">Удалить коммерческий аккаунт</button>
+            </p>
+            <p style="text-indent:32%">
+                <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn">Перейти на личный аккаунт</button>
+            </p>
+        </div>
+    </div>
+</div>

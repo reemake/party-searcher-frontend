@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   user = new User();
   msg = '';
+  USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 
   constructor(private _service: RegistrationService, private _router: Router) { }
 
