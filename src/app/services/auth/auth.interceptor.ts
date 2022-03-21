@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {catchError, Observable, switchMap, throwError} from 'rxjs';
 import {AuthenticationService} from "./authentication.service";
+import {AppModule} from "../../app.module";
 
 
 @Injectable()
@@ -18,13 +19,15 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(request).pipe(catchError(error => {
       if (error.status === 403) {
+        AppModule.HAS_AUTH = false;
         return this.authService.refreshToken().pipe(
           switchMap((val, index) => {
             console.log("I REFRESHED");
             localStorage.setItem("token", val.id.jwt);
             localStorage.setItem("refreshToken", val.refreshToken);
             var authorization = request.headers.set("Authorization", val.id.jwt);
-            request = request.clone({headers: authorization});
+            request = request.clone({headers: authorization})
+            AppModule.HAS_AUTH = true;
             return next.handle(request)
           })
         )
