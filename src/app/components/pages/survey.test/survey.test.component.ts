@@ -52,11 +52,11 @@ export class SurveyTest implements OnInit {
 
   private getResult(): void {
     var type = document.getElementsByName("type");
-    var typeList = [];
-    for (var i = 0; i < type.length; i++) if ((<HTMLInputElement> (type[i])).checked) typeList.push(type[i]);
+    let typeList: Array<string> = [];
+    for (var i = 0; i < type.length; i++) if ((<HTMLInputElement> (type[i])).checked) typeList.push((<HTMLInputElement> type[i]).value);
     var format = document.getElementsByName("format");
-    var formatList = [];
-    for (var i = 0; i < format.length; i++) if ((<HTMLInputElement> (format[i])).checked) formatList.push(format[i]);
+    let formatList: Array<string> = [];
+    for (var i = 0; i < format.length; i++) if ((<HTMLInputElement> (format[i])).checked) formatList.push((<HTMLInputElement> format[i]).value);
     var timeStart = new Date((<HTMLInputElement> document.getElementById("timeStart")).value);
     var timeEnd = new Date((<HTMLInputElement> document.getElementById("timeEnd")).value);
     var memberStart = parseInt((<HTMLInputElement> document.getElementById("memberStart")).value, 10);
