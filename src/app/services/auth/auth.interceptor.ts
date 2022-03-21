@@ -24,22 +24,21 @@ export class AuthInterceptor implements HttpInterceptor {
       var authorization = request.headers.set("Authorization", token);
       request = request.clone({headers: authorization});
     }
-    return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
-        console.log("INTERCEPT")
-        if (event instanceof HttpResponse)
-          if (event.status != 403) {
-            AppModule.HAS_AUTH = true;
-            console.log("ALL FINE")
-          }
-      }
-      , (err) => {
-
-        if (err instanceof HttpErrorResponse) {
-          if (err.status == 403) {
-            console.log("ALL BAD");
+    return next.handle(request).pipe(
+      tap((event: HttpEvent<any>) => {
+          if (event instanceof HttpResponse)
+            if (event.status != 403) {
+              AppModule.HAS_AUTH = true;
+              console.log("ALL FINE")
+            }
+        }
+        , (err) => {
+          if (err instanceof HttpErrorResponse) {
+            if (err.status == 403) {
+              console.log("ALL BAD");
             AppModule.HAS_AUTH = false;
-            console.log("try to refresh  token");
-            this.authService.refreshToken();
+              console.log("try to refresh  token");
+              this.authService.refreshToken(request, next);
           }
         }
       }));
