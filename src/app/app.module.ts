@@ -22,9 +22,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
 
 export const BACKEND_URL: string = "http://localhost:8080";
-declare global {
-  var HAS_AUTH: boolean;
-}
+
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
@@ -71,6 +69,7 @@ const ROUTES: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  public static HAS_AUTH: boolean = false;
 }
 
 

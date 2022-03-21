@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Event} from "../../../../entity/Event/Event";
 import {EventService} from "../../../../services/event.service";
+import {AppModule} from "../../../../app.module";
 
 @Component({
   selector: 'app-events-index',
@@ -45,7 +46,7 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public onCallSearch(event: any): void {
-    console.log(globalThis.HAS_AUTH);
+    console.log(AppModule.HAS_AUTH);
     if (event) {
       this.isSearchActive = true;
       this.prevMapSize = this.mapSize;

@@ -1,12 +1,21 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
+import {Observable, tap} from 'rxjs';
+import {AuthenticationService} from "./authentication.service";
+import {AppModule} from "../../app.module";
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor() {
+  constructor(private authService: AuthenticationService) {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -15,12 +24,25 @@ export class AuthInterceptor implements HttpInterceptor {
       var authorization = request.headers.set("Authorization", token);
       request = request.clone({headers: authorization});
     }
-    return next.handle(request).pipe(map((event: HttpEvent<any>) => {
-      if (event instanceof HttpResponse)
-        if (event.status != 403) {
-          globalThis.HAS_AUTH = true;
-        } else globalThis.HAS_AUTH = false;
-      return event;
-    }));
+    return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
+        console.log("INTERCEPT")
+        if (event instanceof HttpResponse)
+          if (event.status != 403) {
+            AppModule.HAS_AUTH = true;
+            console.log("ALL FINE")
+          }
+      }
+      , (err) => {
+
+        if (err instanceof HttpErrorResponse) {
+          if (err.status == 403) {
+            console.log("ALL BAD");
+            AppModule.HAS_AUTH = false;
+            console.log("try to refresh  token");
+            this.authService.refreshToken();
+          }
+        }
+      }));
   }
+
 }
