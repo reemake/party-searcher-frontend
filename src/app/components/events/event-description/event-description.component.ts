@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Event} from "../../../entity/Event/Event";
+import {AppModule} from "../../../app.module";
 
 @Component({
   selector: 'app-event-description',
@@ -30,6 +31,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   closeDescriptionFun(): void {
+    console.log(AppModule.HAS_AUTH);
     this.event = null;
     this.closeDescription.next({});
   }

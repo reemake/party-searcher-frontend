@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {catchError, Observable, switchMap, throwError} from 'rxjs';
-import { AppModule } from 'src/app/app.module';
-import { AuthenticationService } from './authentication.service';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {catchError, Observable, switchMap, tap, throwError} from 'rxjs';
+import {AppModule} from 'src/app/app.module';
+import {AuthenticationService} from './authentication.service';
 
 
 @Injectable()
@@ -17,7 +17,13 @@ export class AuthInterceptor implements HttpInterceptor {
       var authorization = request.headers.set("Authorization", token);
       request = request.clone({headers: authorization});
     }
-    return next.handle(request).pipe(catchError(error => {
+    return next.handle(request).pipe(tap((val) => {
+      if (val instanceof HttpResponse) {
+        if (val.status !== 403)
+          AppModule.HAS_AUTH = true;
+        else AppModule.HAS_AUTH = false;
+      }
+    }), catchError(error => {
       if (error.status === 403) {
         AppModule.HAS_AUTH = false;
         return this.authService.refreshToken().pipe(
