@@ -2,8 +2,8 @@
     <h1 id="title">Личный кабинет</h1>
 
     <div class="menu">
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
-            <p><a href="/profile" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+            <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
+            <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
             <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myReviews" src="./assets/img/profile/Pencil.png"/>Мои отзывы</a></p>
             <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
             <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
@@ -14,7 +14,7 @@
                 <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
                 <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
         </div>
-        <div class="rightPart">{{user.login}}
+        <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
             <button [disabled]="!hasAuth" type="button" class="btn btn-lg btn-danger accBtn2">Выйти</button>

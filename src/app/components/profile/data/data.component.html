@@ -1,0 +1,75 @@
+<div class="container">
+    <h1 id="title1">Личный кабинет</h1>
+
+    <div class="menu">
+            <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
+            <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myReviews" src="./assets/img/profile/Pencil.png"/>Мои отзывы</a></p>
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
+            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
+    </div>
+
+    <div class="account-data">
+        <div class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+                <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+                <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+            <hr class="accLine">
+            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
+            <button [disabled]="!hasAuth" type="button" class="btn btn-lg btn-danger accBtn2">Выйти</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2 id="title2">Мои данные</h2>
+        <div class="data">
+           <div class="profileImage">
+               <label class="btn btn-default uploadImg">
+                    <input type="file" hidden><img alt="uploadImg" src="./assets/img/profile/add.png"/>
+               </label>
+            </div>
+            <div class="profileData">
+                <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
+                <p class="dataColumns">Логин: <b>{{user.login}}</b></p>
+                <p class="dataColumns">E-mail: <b>{{user.email}}</b></p>
+                <p class="dataColumns">Телефон: <b>{{user.phone}}</b></p>
+            </div>
+        </div>
+
+        <h2 id="title3">Изменение данных</h2>
+        <div class="control">
+            <form #registerForm="ngForm">
+            
+                <div class="form-group" id="email-form">
+                  <input #email="ngModel" [(ngModel)]="userEdited.email" class="form-control" id="email" name="email"
+                         placeholder="Введите адрес электронной почты" type="email"
+                         [class.is-invalid]="email.invalid && email.touched" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
+                  >
+                  <div *ngIf="email.errors && (email.invalid && email.touched)">
+                    <small class="text-danger" *ngIf="email.errors?.['pattern']">Email введён некорректно!</small>
+                  </div>
+                </div>
+
+                <div class="form-group" id="firstname-form">
+                    <input #firstName="ngModel" [(ngModel)]="userEdited.firstName"
+                           [class.is-invalid]="firstName.invalid && firstName.touched" class="form-control" id="firstName"
+                           name="firstName" placeholder="Введите имя" required
+                           type="text"/>
+                    <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">Имя - обязательное
+                      поле!</small>
+                  </div>
+              
+                  <div class="form-group" id="lastname-form">
+                    <input #lastName="ngModel" [(ngModel)]="userEdited.lastName" class="form-control" id="lastName" name="lastName"
+                           placeholder="Введите фамилию" type="text">
+                  </div>
+            
+                  <p style="text-indent:32%">
+                    <button [disabled]="true" type="submit" class="btn btn-lg btn-danger contentBtn">Сохранить изменения</button>
+                </p>
+            </form>
+            
+        </div>
+    </div>
+</div>

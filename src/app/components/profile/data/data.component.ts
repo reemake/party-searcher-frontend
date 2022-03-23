@@ -1,20 +1,20 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BACKEND_URL } from 'src/app/app.module';
+import { AppModule } from 'src/app/app.module';
 import { User } from 'src/app/entity/User';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: 'app-data',
+  templateUrl: './data.component.html',
+  styleUrls: ['./data.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class DataComponent implements OnInit {
 
-  hasAuth = globalThis.HAS_AUTH;
+  hasAuth = AppModule.HAS_AUTH;
   userLogin: string = localStorage.getItem("username") || '';
 
   user = new User();
+  userEdited = new User();
 
   constructor(private userService: UserService) {
     

@@ -3,6 +3,7 @@ import {RegistrationService} from '../../services/auth/registration.service'
 import {User} from '../../entity/User';
 import {Router} from '@angular/router';
 import {HttpResponse} from "@angular/common/http";
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,6 @@ export class LoginComponent implements OnInit {
 
   user = new User();
   msg = '';
-  USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 
   constructor(private _service: RegistrationService, private _router: Router) { }
 
@@ -29,10 +29,12 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("refreshToken", <string>headers.get("refreshToken"));
         }
         console.log("response recieved");
+        AppModule.HAS_AUTH = true;
         this._router.navigate(['/'])
       },
       error => {
         console.log("exception occured");
+        AppModule.HAS_AUTH = false;
         this.msg = "Неправильный логин или пароль";
       }
     )

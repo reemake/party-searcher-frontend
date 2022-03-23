@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {catchError, Observable, switchMap, throwError} from 'rxjs';
+import { AppModule } from 'src/app/app.module';
+import { AuthenticationService } from './authentication.service';
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor() {
+  constructor(private authService: AuthenticationService) {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -15,12 +17,23 @@ export class AuthInterceptor implements HttpInterceptor {
       var authorization = request.headers.set("Authorization", token);
       request = request.clone({headers: authorization});
     }
-    return next.handle(request).pipe(map((event: HttpEvent<any>) => {
-      if (event instanceof HttpResponse)
-        if (event.status != 403) {
-          globalThis.HAS_AUTH = true;
-        } else globalThis.HAS_AUTH = false;
-      return event;
+    return next.handle(request).pipe(catchError(error => {
+      if (error.status === 403) {
+        AppModule.HAS_AUTH = false;
+        return this.authService.refreshToken().pipe(
+          switchMap((val, index) => {
+            console.log("I REFRESHED");
+            localStorage.setItem("token", val.id.jwt);
+            localStorage.setItem("refreshToken", val.refreshToken);
+            var authorization = request.headers.set("Authorization", val.id.jwt);
+            request = request.clone({headers: authorization})
+            AppModule.HAS_AUTH = true;
+            return next.handle(request)
+          })
+        )
+      }
+      return throwError(error);
     }));
+
   }
 }

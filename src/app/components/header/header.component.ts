@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
+import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-header',
@@ -8,18 +9,14 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  hasAuth: boolean;
+  hasAuth = AppModule.HAS_AUTH;
 
   constructor(private _router: Router) {
-    if (globalThis.HAS_AUTH)
-      this.hasAuth = true;
-    else
-      this.hasAuth = false;
-    console.log("hasAuth = " + this.hasAuth);
+    
   }
 
   ngOnInit(): void {
-    
+    console.log(this.hasAuth);
   }
 
 }
