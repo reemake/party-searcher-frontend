@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {EventService} from "../../../services/event.service";
+import {AuthenticationService} from "../../../services/auth/authentication.service";
 
 @Component({
   selector: 'app-event-search',
@@ -31,7 +32,7 @@ export class EventSearchComponent implements OnInit {
   public eventTypeInput: FormControl = new FormControl();
 
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, public auth: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class EventSearchComponent implements OnInit {
   }
 
   search(): void {
-
+    console.log("CURRREMT=" + this.auth.isAuth())
   }
 
   changeWords(): void {

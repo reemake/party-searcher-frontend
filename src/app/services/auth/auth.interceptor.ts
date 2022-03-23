@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {catchError, Observable, switchMap, tap, throwError} from 'rxjs';
+import {catchError, Observable, tap, throwError} from 'rxjs';
 import {AuthenticationService} from './authentication.service';
+import {Jwt} from "../../entity/Jwt";
 
 
 @Injectable()
@@ -21,17 +22,21 @@ export class AuthInterceptor implements HttpInterceptor {
         this.authService.setAuth(val);
       }
     }), catchError(error => {
-      this.authService.setAuth(error).pipe(
-        switchMap((val, index) => {
-          console.log("I REFRESHED");
-          localStorage.setItem("token", val.id.jwt);
-          localStorage.setItem("refreshToken", val.refreshToken);
-          var authorization = request.headers.set("Authorization", val.id.jwt);
+      this.authService.setAuth(error).subscribe(val => {
+        console.log("I REFRESH");
+        console.log("NEW VAL" + JSON.stringify(val.body));
+        var body: Jwt = val as unknown as Jwt;
+        if (body !== null) {
+
+          localStorage.setItem("token", body.id.jwt);
+          localStorage.setItem("refreshToken", body.refreshToken);
+          console.log("I REFRESHed");
+          var authorization = request.headers.set("Authorization", body.id.jwt);
           request = request.clone({headers: authorization})
-          return next.handle(request)
-        })
-      );
-      return throwError(error);
+          this.authService.setAuth(val);
+        }
+      })
+      return throwError(error)
     }));
 
   }

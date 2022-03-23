@@ -1,6 +1,6 @@
 import {HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {catchError, Observable, of, tap} from 'rxjs';
+import {Observable} from 'rxjs';
 import {BACKEND_URL} from 'src/app/app.module';
 import {Jwt} from 'src/app/entity/Jwt';
 
@@ -15,7 +15,8 @@ export class AuthenticationService {
     console.log("AUTH SERVICE CREATED")
   }
 
-  public refreshToken(): Observable<Jwt> {
+  public refreshToken(): Observable<HttpResponse<Jwt>> {
+    console.log("TRY TO UPDATE")
     if (!this.hasAuth) {
       var refresh = localStorage.getItem("refreshToken");
       var token = localStorage.getItem("token");
@@ -27,19 +28,17 @@ export class AuthenticationService {
             jwt: token
           }
         }
-        return this.httpClient.post<Jwt>(BACKEND_URL + "/refreshToken", jwt).pipe(tap(resp => {
-          this.hasAuth = true;
-        }), catchError((err) => {
-          this.hasAuth = false;
-          return of(err);
-        }));
+
+
+        return this.httpClient.post<HttpResponse<Jwt>>(BACKEND_URL + "/refreshToken", jwt);
       }
     }
-    return new Observable<Jwt>();
+    console.log("NOT UPDATE")
+    return new Observable<HttpResponse<Jwt>>();
 
   }
 
-  public setAuth(httpEvent: HttpResponseBase): Observable<Jwt> {
+  public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
     if (httpEvent instanceof HttpErrorResponse) {
       if (httpEvent.status == 403) {
         console.log("SET BAD")
@@ -52,7 +51,7 @@ export class AuthenticationService {
         return this.refreshToken();
       } else this.hasAuth = true;
     }
-    return new Observable<Jwt>();
+    return new Observable<HttpResponse<Jwt>>();
   }
 
   public isAuth(): boolean {
