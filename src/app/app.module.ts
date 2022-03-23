@@ -20,8 +20,8 @@ import {SurveyComponent} from './components/survey/survey.component';
 import {SurveyTest} from './components/pages/survey.test/survey.test.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
-import { AccountsComponent } from './components/profile/accounts/accounts.component';
-import { DataComponent } from './components/profile/data/data.component';
+import {AccountsComponent} from './components/profile/accounts/accounts.component';
+import {DataComponent} from './components/profile/data/data.component';
 
 export const BACKEND_URL: string = "http://localhost:8080";
 
@@ -74,6 +74,5 @@ const ROUTES: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  public static HAS_AUTH: boolean = false;
 }
 

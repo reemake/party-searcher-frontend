@@ -17,7 +17,7 @@
         <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
-            <button [disabled]="!hasAuth" type="button" class="btn btn-lg btn-danger accBtn2">Выйти</button>
+            <button [disabled]="" class="btn btn-lg btn-danger accBtn2" type="button">Выйти</button>
         </div>
     </div>
 
@@ -40,8 +40,8 @@
         <h2 id="title3">Изменение данных</h2>
         <div class="control">
             <form #registerForm="ngForm">
-            
-                <div class="form-group" id="email-form">
+
+              <div class="form-group" id="email-form">
                   <input #email="ngModel" [(ngModel)]="userEdited.email" class="form-control" id="email" name="email"
                          placeholder="Введите адрес электронной почты" type="email"
                          [class.is-invalid]="email.invalid && email.touched" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
@@ -59,17 +59,17 @@
                     <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">Имя - обязательное
                       поле!</small>
                   </div>
-              
-                  <div class="form-group" id="lastname-form">
+
+              <div class="form-group" id="lastname-form">
                     <input #lastName="ngModel" [(ngModel)]="userEdited.lastName" class="form-control" id="lastName" name="lastName"
                            placeholder="Введите фамилию" type="text">
                   </div>
-            
-                  <p style="text-indent:32%">
+
+              <p style="text-indent:32%">
                     <button [disabled]="true" type="submit" class="btn btn-lg btn-danger contentBtn">Сохранить изменения</button>
                 </p>
             </form>
-            
+
         </div>
     </div>
 </div>

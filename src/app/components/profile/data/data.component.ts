@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AppModule } from 'src/app/app.module';
-import { User } from 'src/app/entity/User';
-import { UserService } from 'src/app/services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {User} from 'src/app/entity/User';
+import {UserService} from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-data',
@@ -10,15 +9,14 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class DataComponent implements OnInit {
 
-  hasAuth = AppModule.HAS_AUTH;
   userLogin: string = localStorage.getItem("username") || '';
 
   user = new User();
   userEdited = new User();
 
   constructor(private userService: UserService) {
-    
-   }
+
+  }
 
   ngOnInit(): void {
     this.userService.getUser(this.userLogin).subscribe(
