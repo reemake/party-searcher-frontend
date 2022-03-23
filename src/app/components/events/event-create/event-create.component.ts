@@ -93,6 +93,7 @@ export class EventCreateComponent implements OnInit {
         this.eventService.add(event).subscribe(event => {
 
         }, error => {
+          alert("При создании эвента произошла ошибка, повторите еще раз");
           this.error = error;
         });
       });
@@ -112,8 +113,12 @@ export class EventCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventService.getTypes().subscribe(types => {
-      this.eventTypes = types.map(event => event.name);
-    });
+        this.eventTypes = types.map(event => event.name);
+      }, error1 => {
+        console.log("GIVE ERROR");
+        alert("При загрузке типов мероприятий произошла ошибка, повторите еще раз")
+      }
+    );
   }
 
 }

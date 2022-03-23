@@ -1,12 +1,13 @@
 <div *ngIf="event!=null" id="description" style="width: 100%;">
   <div class="description-row header">
+    <h2 class="title">{{event.name}}</h2>
     <button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
                                                                   src="./assets/img/mapImages/buttons/close-btn.png"/>
     </button>
   </div>
   <div class="description-row">
 
-    <h2 class="title">{{event.name}}</h2>
+
   </div>
 
   <div class="description-row">
@@ -24,6 +25,18 @@
       <img src="./assets/img/rating-star-icon.png"/>
       <p>{{event.owner?.rating}}</p>
     </div>
+  </div>
+  <div class="description-row owner">
+    <p>Время начала</p>
+    <p>{{event.dateTimeStart | date:'dd.MM.YY HH:mm'}}</p>
+  </div>
+  <div *ngIf="event.dateTimeEnd!==null" class="description-row owner">
+    <p>Время окончания мероприятия</p>
+    <p>{{event.dateTimeEnd | date:'dd.MM.YY HH:mm'}}</p>
+  </div>
+  <div *ngIf="event.maxNumberOfGuests!==0" class="description-row owner">
+    <p>Макс кол-во участников</p>
+    <p>{{event.maxNumberOfGuests}}</p>
   </div>
   <div class="description-row">
     <p>Участники</p>
@@ -53,7 +66,12 @@
     </div>
   </div>
 
-  <div *ngFor="let tag of event.tags" class="description-row">
-    <p class="description-tag">{{tag.name}}</p>
+  <div class="description-row tags">
+    <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}}</h3>
+  </div>
+  <div class="price">
+    <img *ngIf="event.price==0" alt="free event" src="./assets/img/FREE%20PRICE.png"/>
+    <p *ngIf="event.price !==0">{{event.price}}</p>
+    <img *ngIf="event.price!==0" alt="paid event" src="./assets/img/ruble.png"/>
   </div>
 </div>

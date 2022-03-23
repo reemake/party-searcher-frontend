@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Event} from "../../../../entity/Event/Event";
 import {EventService} from "../../../../services/event.service";
+import {AppModule} from "../../../../app.module";
 
 @Component({
   selector: 'app-events-index',
@@ -16,6 +17,7 @@ export class EventsIndexComponent implements OnInit {
   public mapSize: string = "100%";
   public isSearchActive: boolean = false;
   private prevMapSize: string = "100%";
+  public currentLocation: number[] = [];
 
   constructor(private eventService: EventService) {
 
@@ -44,6 +46,7 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public onCallSearch(event: any): void {
+    console.log(AppModule.HAS_AUTH);
     if (event) {
       this.isSearchActive = true;
       this.prevMapSize = this.mapSize;
@@ -52,6 +55,10 @@ export class EventsIndexComponent implements OnInit {
       this.isSearchActive = false;
       this.mapSize = this.prevMapSize;
     }
+  }
+
+  public changeLoc(event: any): void {
+    this.currentLocation = event;
   }
 
   ngOnInit(): void {

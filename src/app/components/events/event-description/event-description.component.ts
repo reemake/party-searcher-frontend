@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Event} from "../../../entity/Event/Event";
-import {AuthenticationService} from "../../../services/auth/authentication.service";
 
 @Component({
   selector: 'app-event-description',
@@ -11,7 +10,7 @@ export class EventDescriptionComponent implements OnInit {
   @Output() public closeDescription: EventEmitter<any> = new EventEmitter<any>();
   @Input() public event: Event | null = null;
 
-  constructor(private auth: AuthenticationService) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -31,7 +30,7 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   closeDescriptionFun(): void {
-    console.log(this.auth.isAuth());
+    console.log(this.event);
     this.event = null;
     this.closeDescription.next({});
   }

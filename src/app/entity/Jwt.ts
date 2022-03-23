@@ -1,8 +1,7 @@
 export interface Jwt {
-    id: {
-      jwt: string,
-      username?: string
-    },
-    refreshToken: string
-  }
-  
+  id: {
+    jwt: string,
+    username?: string
+  },
+  refreshToken: string
+}
