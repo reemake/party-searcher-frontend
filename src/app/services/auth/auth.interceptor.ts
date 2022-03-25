@@ -1,6 +1,13 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {catchError, Observable, tap, throwError} from 'rxjs';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
+import {catchError, Observable, switchMap, take, tap, throwError} from 'rxjs';
 import {AuthenticationService} from './authentication.service';
 import {Jwt} from "../../entity/Jwt";
 
@@ -22,23 +29,23 @@ export class AuthInterceptor implements HttpInterceptor {
         this.authService.setAuth(val);
       }
     }), catchError(error => {
-      this.authService.setAuth(error).subscribe(val => {
-        console.log("I REFRESH");
-        console.log("NEW VAL" + JSON.stringify(val.body));
-        var body: Jwt = val as unknown as Jwt;
-        if (body !== null) {
-
-          localStorage.setItem("token", body.id.jwt);
-          localStorage.setItem("refreshToken", body.refreshToken);
-          console.log("I REFRESHed");
-          var authorization = request.headers.set("Authorization", body.id.jwt);
-          request = request.clone({headers: authorization})
-          this.authService.setAuth(val);
-        }
-        console.log("I am going to repeat")
-        return next.handle(request);
-      })
-        return throwError(request)
+        if (error instanceof HttpErrorResponse && error.status == 403) {
+          return this.authService.setAuth(error).pipe(
+            take(1),
+            switchMap(jwt => {
+                var body: Jwt = jwt as unknown as Jwt;
+                if (body !== null) {
+                  localStorage.setItem("token", body.id.jwt);
+                  localStorage.setItem("refreshToken", body.refreshToken);
+                  var authorization = request.headers.set("Authorization", body.id.jwt);
+                  request = request.clone({headers: authorization})
+                  this.authService.setAuth(jwt);
+                }
+                return next.handle(request);
+              }
+            ))
+        } else
+          return throwError(error)
       })
     );
 
