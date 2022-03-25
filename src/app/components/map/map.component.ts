@@ -1,4 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {Feature, Map as MyMap, View} from 'ol';
 import {Coordinate} from 'ol/coordinate';
 import {Control, defaults as DefaultControls, ScaleLine} from 'ol/control';
@@ -13,13 +23,14 @@ import {Point} from "ol/geom";
 import {Icon, Style} from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
+import * as olSphere from 'ol/sphere';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit, OnChanges {
   /**
    * границы карты, которую в данный момент видит пользователь.Начиная с левой нижней и  далее против часовой стрелки
    */
@@ -27,20 +38,20 @@ export class MapComponent implements AfterViewInit {
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
-  _events: Event[] = [];
+  @Input() events: Set<Event> = new Set<Event>();
+  @Output() changeMapBounds = new EventEmitter<Array<any>>();
 
-  public get events(): Event[] {
-    return this._events;
-  }
-
-  @Input()
-  public set events(events: Event[]) {
-    this._events = events;
-    this.updateEventsOnMap(this._events);
-  }
 
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Output() mapReady = new EventEmitter<MyMap>();
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes["events"] !== undefined) {
+
+      this.updateEventsOnMap(this.events);
+    }
+  }
+
   @Output() changeLocation = new EventEmitter<number[]>();
   @Output() callSearch = new EventEmitter<boolean>();
   @Input() center: Coordinate | undefined;
@@ -170,51 +181,101 @@ export class MapComponent implements AfterViewInit {
    * ОПРЕДЕЛИТЬ ГРАНИЦЫ КАРТЫ, КОТОРУЮ В ДАННЫЙ МОМЕНТ ВИДИТ ПОЛЬЗОВАТЕЛЬ.
    */
   private setMapBounds(): void {
-    let extent: number[] | undefined = this.map?.getView().calculateExtent(this.map.getSize())
-    if (extent != undefined) {
-      let edgePoints: number[] = transformExtent(extent, 'EPSG:3857', 'EPSG:3857');
-      this.mapBoundingBox = [[edgePoints[0], edgePoints[1]], [edgePoints[2], edgePoints[1]], [edgePoints[2], edgePoints[3]], [edgePoints[0], edgePoints[3]]];
-//      console.log(this.mapBoundingBox);
+    if (this.map !== undefined) {
+      var size = this.map.getSize();
+      var center = this.map.getView().getCenter();
+      var sourceProj = this.map.getView().getProjection();
+      var extent = this.map.getView().calculateExtent(size);
+
+      extent = transformExtent(extent, sourceProj, 'EPSG:4326');
+      var posSW = [extent[0], extent[1]];
+      var posNE = [extent[2], extent[3]];
+      if (center !== undefined) {
+        center = transform(center, sourceProj, 'EPSG:4326');
+        var centerToSW = olSphere.getDistance(center, posSW);
+        var centerToNE = olSphere.getDistance(center, posNE);
+        var dist: number = Math.max(centerToNE, centerToSW);
+        this.changeMapBounds.emit([center, dist]);
+        console.log("centerToSW - ", centerToSW);
+        console.log("centerToNE - ", centerToNE);
+      }
     }
   }
 
-  private updateEventsOnMap(events: Array<Event>): void {
-    let features: Array<any> = events.map(event => {
-      if (event.location) {
-        let feature: any = new Feature({
-          geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
-          event: event
-        });
+
+  private updateEventsOnMap(events: Set<Event>): void {
+    let features: Array<any> = new Array<any>();
+    if (this.previousEventsMarkersLayer.getSource() === null) {
+      events.forEach(event => {
+        console.log(event);
+        if (event.location !== undefined) {
+          let feature: any = new Feature({
+            geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
+            event: event
+          });
 
 
-        feature.setStyle(new Style({
-          image: new Icon(({
-            crossOrigin: 'anonymous',
-            src: '../assets/img/mapImages/landmark.png',
-            imgSize: [27, 30]
-          }))
-        }));
+          feature.setStyle(new Style({
+            image: new Icon(({
+              crossOrigin: 'anonymous',
+              src: '../assets/img/mapImages/landmark.png',
+              imgSize: [27, 30]
+            }))
+          }));
 
-        if (this.eventsMap.get(feature) === undefined) {
-          let arr: Array<Event> = new Array<Event>(event);
-          this.eventsMap.set(feature, arr);
-        } else {
-          this.eventsMap.get(feature)?.push(event);
+          if (this.eventsMap.get(feature) === undefined) {
+            let arr: Array<Event> = new Array<Event>(event);
+            this.eventsMap.set(feature, arr);
+          } else {
+            this.eventsMap.get(feature)?.push(event);
+          }
+          features.push(feature);
         }
-        return feature;
-      }
-    });
 
-    this.map?.removeLayer(this.previousEventsMarkersLayer);
+      })
+      let vectorSource: VectorSource<any> = new VectorSource({
+        features: features
+      });
+      this.previousEventsMarkersLayer = new VectorLayer<any>({
+        source: vectorSource
+      });
+      this.map?.addLayer(this.previousEventsMarkersLayer);
+    } else {
+      var source: VectorSource<any> = this.previousEventsMarkersLayer.getSource()
+      source.getFeatures().forEach((feature: any) => {
+        if (feature.event !== undefined) {
+          var event = feature.event;
+          if (!events.has(event)) {
+            if (event.location !== undefined) {
+              let feature: any = new Feature({
+                geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
+                event: event
+              });
 
-    let vectorSource: VectorSource<any> = new VectorSource({
-      features: features
-    });
-    this.previousEventsMarkersLayer = new VectorLayer<any>({
-      source: vectorSource
-    });
 
-    this.map?.addLayer(this.previousEventsMarkersLayer);
+              feature.setStyle(new Style({
+                image: new Icon(({
+                  crossOrigin: 'anonymous',
+                  src: '../assets/img/mapImages/landmark.png',
+                  imgSize: [27, 30]
+                }))
+              }));
+
+              if (this.eventsMap.get(feature) === undefined) {
+                let arr: Array<Event> = new Array<Event>(event);
+                this.eventsMap.set(feature, arr);
+              } else {
+                this.eventsMap.get(feature)?.push(event);
+              }
+              source.getFeatures().push(feature);
+            }
+          }
+        }
+      })
+
+    }
+
+
   }
 
   private setUserLocation(): void {
@@ -225,8 +286,6 @@ export class MapComponent implements AfterViewInit {
         this.map.getView().setCenter(transform([this.center[0], this.center[1]], 'EPSG:4326', 'EPSG:3857'));
 
       this.printLocationMarker();
-
-      this.changeLocation.emit(this.userLocation);
     }, () => {
     }, {enableHighAccuracy: true});
   }

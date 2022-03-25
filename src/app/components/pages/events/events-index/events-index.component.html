@@ -2,12 +2,12 @@
 
   <app-event-description (closeDescription)="userEventSelectHandler([])"
                          [event]="currentActiveEvent"></app-event-description>
-
-  <app-map (callSearch)="onCallSearch($event)" (changeLocation)="changeLoc($event)" (mapReady)="onMapReady($event)"
+  <app-map (callSearch)="onCallSearch($event)" (changeLocation)="changeLoc($event)"
+           (changeMapBounds)="changeMapBounds($event)" (mapReady)="onMapReady($event)"
            (selectEvents)="userEventSelectHandler($event)" [ngStyle]="{'width':mapSize}"
            *ngIf="showMap" [center]="[-483281,6904172]" [events]="events"
            [zoom]="14.5"
            class="map"></app-map>
-  <app-event-search (closeSearch)="onCallSearch($event)" (eventsSearched)="events=$event" *ngIf="isSearchActive"
+  <app-event-search (closeSearch)="onCallSearch($event)" (eventsSearched)="search($event)" *ngIf="isSearchActive"
                     [userLocation]="currentLocation"></app-event-search>
 </div>

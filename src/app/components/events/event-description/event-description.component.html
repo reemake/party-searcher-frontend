@@ -65,6 +65,7 @@
       <p>пожаловаться на мероприятие</p>
     </div>
   </div>
+  <p *ngIf="error!==''">{{error}}</p>
 
   <div class="description-row tags">
     <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}}</h3>

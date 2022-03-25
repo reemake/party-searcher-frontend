@@ -43,7 +43,7 @@
 </form>
 <button (click)="addTag()">add tag</button>
 <app-map
-  (changeLocation)="setLocation($event)"
+  (changeMapBounds)="setLocation($event)"
   [center]="[-483281,6904172]"
   [zoom]="14.5"
   class="map">
