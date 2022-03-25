@@ -3,7 +3,6 @@ import {FormControl} from "@angular/forms";
 import {EventService} from "../../../services/event.service";
 import {FilterData} from "../../../entity/filterData";
 import {Event} from "../../../entity/Event/Event";
-import {AppModule} from "../../../app.module";
 
 @Component({
   selector: 'app-event-search',
@@ -47,7 +46,6 @@ export class EventSearchComponent implements OnInit {
   }
 
   search(): void {
-    console.log("YOU TRY TO SEARCH " + AppModule.HAS_AUTH);
     var numbers = this.setTimeLength();
     var formats = [];
     switch (this.eventFormatInput.value) {
@@ -95,7 +93,6 @@ export class EventSearchComponent implements OnInit {
   }
 
   changeWords(): void {
-    console.log("has auth =" + AppModule.HAS_AUTH);
     var value: string = this.wordsInput.value;
     var regExpMatchArray = value.match(new RegExp("[a-zа-я]+", "gi"));
     if (regExpMatchArray != null) {

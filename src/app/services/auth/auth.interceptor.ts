@@ -35,9 +35,12 @@ export class AuthInterceptor implements HttpInterceptor {
           request = request.clone({headers: authorization})
           this.authService.setAuth(val);
         }
+        console.log("I am going to repeat")
+        return next.handle(request);
       })
-      return throwError(error)
-    }));
+        return throwError(request)
+      })
+    );
 
   }
 }
