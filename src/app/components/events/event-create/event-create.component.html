@@ -1,3 +1,4 @@
+
 <form (submit)="submit()" [formGroup]="formGroup">
   <label for="name">Название мероприятия</label>
   <input [formControl]="nameInput" id="name" required type="text"/>
@@ -42,10 +43,17 @@
   <p *ngIf="error!==''">{{error}}</p>
 </form>
 <button (click)="addTag()">add tag</button>
-<app-map
-  (changeMapBounds)="setLocation($event)"
-  [center]="[-483281,6904172]"
-  [zoom]="14.5"
-  class="map">
+<div class="mycontainer">
+  <app-event-description [event]="event"></app-event-description>
+  <app-map
+    (changeLocation)="currentLocation=$event"
+    (changeMapBounds)="changeMapBounds($event)"
+    (selectEvents)="selectEvents($event)"
+    [events]="events"
+    [ngStyle]="{'width':'50%'}"
+    [center]="[-483281,6904172]"
+    [zoom]="14.5"
+    class="map">
 
-</app-map>
+  </app-map>
+</div>

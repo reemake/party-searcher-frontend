@@ -10,6 +10,9 @@ import {Tag} from "../../../entity/Event/Tag";
   styleUrls: ['./event-create.component.css']
 })
 export class EventCreateComponent implements OnInit {
+  public events: Array<Event> = new Array<Event>();
+  public event: Event | null = null;
+  private currentDistance = 0;
   public tagsCount: number = 0;
   public formGroup: FormGroup;
   public nameInput: FormControl = new FormControl();
@@ -49,8 +52,25 @@ export class EventCreateComponent implements OnInit {
 
   }
 
-  setLocation(event: any): void {
-    this.currentLocation = [event[0], event[1]];
+  selectEvents(event: any): void {
+    console.log(event)
+    this.event = event;
+  }
+
+  changeMapBounds(event: any): void {
+
+    if (this.currentLocation !== event[0]) {
+      this.eventService.getEventsWithinRadius(event[0], event[1]).subscribe((events: Event[]) => {
+        this.events = events;
+      });
+    } else if (this.currentDistance < event[1]) {
+      this.eventService.getEventsWithinRadius(this.currentLocation, event[1]).subscribe((events: Event[]) => {
+        this.events = events;
+        this.currentDistance = event[1];
+      });
+    } else if (this.currentDistance > event[1] * 1.999) {
+
+    }
   }
 
   addTag(): void {

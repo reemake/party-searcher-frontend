@@ -10,7 +10,8 @@ import {EventService} from "../../../../services/event.service";
 export class EventsIndexComponent implements OnInit {
 
   public showMap: boolean = true;
-  public events: Set<Event> = new Set<Event>();
+  public eventsId: Set<number> = new Set<number>();
+  public events: Array<Event> = new Array<Event>();
   public currentActiveEvent: Event | null = null;
   public isList: boolean = false;
   public mapSize: string = "100%";
@@ -62,13 +63,13 @@ export class EventsIndexComponent implements OnInit {
 
     if (this.currentLocation !== event[0]) {
       this.eventService.getEventsWithinRadius(event[0], event[1]).subscribe((events: Event[]) => {
-        events.forEach(event => this.events = this.events.add(event));
+        this.events = events;
         this.currentLocation = event[0];
       });
     } else if (this.currentDistance < event[1]) {
       this.eventService.getEventsWithinRadius(this.currentLocation, event[1]).subscribe((events: Event[]) => {
-        events.forEach(event => this.events = this.events.add(event));
-        this.currentDistance = event[1]
+        this.events = events;
+        this.currentDistance = event[1];
       });
     } else if (this.currentDistance > event[1] * 1.999) {
 
