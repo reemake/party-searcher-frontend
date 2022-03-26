@@ -44,6 +44,10 @@ tr td {
 
 }
 
+hr {
+  width: 50vw;
+}
+
 
 .price1 {
   display: inline !important;
@@ -62,4 +66,10 @@ tr td {
 .paginationContainer button {
   margin: 0px;
   display: block;
+  border: 1px solid gray;
+  border-collapse: collapse;
+}
+
+.currentPageBtn {
+  background-color: dodgerblue !important;
 }

@@ -2,7 +2,8 @@
 
   <app-event-description
     [event]="currentActiveEvent"></app-event-description>
-  <app-list *ngIf="!showMap" [events]="events" [filter]="filter"></app-list>
+  <app-list (clickOnEvent)="userEventSelectHandler($event)" *ngIf="!showMap" [events]="events"
+            [filter]="filter"></app-list>
   <app-map (callListItem)="showList($event)" (callSearch)="onCallSearch($event)" (changeLocation)="changeLoc($event)"
            [hasSearch]="true"
            (changeMapBounds)="changeMapBounds($event)" (mapReady)="onMapReady($event)"

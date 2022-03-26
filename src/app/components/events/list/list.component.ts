@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Event} from "../../../entity/Event/Event";
 import {FilterData} from "../../../entity/filterData";
 import {EventService} from "../../../services/event.service";
@@ -9,6 +9,8 @@ import {EventService} from "../../../services/event.service";
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit, OnChanges {
+
+  @Output() clickOnEvent: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
   @Input() filter: FilterData | null;
   @Input() events: Array<Event> = new Array<Event>();
@@ -26,11 +28,15 @@ export class ListComponent implements OnInit, OnChanges {
     }
   }
 
+  public showDescription(event: Event): void {
+    this.clickOnEvent.emit([event]);
+  }
+
   public goToPage(pageNum: number): void {
     if (this.filter !== null)
-      this.eventService.filterWithPaging(this.filter, pageNum, this.size).subscribe(events => {
+      this.eventService.filterWithPaging(this.filter, pageNum - 1, this.size).subscribe(events => {
         this.pageCount = events.totalPages;
-        this.currentPage = events.pageable.pageNumber;
+        this.currentPage = events.pageable.pageNumber + 1;
         this.events = events.content;
       });
 
@@ -56,7 +62,7 @@ export class ListComponent implements OnInit, OnChanges {
       this.pages = [];
       this.eventService.filterWithPaging(this.filter, this.currentPage, this.size).subscribe(events => {
         this.pageCount = events.totalPages;
-        this.currentPage = events.pageable.pageNumber;
+        this.currentPage = events.pageable.pageNumber + 1;
         if (this.pageCount > 4) {
           this.generateArray(1, 4);
         } else this.generateArray(1, this.pageCount);

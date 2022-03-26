@@ -4,7 +4,7 @@
     <table>
       <tr *ngFor="let event of events">
         <td>
-          <button><h2>{{event.name}}</h2></button>
+          <button (click)="showDescription(event)"><h2>{{event.name}}</h2></button>
         </td>
         <td>
           <div class="big-container1">
@@ -24,10 +24,11 @@
     <button class="list-btn"><img alt="list of events" src="./assets/img/mapImages/list-image.png"/></button>
   </div>
   <div class="paginationContainer">
-    <button (click)="decreasePages(pages[0])" *ngIf="pages.length>0 && pages[0]>1" class="prevPageBtn">BACK</button>
-    <button (click)="goToPage(page)" *ngFor="let page of pages" class="pageNumBtn">{{page}}</button>
+    <button (click)="decreasePages(pages[0])" *ngIf="pages.length>0 && pages[0]>1" class="prevPageBtn"><<</button>
+    <button (click)="goToPage(page)" *ngFor="let page of pages" [ngClass]="currentPage==page?'currentPageBtn':''"
+            class="pageNumBtn">{{page}}</button>
     <button (click)="increasePages(pages[pages.length-1])" *ngIf="pages.length>0 && pages[pages.length-1]<pageCount"
-            class="nextPageBtn">GO
+            class="nextPageBtn">>>
     </button>
   </div>
 </div>
