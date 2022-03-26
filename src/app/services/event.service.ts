@@ -5,6 +5,7 @@ import {BACKEND_URL} from "../app.module";
 import {Event} from "../entity/Event/Event";
 import {EventType} from "../entity/Event/EventType";
 import {FilterData} from "../entity/filterData";
+import {EventPage} from "../entity/Event/EventPage";
 
 
 @Injectable({
@@ -47,6 +48,12 @@ export class EventService {
 
   public filter(filter: FilterData): Observable<Event[]> {
     return this.httpClient.post<Array<Event>>(BACKEND_URL + "/api/events/filter", filter);
+  }
+
+  public filterWithPaging(filter: FilterData, page: number, size: number): Observable<EventPage> {
+    var params: HttpParams = new HttpParams();
+    params = params.set("pageNum", page).set("size", size);
+    return this.httpClient.post<EventPage>(BACKEND_URL + "/api/events/filterWithPaging", filter, {params: params});
   }
 
   public assignOnEvent(id: number): Observable<any> {

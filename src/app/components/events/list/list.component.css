@@ -1,0 +1,65 @@
+.list-container {
+
+  width: 67vw;
+
+}
+
+.list-container div {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+}
+
+button:not(.list-btn) {
+  border: none;
+  background: none;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.list-btn {
+  border: none;
+  background: none;
+  margin: 0 auto;
+}
+
+button h2 {
+  text-decoration-line: underline;
+}
+
+button:hover {
+  background-color: lightgray;
+}
+
+tr td {
+  display: block;
+}
+
+.big-container1 {
+  display: flex;
+  flex-direction: row;
+
+
+}
+
+
+.price1 {
+  display: inline !important;
+}
+
+.price1 > * {
+  display: inline !important;
+}
+
+.paginationContainer {
+  display: flex;
+  flex-direction: row !important;
+
+}
+
+.paginationContainer button {
+  margin: 0px;
+  display: block;
+}

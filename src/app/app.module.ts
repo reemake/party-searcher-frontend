@@ -22,6 +22,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
 import {AccountsComponent} from './components/profile/accounts/accounts.component';
 import {DataComponent} from './components/profile/data/data.component';
+import {ListComponent} from "./components/events/list/list.component";
 
 export const BACKEND_URL: string = "http://localhost:8080";
 
@@ -44,7 +45,7 @@ const ROUTES: Routes = [
     LocationBtnComponent,
     EventsIndexComponent,
     EventSearchComponent,
-    EventDescriptionComponent ,
+    EventDescriptionComponent,
     HeaderComponent,
     EventCreateComponent,
     RegistrationComponent,
@@ -53,7 +54,8 @@ const ROUTES: Routes = [
     SurveyTest,
     TypeComponent,
     AccountsComponent,
-    DataComponent
+    DataComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,

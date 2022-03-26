@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Event} from "../../../../entity/Event/Event";
 import {EventService} from "../../../../services/event.service";
+import {FilterData} from "../../../../entity/filterData";
 
 @Component({
   selector: 'app-events-index',
@@ -9,6 +10,7 @@ import {EventService} from "../../../../services/event.service";
 })
 export class EventsIndexComponent implements OnInit {
 
+  public filter: FilterData | null = null;
   public showMap: boolean = true;
   public eventsId: Set<number> = new Set<number>();
   public events: Array<Event> = new Array<Event>();
@@ -59,10 +61,20 @@ export class EventsIndexComponent implements OnInit {
     this.currentLocation = event;
   }
 
+  public showList(event: any): void {
+    if (event) {
+      this.showMap = false;
+    } else {
+      this.showMap = true;
+    }
+  }
+
   public changeMapBounds(event: any): void {
 
     if (this.currentLocation !== event[0]) {
       this.eventService.getEventsWithinRadius(event[0], event[1]).subscribe((events: Event[]) => {
+        if (events.length >= 2)
+          this.showMap = false;
         this.events = events;
         this.currentLocation = event[0];
       });
@@ -77,7 +89,7 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public search(events: Array<Event>): void {
-
+    this.events = events;
   }
 
   ngOnInit(): void {

@@ -44,13 +44,13 @@
 </form>
 <button (click)="addTag()">add tag</button>
 <div class="mycontainer">
-  <app-event-description [event]="event"></app-event-description>
+  <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
   <app-map
     (changeLocation)="currentLocation=$event"
     (changeMapBounds)="changeMapBounds($event)"
     (selectEvents)="selectEvents($event)"
     [events]="events"
-    [ngStyle]="{'width':'50%'}"
+    [ngStyle]="{'width':mapWidth}"
     [center]="[-483281,6904172]"
     [zoom]="14.5"
     class="map">

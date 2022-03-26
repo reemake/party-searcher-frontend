@@ -1,1 +1,33 @@
-<p>list works!</p>
+<div class="list-container">
+  <div>
+    <input type="text"/>
+    <table>
+      <tr *ngFor="let event of events">
+        <td>
+          <button><h2>{{event.name}}</h2></button>
+        </td>
+        <td>
+          <div class="big-container1">
+            <pre>{{event.description}}</pre>
+            <div class="price1">
+              <img *ngIf="event.price==0" alt="free event" src="./assets/img/FREE%20PRICE.png"/>
+              <p *ngIf="event.price !==0">{{event.price}}</p>
+              <img *ngIf="event.price!==0" alt="paid event" height="20" src="./assets/img/ruble.png"/>
+            </div>
+          </div>
+        </td>
+        <td></td>
+
+        <hr/>
+      </tr>
+    </table>
+    <button class="list-btn"><img alt="list of events" src="./assets/img/mapImages/list-image.png"/></button>
+  </div>
+  <div class="paginationContainer">
+    <button (click)="decreasePages(pages[0])" *ngIf="pages.length>0 && pages[0]>1" class="prevPageBtn">BACK</button>
+    <button (click)="goToPage(page)" *ngFor="let page of pages" class="pageNumBtn">{{page}}</button>
+    <button (click)="increasePages(pages[pages.length-1])" *ngIf="pages.length>0 && pages[pages.length-1]<pageCount"
+            class="nextPageBtn">GO
+    </button>
+  </div>
+</div>

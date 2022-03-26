@@ -12,8 +12,10 @@ import {Event} from "../../../entity/Event/Event";
 export class EventSearchComponent implements OnInit {
 
   @Input() userLocation: number[] = [];
+  @Input() isPagingUsed: boolean = false;
   @Output() closeSearch: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() eventsSearched: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
+  @Output() filterChanged: EventEmitter<FilterData> = new EventEmitter<FilterData>();
   public words: string[] = ["artyom", "kok"];
   public eventTypes: string[] = [];
 
@@ -88,8 +90,11 @@ export class EventSearchComponent implements OnInit {
       eventFormats: formats,
       freeEvents: this.freeEventInput.value
     };
-    this.eventService.filter(filterData).subscribe(e =>
-      this.eventsSearched.emit(e));
+    if (this.isPagingUsed) {
+      this.filterChanged.emit(filterData);
+    } else
+      this.eventService.filter(filterData).subscribe(e =>
+        this.eventsSearched.emit(e));
   }
 
   changeWords(): void {

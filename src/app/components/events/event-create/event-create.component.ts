@@ -10,6 +10,7 @@ import {Tag} from "../../../entity/Event/Tag";
   styleUrls: ['./event-create.component.css']
 })
 export class EventCreateComponent implements OnInit {
+  public selectedEvents: Array<Event> = new Array<Event>();
   public events: Array<Event> = new Array<Event>();
   public event: Event | null = null;
   private currentDistance = 0;
@@ -31,6 +32,7 @@ export class EventCreateComponent implements OnInit {
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
 
+  public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
   constructor(private eventService: EventService) {
@@ -52,9 +54,18 @@ export class EventCreateComponent implements OnInit {
 
   }
 
+  closeEvent(): void {
+    this.event = null;
+    this.mapWidth = "100%";
+  }
+
   selectEvents(event: any): void {
-    console.log(event)
-    this.event = event;
+    if (event.length > 1) {
+      this.selectedEvents = event;
+    } else if (event.length == 1) {
+      this.mapWidth = "80%"
+      this.event = event[0];
+    }
   }
 
   changeMapBounds(event: any): void {

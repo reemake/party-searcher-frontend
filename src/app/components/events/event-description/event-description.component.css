@@ -75,14 +75,4 @@
   font-weight: bold;
 }
 
-.price {
-  display: flex;
-  align-content: flex-end;
-  justify-content: flex-end;
-  justify-items: flex-end;
-}
 
-.price p {
-  font-weight: bold;
-  font-size: 40px;
-}

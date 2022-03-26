@@ -31,7 +31,6 @@ export class MapComponent implements AfterViewInit {
   eventsId: Set<number> = new Set<number>();
   _events: Array<Event> = new Array<Event>();
 
-
   public get events(): Array<Event> {
     return this._events;
   }
@@ -42,6 +41,8 @@ export class MapComponent implements AfterViewInit {
     this.updateEventsOnMap();
   }
 
+  @Input() hasSearch: boolean = false;
+
   @Output() changeMapBounds = new EventEmitter<Array<any>>();
 
 
@@ -51,6 +52,7 @@ export class MapComponent implements AfterViewInit {
 
   @Output() changeLocation = new EventEmitter<number[]>();
   @Output() callSearch = new EventEmitter<boolean>();
+  @Output() callListItem = new EventEmitter<any>();
   @Input() center: Coordinate | undefined;
   @Input() zoom: number | undefined;
   view: View | undefined;
@@ -88,7 +90,6 @@ export class MapComponent implements AfterViewInit {
 
 
   public addLocationMarker(points: number[]): void {
-    console.log("MARKER " + points);
     points = transform(points, 'EPSG:4326', 'EPSG:3857')
     let feature: any = new Feature({
       geometry: new Point(fromLonLat(points, 'EPSG:4326'))
@@ -134,20 +135,38 @@ export class MapComponent implements AfterViewInit {
 
 
     let buttonElement: any = document.createElement('button');
-    buttonElement.innerHTML = ' <img alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/>';
+    buttonElement.className = "mapBtn";
+    buttonElement.innerHTML = ' <img  alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/>';
     buttonElement.addEventListener('click', () => {
       this.setUserLocation();
     })
     let control = new Control({element: buttonElement});
     this.map.addControl(control);
+    if (this.hasSearch) {
+      let buttonSearchElement: any = document.createElement('button')
+      buttonSearchElement.className = "mapBtn searchBtn"
+      buttonSearchElement.innerHTML = ' <img alt="поиск"  src="./assets/img/mapImages/search-btn.png"/>';
+      buttonSearchElement.addEventListener('click', () => {
+        this.callSearch.emit(true);
+      })
+      let searchControl = new Control({element: buttonSearchElement});
+      this.map.addControl(searchControl);
 
-    let buttonSearchElement: any = document.createElement('button');
-    buttonSearchElement.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/search-btn.png"/>';
-    buttonSearchElement.addEventListener('click', () => {
-      this.callSearch.emit(true);
-    })
-    let searchControl = new Control({element: buttonSearchElement});
-    this.map.addControl(searchControl);
+
+      let switchMap: any = document.createElement('button');
+
+
+      switchMap.className = "mapBtn switchBtn"
+      switchMap.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/map-image.png"/>';
+      switchMap.addEventListener('click', () => {
+        this.callListItem.emit(true);
+      })
+
+
+      let switchControl = new Control({element: switchMap});
+
+      this.map.addControl(switchControl);
+    }
     this.map?.addLayer(this.previousEventsMarkersLayer);
   }
 
