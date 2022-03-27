@@ -21,10 +21,6 @@ import * as olSphere from 'ol/sphere';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements AfterViewInit {
-  /**
-   * границы карты, которую в данный момент видит пользователь.Начиная с левой нижней и  далее против часовой стрелки
-   */
-  mapBoundingBox: Array<Coordinate> = [[]];
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
@@ -53,7 +49,7 @@ export class MapComponent implements AfterViewInit {
   @Output() changeLocation = new EventEmitter<number[]>();
   @Output() callSearch = new EventEmitter<boolean>();
   @Output() callListItem = new EventEmitter<any>();
-  @Input() center: Coordinate | undefined;
+  @Input() center: Coordinate | undefined = [50, 50];
   @Input() zoom: number | undefined;
   view: View | undefined;
   projection: Projection | undefined;
@@ -73,6 +69,10 @@ export class MapComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.init();
+  }
+
+  public init(): void {
     if (!this.map) {
       this.zone.run(() => {
         this.initMap();
@@ -132,6 +132,7 @@ export class MapComponent implements AfterViewInit {
         new ScaleLine({})
       ])
     });
+
 
 
     let buttonElement: any = document.createElement('button');
@@ -213,7 +214,7 @@ export class MapComponent implements AfterViewInit {
         var centerToSW = olSphere.getDistance(center, posSW);
         var centerToNE = olSphere.getDistance(center, posNE);
         var dist: number = Math.max(centerToNE, centerToSW);
-        this.changeMapBounds.emit([center, dist]);
+        this.changeMapBounds.emit([center, dist, posSW, posNE]);
       }
     }
   }

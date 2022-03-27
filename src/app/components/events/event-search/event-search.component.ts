@@ -33,7 +33,7 @@ export class EventSearchComponent implements OnInit {
   public eventThemeInput: FormControl = new FormControl();
   public maxDistanceInput: FormControl = new FormControl();
   public ratingInput: FormControl = new FormControl();
-  public eventFormatInput: FormControl = new FormControl();
+  public eventFormatInput: FormControl = new FormControl("offline");
   public eventTypeInput: FormControl = new FormControl();
   public distanceMeasureInput: FormControl = new FormControl();
   public freeEventInput: FormControl = new FormControl();
@@ -70,8 +70,6 @@ export class EventSearchComponent implements OnInit {
         distance = this.maxDistanceInput.value * 1000;
         break;
     }
-    console.log("WORD=" + this.wordsInput.value);
-    console.log(this.freeEventInput.value);
     var filterData: FilterData = {
       keyWords: this.wordsInput.value !== null ? (String(this.wordsInput.value).trim().split(" ")) : [],
       eventType: this.eventTypeInput.value ? {name: this.eventTypeInput.value} : null,

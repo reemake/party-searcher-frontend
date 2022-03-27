@@ -21,9 +21,11 @@
         <hr/>
       </tr>
     </table>
-    <button class="list-btn"><img alt="list of events" src="./assets/img/mapImages/list-image.png"/></button>
+    <button (click)="openMap(filter)" *ngIf=" hasOffline()" class="list-btn"><img alt="list of events"
+                                                                                  src="./assets/img/mapImages/list-image.png"/>
+    </button>
   </div>
-  <div class="paginationContainer">
+  <div *ngIf="pageCount>1" class="paginationContainer">
     <button (click)="decreasePages(pages[0])" *ngIf="pages.length>0 && pages[0]>1" class="prevPageBtn"><<</button>
     <button (click)="goToPage(page)" *ngFor="let page of pages" [ngClass]="currentPage==page?'currentPageBtn':''"
             class="pageNumBtn">{{page}}</button>

@@ -85,7 +85,7 @@
 
   <div class="form-row">
     <label>Формат</label>
-    <label> <input [formControl]="eventFormatInput" checked name="formatInput" type="radio"
+    <label> <input [checked]="true" [formControl]="eventFormatInput" name="formatInput" type="radio"
                    value="offline"/>Offline</label>
     <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="online"/>Online</label>
     <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="all"/>ALL</label>

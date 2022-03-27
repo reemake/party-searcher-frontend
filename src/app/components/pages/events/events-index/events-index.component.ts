@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Event} from "../../../../entity/Event/Event";
 import {EventService} from "../../../../services/event.service";
 import {FilterData} from "../../../../entity/filterData";
+import {MapComponent} from "../../../map/map.component";
+import * as olSphere from "ol/sphere";
+import {debounceTime, Observable} from "rxjs";
 
 @Component({
   selector: 'app-events-index',
@@ -9,7 +12,7 @@ import {FilterData} from "../../../../entity/filterData";
   styleUrls: ['./events-index.component.css']
 })
 export class EventsIndexComponent implements OnInit {
-
+  @ViewChild(MapComponent) childMap: MapComponent;
   public filter: FilterData | null = null;
   public showMap: boolean = true;
   public eventsId: Set<number> = new Set<number>();
@@ -21,16 +24,34 @@ export class EventsIndexComponent implements OnInit {
   private prevMapSize: string = "100%";
   public currentLocation: number[] = [];
 
-  private currentDistance: number = 0;
+  public changeMapBounds: Observable<any> = new Observable<any>();
 
+  public maxDistanceFromLoc = 0;
+
+  private currentDistance: number = 0;
+  private maxSW: number[] = [];
+  private maxNE: number[] = [];
 
   constructor(private eventService: EventService) {
+    this.changeMapBounds.pipe(
+      debounceTime(1000)
+    ).subscribe(event => {
+      if (this.isSWandNEmore(event[2], event[3])) {
+        this.eventService.getEventsWithinRadius(event[0], event[1])
+          .subscribe((events: Event[]) => {
+            console.log("down")
+            this.events = events;
+            this.currentLocation = event[0];
+          });
+      }
 
+    })
   }
 
 
   public userEventSelectHandler(eventsArray: Array<Event>) {
     if (eventsArray.length > 1) {
+
       this.isList = true;
       this.showMap = false;
     } else if (eventsArray.length == 1) {
@@ -63,29 +84,56 @@ export class EventsIndexComponent implements OnInit {
 
   public showList(event: any): void {
     if (event) {
+
+      if (this.filter == null)
+        this.filter = {
+          eventFormats: ['OFFLINE']
+        }
+      else
+        this.filter.eventFormats = ['OFFLINE'];
+      this.filter.userLocation = this.currentLocation
       this.showMap = false;
     } else {
       this.showMap = true;
     }
   }
 
-  public changeMapBounds(event: any): void {
-
-    if (this.currentLocation !== event[0]) {
-      this.eventService.getEventsWithinRadius(event[0], event[1]).subscribe((events: Event[]) => {
-        if (events.length >= 2)
-          this.showMap = false;
+  public doOpenMap(event: any): void {
+    this.eventService.filter(event).subscribe(
+      events => {
         this.events = events;
-        this.currentLocation = event[0];
+        this.events.forEach(event => {
+          if (event.location) {
+            var centerToSW = olSphere.getDistance(event.location?.location.coordinates, this.currentLocation);
+            if (centerToSW > this.currentDistance) {
+              this.currentDistance = centerToSW;
+            }
+          }
+        });
+        this.showMap = true;
       });
-    } else if (this.currentDistance < event[1]) {
-      this.eventService.getEventsWithinRadius(this.currentLocation, event[1]).subscribe((events: Event[]) => {
-        this.events = events;
-        this.currentDistance = event[1];
-      });
-    } else if (this.currentDistance > event[1] * 1.999) {
+  }
 
+
+  private isSWandNEmore(SW: number[], NE: number[]): boolean {
+    if (this.maxNE.length == 0 || this.maxSW.length == 0) {
+      this.maxNE = NE;
+      this.maxSW = SW;
+      return true;
+    } else {
+      if (SW[0] < this.maxSW[0] || SW[1] < this.maxSW[0] || NE[0] > this.maxNE[0] || NE[1] > this.maxNE[1]) {
+        this.maxNE = NE;
+        this.maxSW = SW;
+        return true;
+
+      } else return false;
     }
+  }
+
+  private isLocationIsInBounds(point: number[], SW: number[], NE: number[]): boolean {
+    if (point[0] > SW[0] && point[1] > SW[1] && point[0] < NE[0] && point[1] < NE[1])
+      return true;
+    return false;
   }
 
   public search(events: Array<Event>): void {

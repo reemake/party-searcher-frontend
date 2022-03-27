@@ -11,6 +11,7 @@ import {EventService} from "../../../services/event.service";
 export class ListComponent implements OnInit, OnChanges {
 
   @Output() clickOnEvent: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
+  @Output() openMapEvent: EventEmitter<FilterData> = new EventEmitter<FilterData>();
 
   @Input() filter: FilterData | null;
   @Input() events: Array<Event> = new Array<Event>();
@@ -24,7 +25,8 @@ export class ListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['filter']) {
-      this.filterEvents();
+      if (changes['filter'].previousValue !== undefined)
+        this.filterEvents();
     }
   }
 
@@ -42,6 +44,10 @@ export class ListComponent implements OnInit, OnChanges {
 
   }
 
+  public hasOffline(): boolean {
+    return this.filter?.eventFormats?.filter(m => m === "OFFLINE").length == 1 && this.filter.eventFormats.length == 1
+  }
+
   public increasePages(currentlastPage: number): void {
     if (this.pageCount - currentlastPage > 4) {
       this.generateArray(currentlastPage + 1, currentlastPage + 3);
@@ -55,12 +61,25 @@ export class ListComponent implements OnInit, OnChanges {
     } else this.generateArray(1, currentFirstPage - 1);
   }
 
+  openMap(filter: any): void {
+    this.openMapEvent.emit(filter);
+  }
+
+  private generateArray(begin: number, end: number): void {
+    this.pages = [];
+    for (let i = begin; i <= end && i <= this.pageCount; i++) {
+      if (i >= 1)
+        this.pages.push(i);
+    }
+  }
+
   private filterEvents(): void {
+    console.log('FILTER')
     if (this.filter !== null) {
       this.currentPage = 1;
       this.pageCount = 0;
       this.pages = [];
-      this.eventService.filterWithPaging(this.filter, this.currentPage, this.size).subscribe(events => {
+      this.eventService.filterWithPaging(this.filter, this.currentPage - 1, this.size).subscribe(events => {
         this.pageCount = events.totalPages;
         this.currentPage = events.pageable.pageNumber + 1;
         if (this.pageCount > 4) {
@@ -69,14 +88,6 @@ export class ListComponent implements OnInit, OnChanges {
         console.log(this.pages)
         this.events = events.content;
       });
-    }
-  }
-
-  private generateArray(begin: number, end: number): void {
-    this.pages = [];
-    for (let i = begin; i <= end && i <= this.pageCount; i++) {
-      if (i >= 1)
-        this.pages.push(i);
     }
   }
 
