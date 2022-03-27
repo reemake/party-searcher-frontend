@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Event} from "../../../entity/Event/Event";
 import {FilterData} from "../../../entity/filterData";
 import {EventService} from "../../../services/event.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-list',
@@ -15,12 +16,15 @@ export class ListComponent implements OnInit, OnChanges {
 
   @Input() filter: FilterData | null;
   @Input() events: Array<Event> = new Array<Event>();
+  public filteredEvents: Array<Event> = new Array<Event>();
   public pages: number[] = [];
   public currentPage: number = 1;
   public size: number = 7;
   public pageCount: number = 0;
+  public nameInput: FormControl = new FormControl();
 
   constructor(private eventService: EventService) {
+    this.nameInput.valueChanges.subscribe(name => this.doLocalFiltering(name));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -37,6 +41,8 @@ export class ListComponent implements OnInit, OnChanges {
   public goToPage(pageNum: number): void {
     if (this.filter !== null)
       this.eventService.filterWithPaging(this.filter, pageNum - 1, this.size).subscribe(events => {
+        this.filteredEvents = [];
+        this.nameInput.setValue(null);
         this.pageCount = events.totalPages;
         this.currentPage = events.pageable.pageNumber + 1;
         this.events = events.content;
@@ -52,7 +58,6 @@ export class ListComponent implements OnInit, OnChanges {
     if (this.pageCount - currentlastPage > 4) {
       this.generateArray(currentlastPage + 1, currentlastPage + 3);
     } else this.generateArray(currentlastPage + 1, this.pageCount);
-    console.log(this.pages)
   }
 
   public decreasePages(currentFirstPage: number): void {
@@ -73,8 +78,11 @@ export class ListComponent implements OnInit, OnChanges {
     }
   }
 
+  public doLocalFiltering(name: string): void {
+    this.filteredEvents = this.events.filter(e => e.name.indexOf(name) == 0);
+  }
+
   private filterEvents(): void {
-    console.log('FILTER')
     if (this.filter !== null) {
       this.currentPage = 1;
       this.pageCount = 0;
@@ -85,7 +93,8 @@ export class ListComponent implements OnInit, OnChanges {
         if (this.pageCount > 4) {
           this.generateArray(1, 4);
         } else this.generateArray(1, this.pageCount);
-        console.log(this.pages)
+        this.filteredEvents = [];
+        this.nameInput.setValue(null);
         this.events = events.content;
       });
     }

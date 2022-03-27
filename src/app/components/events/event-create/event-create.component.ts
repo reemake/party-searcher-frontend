@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
+import {debounceTime, Subject} from "rxjs";
 
 @Component({
   selector: 'app-event-create',
@@ -31,6 +32,9 @@ export class EventCreateComponent implements OnInit {
   public error: string = "";
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
+  public changeBounds: Subject<any> = new Subject<any>();
+  private maxSW: number[] = [];
+  private maxNE: number[] = [];
 
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
@@ -51,12 +55,40 @@ export class EventCreateComponent implements OnInit {
       theme: this.eventThemeInput,
       type: this.eventTypeInput
     });
+    this.changeBounds.pipe(
+      debounceTime(500)
+    )
+      .subscribe(event => {
+        if (this.isSWandNEmore(event[2], event[3])) {
+          this.eventService.getEventsWithinRadius(event[0], event[1])
+            .subscribe((events: Event[]) => {
+              console.log("down")
+              this.events = events;
+              this.currentLocation = event[0];
+            });
+        }
+      })
 
   }
 
   closeEvent(): void {
     this.event = null;
     this.mapWidth = "100%";
+  }
+
+  private isSWandNEmore(SW: number[], NE: number[]): boolean {
+    if (this.maxNE.length == 0 || this.maxSW.length == 0) {
+      this.maxNE = NE;
+      this.maxSW = SW;
+      return true;
+    } else {
+      if (SW[0] < this.maxSW[0] || SW[1] < this.maxSW[0] || NE[0] > this.maxNE[0] || NE[1] > this.maxNE[1]) {
+        this.maxNE = NE;
+        this.maxSW = SW;
+        return true;
+
+      } else return false;
+    }
   }
 
   selectEvents(event: any): void {
@@ -68,21 +100,7 @@ export class EventCreateComponent implements OnInit {
     }
   }
 
-  changeMapBounds(event: any): void {
 
-    if (this.currentLocation !== event[0]) {
-      this.eventService.getEventsWithinRadius(event[0], event[1]).subscribe((events: Event[]) => {
-        this.events = events;
-      });
-    } else if (this.currentDistance < event[1]) {
-      this.eventService.getEventsWithinRadius(this.currentLocation, event[1]).subscribe((events: Event[]) => {
-        this.events = events;
-        this.currentDistance = event[1];
-      });
-    } else if (this.currentDistance > event[1] * 1.999) {
-
-    }
-  }
 
   addTag(): void {
     let tag: FormControl = new FormControl();

@@ -1,13 +1,13 @@
 <div class="mycontainer">
 
-  <app-event-description
-    [event]="currentActiveEvent"></app-event-description>
+  <app-event-description (closeDescription)="userEventSelectHandler([])"
+                         [event]="currentActiveEvent"></app-event-description>
   <app-list (clickOnEvent)="userEventSelectHandler($event)" (openMapEvent)="doOpenMap($event)" *ngIf="!showMap"
             [events]="events"
             [filter]="filter"></app-list>
   <app-map (callListItem)="showList($event)" (callSearch)="onCallSearch($event)" (changeLocation)="changeLoc($event)"
            [hasSearch]="true"
-           (changeMapBounds)="changeMapBounds($event)" (mapReady)="onMapReady($event)"
+           (mapReady)="onMapReady($event)" [mapBoundsChange]="changeMapBounds"
            (selectEvents)="userEventSelectHandler($event)" [ngStyle]="{'width':mapSize}"
            *ngIf="showMap" [center]="[-483281,6904172]"
            [events]="events"

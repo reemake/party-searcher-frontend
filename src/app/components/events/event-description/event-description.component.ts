@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
+import {User} from "../../../entity/User";
 
 @Component({
   selector: 'app-event-description',
@@ -22,12 +23,28 @@ export class EventDescriptionComponent implements OnInit {
     if (this.event?.id !== undefined)
       this.eventService.assignOnEvent(this.event?.id).subscribe(
         resp => {
-          if (this.event !== null)
+          if (this.event !== null) {
             this.event.currentUserEntered = true;
+            var user = new User();
+            user.login = "YOU";
+            this.event.guests.push({user: user})
+          }
         }, error => {
           this.error = "Произошла ошибка при записи на событие";
         }
       )
+  }
+
+  removeFromEvent(): void {
+    if (this.event?.id !== undefined)
+      this.eventService.removeCurrentUserFromEvent(this.event.id)
+        .subscribe(success => {
+          if (this.event) {
+            this.event.currentUserEntered = false;
+          }
+        }, error1 => {
+          alert("Произошла ошибка")
+        })
   }
 
   callEventOwner(): void {

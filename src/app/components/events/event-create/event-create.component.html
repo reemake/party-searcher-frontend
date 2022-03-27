@@ -31,7 +31,7 @@
 
 
   <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
-  <input *ngIf="isOnlineInput.value===true" [formControl]="eventThemeInput" id="urlInput" type="text"/>
+  <input *ngIf="isOnlineInput.value===true" [formControl]="urlInput" id="urlInput" type="text"/>
 
   <input type="submit" value="Создать">
   <div *ngFor="let theme of tagsInputs">
@@ -47,7 +47,7 @@
   <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
   <app-map
     (changeLocation)="currentLocation=$event"
-    (changeMapBounds)="changeMapBounds($event)"
+    [mapBoundsChange]="changeBounds"
     (selectEvents)="selectEvents($event)"
     [events]="events"
     [ngStyle]="{'width':mapWidth}"

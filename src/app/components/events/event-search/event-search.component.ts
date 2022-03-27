@@ -3,6 +3,7 @@ import {FormControl} from "@angular/forms";
 import {EventService} from "../../../services/event.service";
 import {FilterData} from "../../../entity/filterData";
 import {Event} from "../../../entity/Event/Event";
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-event-search',
@@ -16,7 +17,7 @@ export class EventSearchComponent implements OnInit {
   @Output() closeSearch: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() eventsSearched: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
   @Output() filterChanged: EventEmitter<FilterData> = new EventEmitter<FilterData>();
-  public words: string[] = ["artyom", "kok"];
+  public words: string[] = [];
   public eventTypes: string[] = [];
 
   public wordsInput: FormControl = new FormControl();
@@ -42,9 +43,13 @@ export class EventSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.eventService.getTypes().subscribe(types => {
       this.eventTypes = types.map(event => event.name);
-    });
+    })
+    this.wordsInput.valueChanges.pipe(debounceTime(500))
+      .subscribe(val =>
+        this.changeWords());
   }
 
   search(): void {
@@ -91,8 +96,11 @@ export class EventSearchComponent implements OnInit {
     if (this.isPagingUsed) {
       this.filterChanged.emit(filterData);
     } else
-      this.eventService.filter(filterData).subscribe(e =>
-        this.eventsSearched.emit(e));
+      this.eventService.filter(filterData).subscribe(e => {
+        this.filterChanged.emit(filterData);
+        this.eventsSearched.emit(e);
+      })
+
   }
 
   changeWords(): void {

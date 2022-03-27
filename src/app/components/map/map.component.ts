@@ -14,6 +14,7 @@ import {Icon, Style} from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import * as olSphere from 'ol/sphere';
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-map',
@@ -39,8 +40,6 @@ export class MapComponent implements AfterViewInit {
 
   @Input() hasSearch: boolean = false;
 
-  @Output() changeMapBounds = new EventEmitter<Array<any>>();
-
 
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
   @Output() mapReady = new EventEmitter<MyMap>();
@@ -51,6 +50,9 @@ export class MapComponent implements AfterViewInit {
   @Output() callListItem = new EventEmitter<any>();
   @Input() center: Coordinate | undefined = [50, 50];
   @Input() zoom: number | undefined;
+
+  @Input() mapBoundsChange: Subject<any> = new Subject<any>();
+
   view: View | undefined;
   projection: Projection | undefined;
   extent: Extent = [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
@@ -60,7 +62,8 @@ export class MapComponent implements AfterViewInit {
    */
   private userLocation: Coordinate = [54, 54];
   private clickedLocation: number[] = [];
-  private eventsMap: Map<Feature<any>, Event[]> = new Map<Feature<any>, Event[]>();
+  private eventsMap: WeakMap<Feature<any>, Event[]> = new WeakMap<Feature<any>, Event[]>()
+  private features: Feature<any>[] = [];
   private previousEventsMarkersLayer: VectorLayer<any> = new VectorLayer({});
   private previousCurrentUserLocationICON: VectorLayer<any> = new VectorLayer<any>();
   private previousClickedLocationICON: VectorLayer<any> = new VectorLayer<any>();
@@ -85,8 +88,6 @@ export class MapComponent implements AfterViewInit {
       this.setMapBounds();
     });
   }
-
-
 
 
   public addLocationMarker(points: number[]): void {
@@ -132,7 +133,6 @@ export class MapComponent implements AfterViewInit {
         new ScaleLine({})
       ])
     });
-
 
 
     let buttonElement: any = document.createElement('button');
@@ -214,41 +214,49 @@ export class MapComponent implements AfterViewInit {
         var centerToSW = olSphere.getDistance(center, posSW);
         var centerToNE = olSphere.getDistance(center, posNE);
         var dist: number = Math.max(centerToNE, centerToSW);
-        this.changeMapBounds.emit([center, dist, posSW, posNE]);
+        this.mapBoundsChange.next([center, dist, posSW, posNE]);
       }
     }
   }
 
 
   private updateEventsOnMap(): void {
+    let featuresMap = new Map()
     let features: Array<any> = new Array<any>();
     if (this.previousEventsMarkersLayer.getSource() === null) {
       this.events.forEach(event => {
         if (event.location !== undefined) {
           if (event.id)
             this.eventsId.add(event.id);
-          let feature: any = new Feature({
-            geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
-            event: event
-          });
+          let feature: any = null;
 
+          var locationStr = JSON.stringify(event.location.location);
 
-          feature.setStyle(new Style({
-            image: new Icon(({
-              crossOrigin: 'anonymous',
-              src: '../assets/img/mapImages/landmark.png',
-              imgSize: [27, 30]
-            }))
-          }));
-
+          if (featuresMap.has(locationStr)) {
+            feature = featuresMap.get(locationStr);
+          } else {
+            feature = new Feature({
+              geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
+              event: event
+            });
+            feature.setStyle(new Style({
+              image: new Icon(({
+                crossOrigin: 'anonymous',
+                src: '../assets/img/mapImages/landmark.png',
+                imgSize: [27, 30]
+              }))
+            }));
+            featuresMap = featuresMap.set(locationStr, feature)
+            features.push(feature);
+          }
           if (this.eventsMap.get(feature) === undefined) {
             let arr: Array<Event> = new Array<Event>(event);
-            this.eventsMap.set(feature, arr);
+            this.eventsMap = this.eventsMap.set(feature, arr);
           } else {
             this.eventsMap.get(feature)?.push(event);
           }
 
-          features.push(feature);
+
         }
 
       })
@@ -259,39 +267,64 @@ export class MapComponent implements AfterViewInit {
     } else {
       var source: VectorSource<any> = this.previousEventsMarkersLayer.getSource();
       var features1 = new Array<Feature<any>>();
+      var localSet = new Set();
       this.events.forEach(event => {
+        localSet = localSet.add(event.id);
         if (!this.eventsId.has(<number>event.id)) {
           this.eventsId.add(<number>event.id)
           if (event.location !== undefined) {
-            let feature: any = new Feature({
-              geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
-              event: event
-            });
-
-
-            feature.setStyle(new Style({
-              image: new Icon(({
-                crossOrigin: 'anonymous',
-                src: '../assets/img/mapImages/landmark.png',
-                imgSize: [27, 30]
-              }))
-            }));
-
-            features1.push(feature);
+            var locationStr = JSON.stringify(event.location.location);
+            var feature = null;
+            if (featuresMap.has(locationStr)) {
+              feature = featuresMap.get(locationStr);
+            } else {
+              feature = new Feature({
+                geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
+                event: event
+              });
+              feature.setStyle(new Style({
+                image: new Icon(({
+                  crossOrigin: 'anonymous',
+                  src: '../assets/img/mapImages/landmark.png',
+                  imgSize: [27, 30]
+                }))
+              }));
+              featuresMap = featuresMap.set(locationStr, feature);
+              features1.push(feature);
+            }
 
             if (this.eventsMap.get(feature) === undefined) {
               let arr: Array<Event> = new Array<Event>(event);
-              this.eventsMap.set(feature, arr);
+              this.eventsMap = this.eventsMap.set(feature, arr);
             } else {
               this.eventsMap.get(feature)?.push(event);
             }
-
           }
         }
       });
+      if (this.events.length == 0) {
+        source.clear();
+        this.eventsId.clear();
+      }
       source.addFeatures(features1);
+      this.features.forEach((key) => {
+        var count = 0;
+        var val = this.eventsMap.get(key);
+        val?.forEach(v => {
+          if (!localSet.has(v.id)) {
+            count++;
+            if (v.id != null) {
+              this.eventsId.delete(v.id)
+            }
+          }
+        })
+        if (count == val?.length) {
+          source.removeFeature(key);
+          this.eventsMap.delete(key)
+          this.features = this.features.filter(v => v !== key);
+        }
+      })
     }
-
     this.previousEventsMarkersLayer.changed();
   }
 

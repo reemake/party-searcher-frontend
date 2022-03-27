@@ -4,7 +4,9 @@ import {EventService} from "../../../../services/event.service";
 import {FilterData} from "../../../../entity/filterData";
 import {MapComponent} from "../../../map/map.component";
 import * as olSphere from "ol/sphere";
-import {debounceTime, Observable} from "rxjs";
+import {debounceTime, Observable, Subject as Subj} from "rxjs";
+
+type Subject = Observable<any>;
 
 @Component({
   selector: 'app-events-index',
@@ -23,10 +25,7 @@ export class EventsIndexComponent implements OnInit {
   public isSearchActive: boolean = false;
   private prevMapSize: string = "100%";
   public currentLocation: number[] = [];
-
-  public changeMapBounds: Observable<any> = new Observable<any>();
-
-  public maxDistanceFromLoc = 0;
+  public changeMapBounds = new Subj<any>();
 
   private currentDistance: number = 0;
   private maxSW: number[] = [];
@@ -34,7 +33,7 @@ export class EventsIndexComponent implements OnInit {
 
   constructor(private eventService: EventService) {
     this.changeMapBounds.pipe(
-      debounceTime(1000)
+      debounceTime(500)
     ).subscribe(event => {
       if (this.isSWandNEmore(event[2], event[3])) {
         this.eventService.getEventsWithinRadius(event[0], event[1])
@@ -51,7 +50,14 @@ export class EventsIndexComponent implements OnInit {
 
   public userEventSelectHandler(eventsArray: Array<Event>) {
     if (eventsArray.length > 1) {
-
+      this.events = eventsArray
+      if (this.filter == null)
+        this.filter = {
+          eventFormats: ['OFFLINE']
+        }
+      else
+        this.filter.eventFormats = ['OFFLINE'];
+      this.filter.userLocation = this.currentLocation
       this.isList = true;
       this.showMap = false;
     } else if (eventsArray.length == 1) {
@@ -94,6 +100,7 @@ export class EventsIndexComponent implements OnInit {
       this.filter.userLocation = this.currentLocation
       this.showMap = false;
     } else {
+
       this.showMap = true;
     }
   }
@@ -137,6 +144,13 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public search(events: Array<Event>): void {
+    console.log("searched")
+    console.log(this.filter?.eventFormats);
+    if (this.filter?.eventFormats && this.filter?.eventFormats?.filter(e => e === "ONLINE").length > 0) {
+      console.log("LIST")
+      this.showMap = false;
+
+    }
     this.events = events;
   }
 

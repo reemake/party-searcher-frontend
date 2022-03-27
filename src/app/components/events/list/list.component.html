@@ -1,8 +1,8 @@
 <div class="list-container">
   <div>
-    <input type="text"/>
+    <input [formControl]="nameInput" type="text"/>
     <table>
-      <tr *ngFor="let event of events">
+      <tr *ngFor="let event of nameInput.value===null?events:filteredEvents">
         <td>
           <button (click)="showDescription(event)"><h2>{{event.name}}</h2></button>
         </td>

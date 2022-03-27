@@ -38,8 +38,12 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/api/events", event);
   }
 
+  public removeCurrentUserFromEvent(id: number): Observable<any> {
+    return this.httpClient.delete(BACKEND_URL + "/api/events/deleteCurrentUserFromEvent", {params: {eventId: id}});
+  }
+
   public getWords(wordPart: string): Observable<string[]> {
-    return this.httpClient.get<Array<string>>(BACKEND_URL + "/api/events/getKeyWords", {params: {wordPart: wordPart}});
+    return this.httpClient.get<Array<string>>(BACKEND_URL + "/api/events/getWords", {params: {word: wordPart}});
   }
 
   public getTypes(): Observable<EventType[]> {
