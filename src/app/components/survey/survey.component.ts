@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import { BACKEND_URL } from 'src/app/app.module';
 
 @Component({
     selector: 'survey-component',
@@ -6,11 +8,15 @@ import { Component } from "@angular/core";
     styleUrls: ['./survey.component.css']
 })
 export class SurveyComponent {
-    surveyButton: boolean;
+    surveyButton: boolean = false;
 
-    constructor() {
-      if (globalThis.HAS_AUTH) { this.surveyButton = true; }
-      else { this.surveyButton = false; }
+    constructor(private http: HttpClient) {
+      if (globalThis.HAS_AUTH) {
+        this.http.get<boolean>(BACKEND_URL + "/api/surveyCheck")
+        .subscribe((checkResult: boolean) => {
+          this.surveyButton = checkResult;
+        });
+      }
     }
 
     public surveyButtonPress(): void {
