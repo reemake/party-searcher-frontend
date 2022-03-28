@@ -26,7 +26,7 @@ export class EventDescriptionComponent implements OnInit {
           if (this.event !== null) {
             this.event.currentUserEntered = true;
             var user = new User();
-            user.login = "YOU";
+            user.login = resp.response;
             this.event.guests.push({user: user})
           }
         }, error => {
@@ -41,6 +41,7 @@ export class EventDescriptionComponent implements OnInit {
         .subscribe(success => {
           if (this.event) {
             this.event.currentUserEntered = false;
+            this.event.guests = this.event.guests.filter(guest => guest.user.login !== success.response);
           }
         }, error1 => {
           alert("Произошла ошибка")
@@ -57,7 +58,6 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   closeDescriptionFun(): void {
-    console.log(this.event);
     this.event = null;
     this.closeDescription.next({});
   }
