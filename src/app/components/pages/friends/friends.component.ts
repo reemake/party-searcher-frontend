@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {UserService} from './user.service'
+import { User } from './user';
 
 @Component({
   selector: 'app-friends',
@@ -9,16 +11,20 @@ export class FriendsComponent implements OnInit {
   private button: any;
   private oldId: string;
 
-  constructor() {
+  users: User[];
+  constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
   }
 
   requestChange(): void {
-    console.log("requestChange");
     if (this.button != null) {
-      console.log("old value: " + this.oldId);
+      var field = document.getElementById("searchField");
+      // console.log("field value: " + (<HTMLInputElement>field).value);
+      this.userService.getUsers((<HTMLInputElement>field).value).subscribe((data: User[]) => {
+        console.log(data);
+      })
     }
   }
 
