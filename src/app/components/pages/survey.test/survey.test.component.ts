@@ -64,17 +64,6 @@ export class SurveyTest implements OnInit {
     var moneyStart = parseInt((<HTMLInputElement> document.getElementById("moneyStart")).value, 10);
     var moneyEnd = parseInt((<HTMLInputElement> document.getElementById("moneyEnd")).value, 10);
     var city = (<HTMLInputElement> document.getElementById("city")).value;
-    /*
-    for (var i = 0; i < typeList.length; i++) console.log("Type: " + (<HTMLInputElement> typeList[i]).value);
-    for (var i = 0; i < formatList.length; i++) console.log("Format: " + (<HTMLInputElement> formatList[i]).value);
-    console.log("timeStart: " + timeStart);
-    console.log("timeEnd: " + timeEnd);
-    console.log("memberStart: " + memberStart);
-    console.log("memberEnd: " + memberEnd);
-    console.log("moneyStart: " + moneyStart);
-    console.log("moneyEnd: " + moneyEnd);
-    console.log("city: " + city);
-    */
     var data = {
       "type": typeList,
       "format": formatList,

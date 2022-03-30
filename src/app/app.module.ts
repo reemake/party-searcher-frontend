@@ -21,7 +21,6 @@ import {SurveyTest} from './components/pages/survey.test/survey.test.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
 import { FriendsComponent } from './components/pages/friends/friends.component';
-
 export const BACKEND_URL: string = "http://localhost:8080";
 declare global {
   var HAS_AUTH: boolean;
@@ -34,7 +33,8 @@ const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'pages/survey.test', component: SurveyTest},
-  {path: 'api/survey', component: SurveyTest}
+  {path: 'api/survey', component: SurveyTest},
+  {path: 'friends', component: FriendsComponent}
 ];
 
 
@@ -53,7 +53,7 @@ const ROUTES: Routes = [
     SurveyComponent,
     SurveyTest,
     TypeComponent,
-    FriendsComponent
+    FriendsComponent,
   ],
   imports: [
     BrowserModule,
