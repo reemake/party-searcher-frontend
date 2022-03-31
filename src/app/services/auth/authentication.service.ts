@@ -38,6 +38,10 @@ export class AuthenticationService {
 
   }
 
+  public getToken(): string {
+    return localStorage.getItem("token") || "";
+  }
+
   public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
     if (httpEvent instanceof HttpErrorResponse) {
       if (httpEvent.status == 403) {
