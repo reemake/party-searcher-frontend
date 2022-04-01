@@ -19,9 +19,12 @@ export class ChatService {
     })
     this.url = BACKEND_URL;
     this.url = this.url.replace("http://", "ws://") + "/chatService";
+    var stompHeaders: StompHeaders = new StompHeaders();
+    stompHeaders["jwt"] = this.authService.getToken();
     this.rxStomp.configure({
       brokerURL: this.url,
-      debug: console.log
+      debug: console.log,
+      connectHeaders: stompHeaders
     });
 
   }
@@ -31,20 +34,18 @@ export class ChatService {
       this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["jwt"] = this.authService.getToken();
+    stompHeaders["chatId"] = chatId.toString();
     var observer: Subject<any> = new Subject<any>();
 
-    return this.rxStomp.watch({destination: "/chat/messages/" + chatId});
+    return this.rxStomp.watch({destination: "/chat/messages/" + chatId, subHeaders: stompHeaders});
   }
 
   public sendMessage(message: Message): void {
     if (!this.rxStomp.active)
       this.rxStomp.activate();
-    var stompHeaders: StompHeaders = new StompHeaders();
-    stompHeaders["jwt"] = this.authService.getToken();
     this.rxStomp.publish({
       destination: "/app/sendMessage/" + message.chatId,
-      body: JSON.stringify(message),
-      headers: stompHeaders
+      body: JSON.stringify(message)
     });
   }
 }
