@@ -43,7 +43,7 @@ export class ChatService {
       this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["jwt"] = this.authService.getToken();
-    this.rxStomp.publish({
+    this.rxStomp.stompClient.publish({
       destination: "/app/sendMessage/" + message.chatId,
       body: JSON.stringify(message),
       headers: stompHeaders
