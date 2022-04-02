@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
@@ -17,9 +17,9 @@ export class EventCreateComponent implements OnInit {
   private currentDistance = 0;
   public tagsCount: number = 0;
   public formGroup: FormGroup;
-  public nameInput: FormControl = new FormControl();
+  public nameInput: FormControl = new FormControl(null, [Validators.required]);
   public descriptionInput: FormControl = new FormControl();
-  public startTimeInput: FormControl = new FormControl();
+  public startTimeInput: FormControl = new FormControl(null, [Validators.required]);
   public endTimeInput: FormControl = new FormControl();
   public maxGuestsCountInput: FormControl = new FormControl();
   public priceInput: FormControl = new FormControl();
@@ -27,8 +27,8 @@ export class EventCreateComponent implements OnInit {
   public isOnlineInput: FormControl = new FormControl();
   public locationInput: FormControl = new FormControl();
   public urlInput: FormControl = new FormControl();
-  public eventThemeInput: FormControl = new FormControl();
-  public eventTypeInput: FormControl = new FormControl();
+  public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
+  public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
   public error: string = "";
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
@@ -109,6 +109,12 @@ export class EventCreateComponent implements OnInit {
   }
 
   submit(): void {
+    if (!this.formGroup.valid) {
+      this.formGroup.markAllAsTouched();
+      this.error = "Заполните все обязательные поля!";
+      return
+    }
+    this.error = "";
     let event: Event = {
       description: this.descriptionInput.value,
       theme: this.eventThemeInput.value,

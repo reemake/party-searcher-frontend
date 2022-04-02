@@ -1,13 +1,22 @@
 
 <form (submit)="submit()" [formGroup]="formGroup">
   <label for="name">Название мероприятия</label>
-  <input [formControl]="nameInput" id="name" required type="text"/>
+  <input [formControl]="nameInput" id="name" type="text"/>
+  <div *ngIf="nameInput.errors?.['required']&& (nameInput.dirty || nameInput.touched)" class="alert alert-danger">
+    Название не заполнено
+  </div>
   <label for="theme">Тема мероприятия</label>
-  <input [formControl]="eventThemeInput" id="theme" required type="text"/>
+  <input [formControl]="eventThemeInput" id="theme" type="text"/>
+  <div *ngIf="eventThemeInput.errors?.['required']&& (eventThemeInput.dirty || eventThemeInput.touched)"
+       class="alert alert-danger">Тема мероприятия не заполнена
+  </div>
   <label for="type">Тип мероприятия</label>
-  <select [formControl]="eventTypeInput" id="type" required>
+  <select [formControl]="eventTypeInput" id="type">
     <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
   </select>
+  <div *ngIf="eventTypeInput.errors?.['required'] && (eventTypeInput.dirty || eventTypeInput.touched)"
+       class="alert alert-danger">Тип мероприятия не заполнен
+  </div>
 
   <label for="description">Описание</label>
   <textarea [formControl]="descriptionInput" id="description"></textarea>
@@ -18,6 +27,9 @@
 
   <label for="begin">Время начала мероприятия</label>
   <input [formControl]="startTimeInput" id="begin" required type="datetime-local"/>
+  <div *ngIf="startTimeInput.errors?.['required'] && (startTimeInput.dirty || startTimeInput.touched)"
+       class="alert alert-danger">Дата начала не заполнена
+  </div>
   <label for="end">Время</label>
   <input [formControl]="endTimeInput" id="end" type="datetime-local"/>
   <label for="maxCount">Максимальное кол-во участников</label>
@@ -40,9 +52,9 @@
     <button (click)="remove(theme)" class="remove-btn"><img alt="remove" height="15" src="./assets/img/remove-icon.png"
                                                             width="25"/></button>
   </div>
-  <p *ngIf="error!==''">{{error}}</p>
+  <p *ngIf="error!==''" class="alert-danger alert">{{error|json}}</p>
 </form>
-<button (click)="addTag()">add tag</button>
+<button (click)="addTag()" [disabled]="formGroup.errors?.['required']">add tag</button>
 <div class="mycontainer">
   <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
   <app-map
