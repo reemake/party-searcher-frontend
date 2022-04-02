@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
@@ -26,7 +26,7 @@ export class EventCreateComponent implements OnInit {
   public isPrivateInput: FormControl = new FormControl();
   public isOnlineInput: FormControl = new FormControl();
   public locationInput: FormControl = new FormControl();
-  public urlInput: FormControl = new FormControl();
+  public urlInput: FormControl = new FormControl(null, [this.urlValidator()]);
   public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
   public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
   public error: string = "";
@@ -68,6 +68,17 @@ export class EventCreateComponent implements OnInit {
             });
         }
       })
+  }
+
+  urlValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (this.isOnlineInput.value && (control.value === null || control.value == "")) {
+        return ["url empty error"];
+      }
+
+      return null;
+    }
+
 
   }
 

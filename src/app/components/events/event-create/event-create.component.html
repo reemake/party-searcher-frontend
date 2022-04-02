@@ -44,7 +44,9 @@
 
   <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
   <input *ngIf="isOnlineInput.value===true" [formControl]="urlInput" id="urlInput" type="text"/>
-
+  <div *ngIf="urlInput.errors && (urlInput.dirty || urlInput.touched)"
+       class="alert alert-danger">Ссылка на мероприятие не заполнена
+  </div>
   <input type="submit" value="Создать">
   <div *ngFor="let theme of tagsInputs">
     <label for="tags">Тег</label>
