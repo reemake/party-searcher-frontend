@@ -44,7 +44,6 @@ export class ChatService {
     if (!this.rxStomp.active)
       this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
-    stompHeaders["jwt"] = this.authService.getToken();
     stompHeaders["chatId"] = chatId.toString();
     var observer: Subject<any> = new Subject<any>();
 

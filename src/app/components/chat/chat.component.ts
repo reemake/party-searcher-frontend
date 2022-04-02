@@ -16,13 +16,17 @@ export class ChatComponent implements OnInit {
   constructor(private chatService: ChatService, private route: ActivatedRoute) {
     route.paramMap.subscribe(params => {
       var id = Number(params.get('id'));
-      this.chatId = id;
+      this.chatId = id
       this.chatService.subscribe(id).subscribe(message => this.messages.push(JSON.parse(message.body)));
+      this.chatService.getMessages(id).subscribe(messages => {
+        var arr = messages;
+        this.chatService.
+      })
       this.chatService.sendMessage({
         chatId: id,
         text: "kokkk",
         sendTime: new Date(),
-        userId: "temkarus0070",
+        userId: "",
         messagesImagesUrl: []
       })
     });
