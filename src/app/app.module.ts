@@ -22,18 +22,19 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
 import { AccountsComponent } from './components/profile/accounts/accounts.component';
 import { DataComponent } from './components/profile/data/data.component';
+import { AuthGuardService } from './services/auth/auth-guard.service';
 
 export const BACKEND_URL: string = "http://localhost:8080";
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
-  {path: "events/add", component: EventCreateComponent},
+  {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
-  {path: 'pages/survey.test', component: SurveyTest},
-  {path: 'profile/accounts', component: AccountsComponent},
-  {path: 'profile/me', component: DataComponent}
+  {path: 'pages/survey.test', component: SurveyTest, canActivate: [AuthGuardService]},
+  {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]}
 ];
 
 
@@ -74,6 +75,5 @@ const ROUTES: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  public static HAS_AUTH: boolean = false;
 }
 

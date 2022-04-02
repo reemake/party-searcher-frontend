@@ -29,12 +29,10 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("refreshToken", <string>headers.get("refreshToken"));
         }
         console.log("response recieved");
-        AppModule.HAS_AUTH = true;
         this._router.navigate(['/'])
       },
       error => {
         console.log("exception occured");
-        AppModule.HAS_AUTH = false;
         this.msg = "Неправильный логин или пароль";
       }
     )

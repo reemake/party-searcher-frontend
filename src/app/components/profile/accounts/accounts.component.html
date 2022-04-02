@@ -17,7 +17,7 @@
         <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
-            <button [disabled]="!hasAuth" type="button" class="btn btn-lg btn-danger accBtn2">Выйти</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
         </div>
     </div>
 

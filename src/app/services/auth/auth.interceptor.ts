@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {catchError, Observable, switchMap, throwError} from 'rxjs';
-import { AppModule } from 'src/app/app.module';
-import { AuthenticationService } from './authentication.service';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {catchError, Observable, switchMap, tap, throwError} from 'rxjs';
+import {AuthenticationService} from './authentication.service';
 
 
 @Injectable()
@@ -17,21 +16,21 @@ export class AuthInterceptor implements HttpInterceptor {
       var authorization = request.headers.set("Authorization", token);
       request = request.clone({headers: authorization});
     }
-    return next.handle(request).pipe(catchError(error => {
-      if (error.status === 403) {
-        AppModule.HAS_AUTH = false;
-        return this.authService.refreshToken().pipe(
-          switchMap((val, index) => {
-            console.log("I REFRESHED");
-            localStorage.setItem("token", val.id.jwt);
-            localStorage.setItem("refreshToken", val.refreshToken);
-            var authorization = request.headers.set("Authorization", val.id.jwt);
-            request = request.clone({headers: authorization})
-            AppModule.HAS_AUTH = true;
-            return next.handle(request)
-          })
-        )
+    return next.handle(request).pipe(tap((val) => {
+      if (val instanceof HttpResponse) {
+        this.authService.setAuth(val);
       }
+    }), catchError(error => {
+      this.authService.setAuth(error).pipe(
+        switchMap((val, index) => {
+          console.log("I REFRESHED");
+          localStorage.setItem("token", val.id.jwt);
+          localStorage.setItem("refreshToken", val.refreshToken);
+          var authorization = request.headers.set("Authorization", val.id.jwt);
+          request = request.clone({headers: authorization})
+          return next.handle(request)
+        })
+      );
       return throwError(error);
     }));
 

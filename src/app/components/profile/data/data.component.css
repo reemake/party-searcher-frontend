@@ -245,7 +245,14 @@
 
   .form-control {
     width: 350px;
-
     margin-top: 30px;
+  }
+
+  .left-form {
     margin-left: 100px;
+  }
+
+  .right-form {
+    margin-left: 600px;
+    margin-top: -205px;
   }

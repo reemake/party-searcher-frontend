@@ -24,4 +24,5 @@ export class RegistrationService {
   public registerUserFromRemote(user: User):Observable<any> {
     return this.httpClient.post<any>(BACKEND_URL + "/register", user);
     }
+
 }

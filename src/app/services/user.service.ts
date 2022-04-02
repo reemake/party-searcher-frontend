@@ -19,4 +19,8 @@ export class UserService {
     return this.httpClient.get<User>(BACKEND_URL + "/api/users/getUserByLogin", {params: {userLogin: userLogin}})
   }
 
+  public updateUser(user: User): Observable<any> {
+    return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateUser", user);
+  }
+
 }
