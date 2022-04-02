@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from './user.service'
 import { User } from './user';
+import {HttpClient} from "@angular/common/http";
+import { BACKEND_URL } from 'src/app/app.module';
 
 @Component({
   selector: 'app-friends',
@@ -8,37 +10,56 @@ import { User } from './user';
   styleUrls: ['./friends.component.css']
 })
 export class FriendsComponent implements OnInit {
-  private button: any;
-  private oldId: string;
 
+  findCheck: boolean = false;
   users: User[];
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
   }
 
   requestChange(): void {
-    if (this.button != null) {
-      var field = document.getElementById("searchField");
-      // console.log("field value: " + (<HTMLInputElement>field).value);
+    this.findCheck = false;
+    var field = document.getElementById("searchField");
+    if ((<HTMLInputElement>field).value != "") {
+      this.hideFields();
       this.userService.getUsers((<HTMLInputElement>field).value).subscribe((data: User[]) => {
-        console.log(data);
+        this.users = data;
+        console.log(this.users);
+        this.findCheck = true;
       })
+    } else {
+      this.findCheck = false;
+      this.enableFields();
     }
   }
 
-  buttonClick(id: string): void {
-    if (this.button != null) {
-      (<HTMLInputElement>this.button).id = this.oldId;
-      this.button = <HTMLInputElement>document.getElementById(id);
-      this.oldId = this.button.id;
-      (<HTMLInputElement>this.button).id = "clickedButton";
-    } else {
-      this.button = <HTMLInputElement>document.getElementById(id);
-      this.oldId = this.button.id;
-      (<HTMLInputElement>this.button).id = "clickedButton";
+  hideFields(): void {
+    var headers = document.getElementsByClassName("listSelector");
+    for (let i = 0; i < headers.length; i++) {
+      if ((<HTMLInputElement>headers[i]).id != "find") {
+        (<HTMLInputElement>headers[i]).hidden = true;
+      }
     }
+  }
+
+  enableFields(): void {
+    var headers = document.getElementsByClassName("listSelector");
+    for (let i = 0; i < headers.length; i++) {
+      if ((<HTMLInputElement>headers[i]).id != "find") {
+        (<HTMLInputElement>headers[i]).hidden = false;
+      }
+    }
+  }
+
+  clickFriendButton(event: any): void {
+    var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
+    console.log(friendLogin);
+    var data = { "friendName": friendLogin};
+    console.log("sending data");
+    console.log(data);
+    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {});
   }
 
 }

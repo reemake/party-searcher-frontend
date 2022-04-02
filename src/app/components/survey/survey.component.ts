@@ -14,7 +14,7 @@ export class SurveyComponent {
       if (globalThis.HAS_AUTH) {
         this.http.get<boolean>(BACKEND_URL + "/api/surveyCheck")
         .subscribe((checkResult: boolean) => {
-          this.surveyButton = checkResult;
+          this.surveyButton = !checkResult;
         });
       }
     }
