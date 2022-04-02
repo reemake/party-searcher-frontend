@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from './user.service'
-import { User } from './user';
+import {User} from './user';
 import {HttpClient} from "@angular/common/http";
-import { BACKEND_URL } from 'src/app/app.module';
+import {BACKEND_URL} from 'src/app/app.module';
 
 @Component({
   selector: 'app-friends',
@@ -53,13 +53,12 @@ export class FriendsComponent implements OnInit {
     }
   }
 
-  clickFriendButton(event: any): void {
-    var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
+  clickFriendButton(friendLogin: string): void {
     console.log(friendLogin);
-    var data = { "friendName": friendLogin};
+    var data = {"friendName": friendLogin};
     console.log("sending data");
     console.log(data);
-    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {});
+    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e => console.log("send req"));
   }
 
 }
