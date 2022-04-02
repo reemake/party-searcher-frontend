@@ -7,6 +7,7 @@ import {Message} from "../entity/Message";
 import {RxStomp} from "@stomp/rx-stomp";
 import {HttpClient} from "@angular/common/http";
 import {Event} from "../entity/Event/Event";
+import {Chat} from "../entity/Chat";
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,9 @@ export class ChatService {
       destination: "/app/sendMessage/" + message.chatId,
       body: JSON.stringify(message)
     });
+  }
+
+  public get(id: number): Observable<Chat> {
+    return this.httpClient.get<Chat>(BACKEND_URL + "/api/chat", {params: {chatId: id}});
   }
 }

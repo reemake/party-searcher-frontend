@@ -29,7 +29,7 @@ export const BACKEND_URL: string = "http://localhost:8080";
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: "events/add", component: EventCreateComponent},
-  {path: '', component: ChatComponent},
+  {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'pages/survey.test', component: SurveyTest},
