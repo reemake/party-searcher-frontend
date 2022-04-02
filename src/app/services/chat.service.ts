@@ -5,6 +5,8 @@ import {AuthenticationService} from "./auth/authentication.service";
 import {BACKEND_URL} from "../app.module";
 import {Message} from "../entity/Message";
 import {RxStomp} from "@stomp/rx-stomp";
+import {HttpClient} from "@angular/common/http";
+import {Event} from "../entity/Event/Event";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class ChatService {
   private rxStomp = new RxStomp();
   private url: string = "";
 
-  constructor(private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationService, private httpClient: HttpClient) {
     this.rxStomp.configure({
       brokerURL: this.url
     })
@@ -27,6 +29,15 @@ export class ChatService {
       connectHeaders: stompHeaders
     });
 
+  }
+
+  public createChat(event: Event): Observable<number> {
+    console.log(event);
+    return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createEventChat", event);
+  }
+
+  public getMessages(chatId: number): Observable<Array<Message>> {
+    return this.httpClient.get<Array<Message>>(BACKEND_URL + "/api/chat/getMessages", {params: {chatId: chatId}});
   }
 
   public subscribe(chatId: number): Observable<IMessage> {
