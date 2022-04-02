@@ -25,14 +25,14 @@
     <input [formControl]="eventLengthFromInput" id="eventLengthFromInput" type="number"/>
     <select [formControl]="eventLengthMeasureFromInput">
       <option value="minutes">Минуты</option>
-      <option value="hours">Часы</option>
+      <option [defaultSelected]="true" value="hours">Часы</option>
       <option value="days">Дни</option>
     </select>
     <label for="eventLengthToInput">До</label>
     <input [formControl]="eventLengthToInput" id="eventLengthToInput" type="number"/>
     <select [formControl]="eventLengthMeasureToInput">
       <option value="minutes">Минуты</option>
-      <option value="hours">Часы</option>
+      <option [defaultSelected]="true" value="hours">Часы</option>
       <option value="days">Дни</option>
     </select>
   </div>
@@ -74,7 +74,7 @@
     <input [formControl]="maxDistanceInput" id="maxDistanceInput" type="number"/>
     <select [formControl]="distanceMeasureInput">
       <option value="METRES">М</option>
-      <option selected value="KILOMETERS">КМ</option>
+      <option [selected]="true" value="KILOMETERS">КМ</option>
     </select>
   </div>
 

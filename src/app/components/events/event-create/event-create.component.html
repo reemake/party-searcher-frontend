@@ -56,7 +56,8 @@
   </div>
   <p *ngIf="error!==''" class="alert-danger alert">{{error|json}}</p>
 </form>
-<button (click)="addTag()" [disabled]="formGroup.errors?.['required']">add tag</button>
+<button (click)="addTag()">add tag</button>
+<h3 *ngIf="message!==''">{{message}}</h3>
 <div class="mycontainer">
   <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
   <app-map

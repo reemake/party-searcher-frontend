@@ -11,6 +11,7 @@ import {debounceTime, Subject} from "rxjs";
   styleUrls: ['./event-create.component.css']
 })
 export class EventCreateComponent implements OnInit {
+  public message: string = "";
   public selectedEvents: Array<Event> = new Array<Event>();
   public events: Array<Event> = new Array<Event>();
   public event: Event | null = null;
@@ -166,7 +167,7 @@ export class EventCreateComponent implements OnInit {
     } else
 
       this.eventService.add(event).subscribe(event => {
-
+        this.message = "Событие успешно создано"
       }, error => {
         this.error = error;
       });
