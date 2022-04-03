@@ -1,7 +1,24 @@
 <div class="friends">
     <input type="search" class="search" placeholder="login" (change)="requestChange()" id="searchField" />
-    <div class="listSelector" id="friend">Друзья</div>
-    <div class="listSelector" id="sub">Подписчики</div>
+    <div class="listSelector" id="friend" *ngIf="friendsCheck">Друзья</div>
+    <tbody class="listSelector" *ngIf="friendsCheck">
+        <tr *ngFor=" let friend of friends">
+            <td class="listSelectorField"> {{ friend.id.owner.login}}</td>
+            <td class="listSelectorField">   </td>
+            <td class="listSelectorField"> ({{ friend.id.owner.firstName}}</td>
+            <td class="listSelectorField">   </td>
+            <td class="listSelectorField"> {{ friend.id.owner.lastName}})</td>
+            <td class="listSelectorField">   </td>
+            <td class="dropDown">
+                <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
+                <div class="dropContent">
+                    <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Отправить сообщение</button>
+                    <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Удалить из друзей</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    <div class="listSelector" id="sub" *ngIf="requestsCheck">Подписчики</div>
     <tbody class="listSelector" *ngIf="requestsCheck">
         <tr *ngFor=" let request of requests">
             <td class="listSelectorField"> {{ request.id.owner.login}}</td>

@@ -15,16 +15,23 @@ export class FriendsComponent implements OnInit {
   findCheck: boolean = false;
   users: User[];
   requests: Relationship[];
+  friends: Relationship[];
   requestsCheck: boolean = false;
+  friendsCheck: boolean = false;
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
     this.userService.getRequests().subscribe((data: Relationship[]) => {
-      this.requests = data;
       console.log("waiting requests");
-      console.log(data);
-      this.requestsCheck = true;
+      this.requests = data;
+      if (this.requests.length > 0) this.requestsCheck = true;
     });
-    console.log(this.requests);
+    this.userService.getFriends().subscribe((data: Relationship[]) => {
+      console.log("waiting friends");
+      this.friends = data;
+      if (this.friends.length > 0) this.friendsCheck = true;
+    }
+
+    );
   }
 
   ngOnInit(): void {
@@ -72,25 +79,41 @@ export class FriendsComponent implements OnInit {
   }
 
   clickRequestButton(event: any): void {
-    var onwerLogin: string = (<HTMLInputElement>event.path[0]).id;
+    var userLogin: string = (<HTMLInputElement>event.path[0]).id;
     if ((<HTMLInputElement>event.path[0]).textContent == "Принять заявку") {
-      console.log("Принять заявку");
       var data = { 
-        "friendName": onwerLogin,
+        "friendName": userLogin,
         "friend": "1"
       };
       this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
         console.log("sending data");
       });
+      location.reload();
     }
     if ((<HTMLInputElement>event.path[0]).textContent == "Отклонить заявку") {
-      console.log("Отклонить заявку");
       var data1 = {
-        "friendName": onwerLogin
+        "friendName": userLogin
       };
       this.httpClient.post<any>(BACKEND_URL + "/api/cancelFriend", null, {headers: data1}).subscribe(e=> {
         console.log("sending data");
       });
+      location.reload();
+    }
+  }
+
+  clickAddedFriendButton(event: any): void {
+    var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
+    if ((<HTMLInputElement>event.path[0]).textContent == "Отправить сообщение") {
+      console.log("К сожалению, в данный момент, отправка сообщений не доступна");
+    }
+    if ((<HTMLInputElement>event.path[0]).textContent == "Удалить из друзей") {
+      var data = {
+        "friendName": friendLogin
+      }
+      this.httpClient.post<any>(BACKEND_URL + "/api/deleteFriend", null, {headers: data}).subscribe(e=> {
+        console.log("sending data");
+      });
+      location.reload();
     }
   }
 
