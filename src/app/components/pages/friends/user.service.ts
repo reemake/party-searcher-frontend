@@ -15,4 +15,8 @@ export class UserService {
     const headers = { 'login': login }
     return this.http.get<User[]>(BACKEND_URL + "/api/usersList", {headers});
   }
+
+  getRequests(): Observable<User[]> {
+    return this.http.get<User[]>(BACKEND_URL + "/api/getRequests");
+  }
 }

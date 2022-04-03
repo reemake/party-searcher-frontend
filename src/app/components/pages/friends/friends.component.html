@@ -2,6 +2,23 @@
     <input type="search" class="search" placeholder="login" (change)="requestChange()" id="searchField" />
     <div class="listSelector" id="friend">Друзья</div>
     <div class="listSelector" id="sub">Подписчики</div>
+    <tbody class="listSelector" *ngIf="requestsCheck">
+        <tr *ngFor=" let request of requests">
+            <td class="listSelectorField"> {{ request.login}}</td>
+            <td class="listSelectorField">   </td>
+            <td class="listSelectorField"> ({{ request.firstName}}</td>
+            <td class="listSelectorField">   </td>
+            <td class="listSelectorField"> {{ request.lastName}})</td>
+            <td class="listSelectorField">   </td>
+            <td class="dropDown">
+                <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
+                <div class="dropContent">
+                    <button class="dropContentFields" id={{request.login}} (click)="clickFriendButton($event)">Принять заявку</button>
+                    <button class="dropContentFields" id={{request.login}} (click)="clickFriendButton($event)">Отклонить заявку</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
     <div class="listSelector" id="sent">Исходящие заявки</div>
     <div class="listSelector" id="find" *ngIf="findCheck">Найти друзей</div>
     <tbody *ngIf="findCheck" class="listSelector">
