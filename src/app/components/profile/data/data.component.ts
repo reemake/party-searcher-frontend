@@ -15,19 +15,40 @@ export class DataComponent implements OnInit {
 
   user = new User();
   userEdited = new User();
-  msg = '';
+  msg = "";
 
-  constructor(private userService: UserService, public authService: AuthenticationService) {
-    
-   }
+  currentPassword: string = "";
+  isPasswordMatches: boolean = false;
+
+  constructor(private userService: UserService, public authService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.getUserInfo();
   }
 
+  checkPassword() {
+    console.log(this.user.login);
+    console.log(this.currentPassword);
+    this.userService.approvePassword(this.user.login, this.currentPassword).subscribe(
+      result => {
+        this.isPasswordMatches = result;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
   updateUser(dataChangeForm: NgForm) {
 
-    this.userEdited.login = this.user.login;
+    console.log("CURRENT PASSWORD = " + this.currentPassword);
+
+    this.checkPassword();
+    if (!this.isPasswordMatches) {
+      this.msg = "Пароли не совпадают!"
+    }
+    else {
+      this.userEdited.login = this.user.login;
     if (this.userEdited.email == null)
       this.userEdited.email = this.user.email;
     if (this.userEdited.password == null)
@@ -50,6 +71,7 @@ export class DataComponent implements OnInit {
           console.log(error);
       }
     )
+    }
   }
 
   getUserInfo() {
