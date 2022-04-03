@@ -16,8 +16,10 @@ export class FriendsComponent implements OnInit {
   users: User[];
   requests: Relationship[];
   friends: Relationship[];
+  sendedRequests: Relationship[];
   requestsCheck: boolean = false;
   friendsCheck: boolean = false;
+  sendedRequestsCheck: boolean = false;
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
     this.userService.getRequests().subscribe((data: Relationship[]) => {
@@ -30,7 +32,13 @@ export class FriendsComponent implements OnInit {
       this.friends = data;
       if (this.friends.length > 0) this.friendsCheck = true;
     }
-
+    );
+    this.userService.getSendedRequests().subscribe((data: Relationship[]) => {
+      console.log("waiting sended requests");
+      this.sendedRequests = data;
+      console.log(this.sendedRequests);
+      if (this.sendedRequests.length > 0) this.sendedRequestsCheck = true;
+    }
     );
   }
 
@@ -75,6 +83,7 @@ export class FriendsComponent implements OnInit {
     var data = { "friendName": friendLogin};
     this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
       console.log("sending data");
+      location.reload();
     });
   }
 
@@ -87,8 +96,8 @@ export class FriendsComponent implements OnInit {
       };
       this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
         console.log("sending data");
+        location.reload();
       });
-      location.reload();
     }
     if ((<HTMLInputElement>event.path[0]).textContent == "Отклонить заявку") {
       var data1 = {
@@ -96,8 +105,8 @@ export class FriendsComponent implements OnInit {
       };
       this.httpClient.post<any>(BACKEND_URL + "/api/cancelFriend", null, {headers: data1}).subscribe(e=> {
         console.log("sending data");
+        location.reload();
       });
-      location.reload();
     }
   }
 
@@ -115,6 +124,17 @@ export class FriendsComponent implements OnInit {
       });
       location.reload();
     }
+  }
+
+  clickSendedRequestButton(event: any): void {
+    var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
+    var data = {
+      "friendName": friendLogin
+    }
+    this.httpClient.post<any>(BACKEND_URL + "/api/deleteSendedRequest", null, {headers: data}).subscribe(e=> {
+      console.log("sending data");
+    });
+    location.reload();
   }
 
 }

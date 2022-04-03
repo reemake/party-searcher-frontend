@@ -24,4 +24,8 @@ export class UserService {
   getFriends(): Observable<Relationship[]> {
     return this.http.get<Relationship[]>(BACKEND_URL + "/api/getFriends");
   }
+
+  getSendedRequests(): Observable<Relationship[]> {
+    return this.http.get<Relationship[]>(BACKEND_URL + "/api/getSendedRequests");
+  }
 }
