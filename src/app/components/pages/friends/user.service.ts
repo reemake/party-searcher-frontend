@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './user';
 import { BACKEND_URL } from 'src/app/app.module';
+import { Relationship } from './Relationship';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class UserService {
     return this.http.get<User[]>(BACKEND_URL + "/api/usersList", {headers});
   }
 
-  getRequests(): Observable<User[]> {
-    return this.http.get<User[]>(BACKEND_URL + "/api/getRequests");
+  getRequests(): Observable<Relationship[]> {
+    return this.http.get<Relationship[]>(BACKEND_URL + "/api/getRequests");
   }
 }

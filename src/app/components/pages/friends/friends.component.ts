@@ -18,7 +18,7 @@ export class FriendsComponent implements OnInit {
   requestsCheck: boolean = false;
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
-    this.userService.getRequests().subscribe((data: User[]) => {
+    this.userService.getRequests().subscribe((data: Relationship[]) => {
       this.requests = data;
       console.log("waiting requests");
       console.log(data);
@@ -66,8 +66,26 @@ export class FriendsComponent implements OnInit {
   clickFriendButton(event: any): void {
     var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
     var data = { "friendName": friendLogin};
-    console.log("sending data");
-    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {});
+    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
+      console.log("sending data");
+    });
+  }
+
+  clickRequestButton(event: any): void {
+    var onwerLogin: string = (<HTMLInputElement>event.path[0]).id;
+    if ((<HTMLInputElement>event.path[0]).textContent == "Принять заявку") {
+      console.log("Принять заявку");
+      var data = { 
+        "friendName": onwerLogin,
+        "friend": "1"
+      };
+      this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
+        console.log("sending data");
+      });
+    }
+    if ((<HTMLInputElement>event.path[0]).textContent == "Отклонить заявку") {
+      console.log("Отклонить заявку");
+    }
   }
 
 }
