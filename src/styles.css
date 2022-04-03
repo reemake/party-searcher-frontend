@@ -1,7 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ol/ol.css";
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   width: 100% !important;
   margin: 0 0 !important;
+}
+
+.switchBtn {
+  float: right;
+}
+
+.mapBtn {
+  border: none !important;
+  background: none !important;
+}
+
+.searchBtn {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.price {
+  display: flex;
+  align-content: flex-end;
+  justify-content: flex-end;
+  justify-items: flex-end;
+}
+
+.price p {
+  font-weight: bold;
+  font-size: 40px;
 }

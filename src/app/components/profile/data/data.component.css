@@ -1,0 +1,251 @@
+.container {
+    min-width: 960px;
+    max-width: 70%;
+    margin: 0 auto;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.menu {
+    width: 427px;
+    height: 385px;
+    margin-bottom: 247px;
+
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding-left: 20px;
+}
+
+.account-data {
+    width: 427px;
+    height: 150px;
+    box-sizing: border-box;
+    padding: 25px;
+
+    font-style: normal;
+    font-weight: 320;
+
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+}
+
+.content {
+    width: 1200px;
+    height: 785px;
+    margin-left: 550px;
+    margin-top: -783px;
+
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+}
+
+#title1 {
+    margin-top: 20px;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 44px;
+
+    color: #000000;
+}
+
+.data {
+    position: absolute;
+    width: 1120px;
+    height: 300px;
+    margin-top: 40px;
+    margin-left: 40px;
+
+    font-style: normal;
+    font-weight: 320;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: justify;
+    text-indent: 40px;
+    box-sizing: border-box;
+    padding: 20px;
+
+    background: #E3E3E3;
+    border-radius: 3px;
+}
+
+.dataColumns {
+  margin-top: 25px;
+}
+
+.excMark {
+    left: 1%;
+    top: 3%;
+    position: absolute;
+}
+
+#title2 {
+    left: 40px;
+    top: 30px;
+    position: relative;
+}
+
+#title3 {
+    left: 40px;
+    top: 365px;
+    position: relative;
+}
+
+.control {
+    position: relative;
+    width: 1120px;
+    height: 240px;
+    top: 365px;
+    left: 40px;
+
+    font-style: normal;
+    font-weight: 320;
+    font-size: 22px;
+    line-height: 28px;
+    text-align: justify;
+    box-sizing: border-box;
+    padding-left: 30px;
+
+    border-radius: 3px;
+}
+
+.excMark1 {
+    left: 1%;
+    top: 6%;
+    position: absolute;
+}
+
+.contentBtn {
+    width: 300px;
+    height: 43px;
+    margin-top: 40px;
+    margin-left: 25px;
+    margin-right: 25px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+}
+
+.btn-danger:hover {
+    background: #FF0000;
+    transition: .7s;
+  }
+
+.menuBtn {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font: 20px/40px Roboto, sans-serif;
+    padding-left: 10px;
+    transition: all .2s ease
+}
+
+.menuBtn:hover {
+    color:  #D15D55;
+    text-shadow: 0 0 1px  #D15D55;
+  }
+
+  .menuImg {
+     margin-top: -5px;
+     margin-right: 20px;
+  }
+
+  .accBtn1 {
+    width: 150px;
+    height: 60px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+  }
+
+  .accBtn2 {
+    width: 80px;
+    height: 40px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+
+  .accLine {
+    width: 255px;
+  }
+
+  .leftPart{
+    font-size: 12px;
+  }
+
+  .rightPart {
+    float: right;
+    margin-top: -100px;
+
+    line-height: 10px;
+    font-size: 22px;
+  }
+
+  .accImg {
+      width: 60px;
+      height: 60px;
+      margin-top: 10px;
+      margin-left: 15px;
+  }
+
+  .accType1 {
+    text-indent: -10px;
+  }
+
+  .accType2 {
+    text-indent: 5px;
+  }
+
+  .profileImage {
+    width: 180px;
+    height: 180px;
+    background: #FFFFFF;
+    border-radius: 50%;
+
+    margin-top: 35px;
+    margin-left: 30px;
+
+    display: grid;
+    place-items: center;
+  }
+
+  .uploadImg {
+     margin-left: -35px;
+  }
+
+  .profileData {
+    margin-left: 270px;
+    margin-top: -210px;
+  }
+
+  .form-control {
+    width: 350px;
+
+    margin-top: 30px;
+    margin-left: 100px;
+  }

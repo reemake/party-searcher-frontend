@@ -18,8 +18,11 @@ import {RegistrationComponent} from "./components/registration/registration.comp
 import {AuthInterceptor} from "./services/auth/auth.interceptor";
 import {SurveyComponent} from './components/survey/survey.component';
 import {SurveyTest} from './components/pages/survey.test/survey.test.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
+import {AccountsComponent} from './components/profile/accounts/accounts.component';
+import {DataComponent} from './components/profile/data/data.component';
+import {ListComponent} from "./components/events/list/list.component";
+import {ChatComponent} from './components/chat/chat.component';
 import { FriendsComponent } from './components/pages/friends/friends.component';
 export const BACKEND_URL: string = "http://localhost:8080";
 declare global {
@@ -33,9 +36,11 @@ const ROUTES: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'pages/survey.test', component: SurveyTest},
+  {path: 'profile/accounts', component: AccountsComponent},
   {path: 'api/survey', component: SurveyTest},
-  {path: 'friends', component: FriendsComponent}
-];
+  {path: 'profile/me', component: DataComponent},
+  {path: 'chat', component: ChatComponent},
+  {path: 'friends', component: FriendsComponent}];
 
 
 @NgModule({
@@ -53,14 +58,17 @@ const ROUTES: Routes = [
     SurveyComponent,
     SurveyTest,
     TypeComponent,
-    FriendsComponent,
+    AccountsComponent,
+    DataComponent,
+    ListComponent,
+    ChatComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     CommonModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES) ,
     ReactiveFormsModule
   ],
