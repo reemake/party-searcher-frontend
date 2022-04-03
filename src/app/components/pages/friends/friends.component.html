@@ -53,9 +53,6 @@
             </td>
         </tr>
     </tbody>
-
-
-
     <div class="listSelector" id="find" *ngIf="findCheck">Найти друзей</div>
     <tbody *ngIf="findCheck" class="listSelector">
         <tr *ngFor = "let user of users">
@@ -73,4 +70,5 @@
             </td>
         </tr>
     </tbody>
+    <div class="listSelector" id="find" *ngIf="!friendsCheck and !sendedRequestsCheck and !requestsCheck and !findCheck">Похоже что ваш список друзей пуст!</div>
 </div>
