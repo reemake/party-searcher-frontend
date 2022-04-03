@@ -85,6 +85,12 @@ export class FriendsComponent implements OnInit {
     }
     if ((<HTMLInputElement>event.path[0]).textContent == "Отклонить заявку") {
       console.log("Отклонить заявку");
+      var data1 = {
+        "friendName": onwerLogin
+      };
+      this.httpClient.post<any>(BACKEND_URL + "/api/cancelFriend", null, {headers: data1}).subscribe(e=> {
+        console.log("sending data");
+      });
     }
   }
 
