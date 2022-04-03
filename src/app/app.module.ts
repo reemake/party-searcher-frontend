@@ -23,8 +23,9 @@ import {AccountsComponent} from './components/profile/accounts/accounts.componen
 import {DataComponent} from './components/profile/data/data.component';
 import {ListComponent} from "./components/events/list/list.component";
 import {ChatComponent} from './components/chat/chat.component';
-import { FriendsComponent } from './components/pages/friends/friends.component';
-export const BACKEND_URL: string = "http://localhost:8080";
+import {FriendsComponent} from './components/pages/friends/friends.component';
+
+export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 declare global {
   var HAS_AUTH: boolean;
 }
