@@ -37,7 +37,6 @@ const ROUTES: Routes = [
   {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]}
 ];
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,8 +61,8 @@ const ROUTES: Routes = [
     CommonModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(ROUTES) ,
-    ReactiveFormsModule
+    RouterModule.forRoot(ROUTES),
+    ReactiveFormsModule,
   ],
   providers: [
     {
