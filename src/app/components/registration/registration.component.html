@@ -4,7 +4,7 @@
 
   <h1 id="title">Регистрация аккаунта</h1>
   <form #registerForm="ngForm" (ngSubmit)="registerUser()">
-    <small class="text-danger">{{msg}}</small>
+    <small class="text-danger" style="padding-left: 30px">{{msg}}</small>
 
     <div class="form-group" id="email-form">
       <label for="email">Email:</label>
@@ -71,10 +71,10 @@
 
     <div class="form-group" id="cpassword-form">
       <label for="cpwd">Подтвердите пароль:</label>
-      <input #cpassword="ngModel" [ngModel]="user.password" class="form-control" id="cpwd" name="cpassword" ngModel
+      <input #cpassword="ngModel" (ngModel)="user.password" class="form-control" id="cpwd" name="cpassword" ngModel
              placeholder="Введите пароль ещё раз" required type="password"
              [class.is-invalid]="cpassword.invalid && cpassword.touched"
-      />
+      >
       <small class="text-danger" [class.d-none]="(cpassword.value == password.value) || cpassword.untouched">Пароли не совпадают!</small>
     </div>
 

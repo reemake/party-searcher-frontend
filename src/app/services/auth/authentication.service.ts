@@ -62,4 +62,11 @@ export class AuthenticationService {
     return this.hasAuth;
   }
 
+  logOut() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    this.hasAuth = false;
+    this.router.navigate(['/login']);
+  }
+
 }

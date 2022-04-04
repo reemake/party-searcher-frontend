@@ -17,7 +17,7 @@
         <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
-            <button [disabled]="" class="btn btn-lg btn-danger accBtn2" type="button">Выйти</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
         </div>
     </div>
 
@@ -39,35 +39,54 @@
 
         <h2 id="title3">Изменение данных</h2>
         <div class="control">
-            <form #registerForm="ngForm">
+            <form #dataChangeForm="ngForm" (ngSubmit)="updateUser(dataChangeForm)">
 
-              <div class="form-group" id="email-form">
-                  <input #email="ngModel" [(ngModel)]="userEdited.email" class="form-control" id="email" name="email"
-                         placeholder="Введите адрес электронной почты" type="email"
-                         [class.is-invalid]="email.invalid && email.touched" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
-                  >
-                  <div *ngIf="email.errors && (email.invalid && email.touched)">
-                    <small class="text-danger" *ngIf="email.errors?.['pattern']">Email введён некорректно!</small>
-                  </div>
-                </div>
+                    <div class="left-form">
+                        <div class="form-group" id="email-form">
+                            <input #email="ngModel" [(ngModel)]="userEdited.email" class="form-control" id="email" name="email"
+                                    placeholder="Введите адрес электронной почты" type="email"
+                                    [class.is-invalid]="email.invalid" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
+                            >
+                        </div>
 
-                <div class="form-group" id="firstname-form">
-                    <input #firstName="ngModel" [(ngModel)]="userEdited.firstName"
-                           [class.is-invalid]="firstName.invalid && firstName.touched" class="form-control" id="firstName"
-                           name="firstName" placeholder="Введите имя" required
-                           type="text"/>
-                    <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">Имя - обязательное
-                      поле!</small>
-                  </div>
+                        <div class="form-group" id="firstname-form">
+                            <input #firstName="ngModel" [(ngModel)]="userEdited.firstName"
+                                class="form-control" id="firstName"
+                                name="firstName" placeholder="Введите имя"
+                                type="text">
+                        </div>
 
-              <div class="form-group" id="lastname-form">
-                    <input #lastName="ngModel" [(ngModel)]="userEdited.lastName" class="form-control" id="lastName" name="lastName"
-                           placeholder="Введите фамилию" type="text">
-                  </div>
+                        <div class="form-group" id="lastname-form">
+                            <input #lastName="ngModel" [(ngModel)]="userEdited.lastName" class="form-control" id="lastName" name="lastName"
+                                placeholder="Введите фамилию" type="text">
+                        </div>
+                    </div>
 
-              <p style="text-indent:32%">
-                    <button [disabled]="true" type="submit" class="btn btn-lg btn-danger contentBtn">Сохранить изменения</button>
-                </p>
+                    <div class="right-form">
+                        <div class="form-group" id="phone-form">
+                            <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone" name="phone"
+                                placeholder="Введите номер телефона" type="tel"
+                                [class.is-invalid]="phone.invalid" pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$"
+                            >
+                        </div>
+
+                        <div class="form-group" id="password-form">
+                            <input #password="ngModel" [(ngModel)]="userEdited.password" class="form-control" id="pwd" name="password"
+                                placeholder="Введите новый пароль" type="password"
+                            >
+                        </div>
+
+                        <div class="form-group" id="cpassword-form">
+                            <input #cpassword="ngModel" [(ngModel)]="this.currentPassword" class="form-control" id="cpwd" name="cpassword" ngModel
+                                placeholder="Текущий пароль (для подтверждения)" required type="password"
+                            >
+                            <small class="text-danger">{{msg}}</small>
+                        </div>
+                    </div>
+
+                    <p style="text-indent:32%">
+                        <button [disabled]="dataChangeForm.form.invalid" type="submit" class="btn btn-lg btn-danger contentBtn">Сохранить изменения</button>
+                    </p>
             </form>
 
         </div>

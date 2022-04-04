@@ -19,29 +19,22 @@ import {AuthInterceptor} from "./services/auth/auth.interceptor";
 import {SurveyComponent} from './components/survey/survey.component';
 import {SurveyTest} from './components/pages/survey.test/survey.test.component';
 import {TypeComponent} from './components/type/type.component';
-import {AccountsComponent} from './components/profile/accounts/accounts.component';
-import {DataComponent} from './components/profile/data/data.component';
-import {ListComponent} from "./components/events/list/list.component";
-import {ChatComponent} from './components/chat/chat.component';
-import {FriendsComponent} from './components/pages/friends/friends.component';
+import { AccountsComponent } from './components/profile/accounts/accounts.component';
+import { DataComponent } from './components/profile/data/data.component';
+import { AuthGuardService } from './services/auth/auth-guard.service';
 
 export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
-declare global {
-  var HAS_AUTH: boolean;
-}
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
-  {path: "events/add", component: EventCreateComponent},
+  {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: 'pages/survey.test', component: SurveyTest},
-  {path: 'profile/accounts', component: AccountsComponent},
-  {path: 'api/survey', component: SurveyTest},
-  {path: 'profile/me', component: DataComponent},
-  {path: 'chat', component: ChatComponent},
-  {path: 'friends', component: FriendsComponent}];
+  {path: 'register', component: RegistrationComponent}, {path: 'pages/survey.test',
+    component: SurveyTest, canActivate: [AuthGuardService]},
+  {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]}
+];
 
 
 @NgModule({
@@ -60,10 +53,7 @@ const ROUTES: Routes = [
     SurveyTest,
     TypeComponent,
     AccountsComponent,
-    DataComponent,
-    ListComponent,
-    ChatComponent,
-    FriendsComponent
+    DataComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +73,6 @@ const ROUTES: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  public static HAS_AUTH: boolean = false;
 }
-
 

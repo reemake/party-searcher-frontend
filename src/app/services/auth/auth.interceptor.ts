@@ -25,10 +25,10 @@ export class AuthInterceptor implements HttpInterceptor {
       request = request.clone({headers: authorization});
     }
     return next.handle(request).pipe(tap((val) => {
-      if (val instanceof HttpResponse) {
-        this.authService.setAuth(val);
-      }
-    }), catchError(error => {
+        if (val instanceof HttpResponse) {
+          this.authService.setAuth(val);
+        }
+      }), catchError(error => {
         if (error instanceof HttpErrorResponse && error.status == 403) {
           return this.authService.setAuth(error).pipe(
             take(1),

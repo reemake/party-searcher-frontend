@@ -17,14 +17,14 @@
         <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
-            <button [disabled]="" class="btn btn-lg btn-danger accBtn2" type="button">Выйти</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
         </div>
     </div>
 
     <div class="content">
         <h2 id="commercialAcc-title">Коммерческий аккаунт</h2>
         <div class="notification">
-          <img alt="excMark" class="excMark" src="./assets/img/profile/ExclamationMark.png"/>
+            <img class="excMark" alt="excMark" src="./assets/img/profile/ExclamationMark.png"/>
             <br>
             <p>При подключении коммерческого аккаунта, Вам открывается доступ к следующим возможностям, не доступных ранее на уровне личного аккаунта:</p>
             <ul>

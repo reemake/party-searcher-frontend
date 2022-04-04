@@ -1,6 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from 'src/app/entity/User';
-import {UserService} from 'src/app/services/user.service';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { AppModule, BACKEND_URL } from 'src/app/app.module';
+import { User } from 'src/app/entity/User';
+import { AuthenticationService } from 'src/app/services/auth/authentication.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-accounts',
@@ -13,9 +16,9 @@ export class AccountsComponent implements OnInit {
 
   user = new User();
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, public authService: AuthenticationService) {
 
-  }
+   }
 
   ngOnInit(): void {
     this.userService.getUser(this.userLogin).subscribe(
@@ -27,6 +30,10 @@ export class AccountsComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  logOut() {
+    this.authService.logOut();
   }
 
 }
