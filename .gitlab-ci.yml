@@ -1,5 +1,3 @@
-before_script:
-    - gem install faraday -v 1.10.0
 
 deploy:
   stage: deploy
