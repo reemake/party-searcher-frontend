@@ -60,7 +60,8 @@ const ROUTES: Routes = [
     TypeComponent,
     AccountsComponent,
     DataComponent,
-    ListComponent
+    ListComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
