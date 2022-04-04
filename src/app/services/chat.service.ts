@@ -21,7 +21,7 @@ export class ChatService {
       brokerURL: this.url
     })
     this.url = BACKEND_URL;
-    this.url = this.url.replace("https://", "ws://") + "/chatService";
+    this.url = this.url.replace("https://", "wss://") + "/chatService";
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["jwt"] = this.authService.getToken();
     this.rxStomp.configure({
