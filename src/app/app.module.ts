@@ -19,9 +19,10 @@ import {AuthInterceptor} from "./services/auth/auth.interceptor";
 import {SurveyComponent} from './components/survey/survey.component';
 import {SurveyTest} from './components/pages/survey.test/survey.test.component';
 import {TypeComponent} from './components/type/type.component';
-import { AccountsComponent } from './components/profile/accounts/accounts.component';
-import { DataComponent } from './components/profile/data/data.component';
-import { AuthGuardService } from './services/auth/auth-guard.service';
+import {AccountsComponent} from './components/profile/accounts/accounts.component';
+import {DataComponent} from './components/profile/data/data.component';
+import {AuthGuardService} from './services/auth/auth-guard.service';
+import {ListComponent} from "./components/events/list/list.component";
 
 export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 
@@ -30,8 +31,10 @@ const ROUTES: Routes = [
   {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent}, {path: 'pages/survey.test',
-    component: SurveyTest, canActivate: [AuthGuardService]},
+  {path: 'register', component: RegistrationComponent}, {
+    path: 'pages/survey.test',
+    component: SurveyTest, canActivate: [AuthGuardService]
+  },
   {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
   {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]}
 ];
@@ -44,7 +47,7 @@ const ROUTES: Routes = [
     LocationBtnComponent,
     EventsIndexComponent,
     EventSearchComponent,
-    EventDescriptionComponent ,
+    EventDescriptionComponent,
     HeaderComponent,
     EventCreateComponent,
     RegistrationComponent,
@@ -53,7 +56,8 @@ const ROUTES: Routes = [
     SurveyTest,
     TypeComponent,
     AccountsComponent,
-    DataComponent
+    DataComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
