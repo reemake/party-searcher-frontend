@@ -60,6 +60,7 @@
 
 .dropDown:hover .dropContent {
     display: block;
+    position: absolute;
 }
 
 .dropContent {
@@ -72,6 +73,7 @@
     text-decoration: none;
     color: #000000;
     border: none;
+    width: 100%;
 }
 
 .dropContentFields:hover {
