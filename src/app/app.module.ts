@@ -77,6 +77,5 @@ const ROUTES: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  public static HAS_AUTH: boolean = false;
 }
 
