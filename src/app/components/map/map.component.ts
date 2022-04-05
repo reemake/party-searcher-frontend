@@ -321,7 +321,8 @@ export class MapComponent implements AfterViewInit {
     feature.setStyle(new Style({
       image: new Icon(({
         crossOrigin: 'anonymous',
-        src: '../assets/img/mapImages/currentPosition.png'
+        src: '../assets/img/mapImages/currentPosition.png',
+        opacity: 0.5
       }))
     }));
 
