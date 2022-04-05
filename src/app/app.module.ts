@@ -24,6 +24,7 @@ import {DataComponent} from './components/profile/data/data.component';
 import {AuthGuardService} from './services/auth/auth-guard.service';
 import {ListComponent} from "./components/events/list/list.component";
 import {ChatComponent} from "./components/chat/chat.component";
+import {FriendsComponent} from "./components/pages/friends/friends.component";
 
 export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 
@@ -38,7 +39,9 @@ const ROUTES: Routes = [
   },
   {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
   {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]},
-  {path: 'chat', component: ChatComponent}
+  {path: 'chat', component: ChatComponent},
+  {path: 'friends', component: FriendsComponent}
+
 
 ];
 
@@ -61,7 +64,8 @@ const ROUTES: Routes = [
     AccountsComponent,
     DataComponent,
     ListComponent,
-    ChatComponent
+    ChatComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,
