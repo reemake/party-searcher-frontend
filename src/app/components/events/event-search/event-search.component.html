@@ -52,8 +52,8 @@
     <input [formControl]="guestsCountToInput" id="guestsCountToInput" type="number"/>
   </div>
 
-  <h3>Стоимость участия</h3>
-  <div class="form-row-2">
+  <h3 *ngIf="paidEventInput.value">Стоимость участия</h3>
+  <div *ngIf="paidEventInput.value" class="form-row-2">
     <label for="priceFromInput">От</label>
     <input [formControl]="priceFromInput" id="priceFromInput" type="number"/>
     <label for="priceToInput">До</label>
@@ -61,8 +61,8 @@
     <p>рублей</p>
   </div>
   <div class="free-btn">
-    <label for="freeRadio">бесплатно</label>
-    <input [formControl]="freeEventInput" id="freeRadio" type="radio" value="true"/>
+    <label for="freeRadio" style="margin-right: 10px;">платные эвенты</label>
+    <input [formControl]="paidEventInput" id="freeRadio" type="checkbox" value="false"/>
   </div>
   <div class="form-row">
     <label for="themeInput">Тематика мероприятия</label>

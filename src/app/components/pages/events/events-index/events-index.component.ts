@@ -30,15 +30,15 @@ export class EventsIndexComponent implements OnInit {
   private currentDistance: number = 0;
   private maxSW: number[] = [];
   private maxNE: number[] = [];
+  private settedFilter = false;
 
   constructor(private eventService: EventService) {
     this.changeMapBounds.pipe(
       debounceTime(500)
     ).subscribe(event => {
-      if (this.isSWandNEmore(event[2], event[3])) {
+      if (this.isSWandNEmore(event[2], event[3]) && !this.settedFilter) {
         this.eventService.getEventsWithinRadius(event[0], event[1])
           .subscribe((events: Event[]) => {
-            console.log("down")
             this.events = events;
             this.currentLocation = event[0];
           });
@@ -85,6 +85,7 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public changeLoc(event: any): void {
+    console.log(event)
     this.currentLocation = event;
   }
 
@@ -144,10 +145,9 @@ export class EventsIndexComponent implements OnInit {
   }
 
   public search(events: Array<Event>): void {
-    console.log("searched")
-    console.log(this.filter?.eventFormats);
+    console.log(events)
+    this.settedFilter = true;
     if (this.filter?.eventFormats && this.filter?.eventFormats?.filter(e => e === "ONLINE").length > 0) {
-      console.log("LIST")
       this.showMap = false;
 
     }
