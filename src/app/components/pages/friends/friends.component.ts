@@ -20,26 +20,32 @@ export class FriendsComponent implements OnInit {
   requestsCheck: boolean = false;
   friendsCheck: boolean = false;
   sendedRequestsCheck: boolean = false;
+  autorisationCheck: boolean;
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
-    this.userService.getRequests().subscribe((data: Relationship[]) => {
-      console.log("waiting requests");
-      this.requests = data;
-      if (this.requests.length > 0) this.requestsCheck = true;
-    });
-    this.userService.getFriends().subscribe((data: Relationship[]) => {
-      console.log("waiting friends");
-      this.friends = data;
-      if (this.friends.length > 0) this.friendsCheck = true;
+    if (localStorage.getItem("token")) {
+      this.autorisationCheck = true;
+      this.userService.getRequests().subscribe((data: Relationship[]) => {
+        console.log("waiting requests");
+        this.requests = data;
+        if (this.requests.length > 0) this.requestsCheck = true;
+      });
+      this.userService.getFriends().subscribe((data: Relationship[]) => {
+        console.log("waiting friends");
+        this.friends = data;
+        if (this.friends.length > 0) this.friendsCheck = true;
+      }
+      );
+      this.userService.getSendedRequests().subscribe((data: Relationship[]) => {
+        console.log("waiting sended requests");
+        this.sendedRequests = data;
+        console.log(this.sendedRequests);
+        if (this.sendedRequests.length > 0) this.sendedRequestsCheck = true;
+      }
+      );
+    } else {
+      this.autorisationCheck = false;
     }
-    );
-    this.userService.getSendedRequests().subscribe((data: Relationship[]) => {
-      console.log("waiting sended requests");
-      this.sendedRequests = data;
-      console.log(this.sendedRequests);
-      if (this.sendedRequests.length > 0) this.sendedRequestsCheck = true;
-    }
-    );
   }
 
   ngOnInit(): void {

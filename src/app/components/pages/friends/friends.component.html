@@ -1,4 +1,7 @@
-<div class="friends">
+<div class="friends" *ngIf="!autorisationCheck">
+    <div class="listSelector" id="autorisationAlert">Для просмотра данной страницы вам необходимо автиризироваться!</div>
+</div>
+<div class="friends" *ngIf="autorisationCheck">
     <input type="search" class="search" placeholder="Найти пользователя" (change)="requestChange()" id="searchField" />
     <select class="searchOption" id="searchOption">
         <option class="dropContentFields">Поиск по логину</option>
