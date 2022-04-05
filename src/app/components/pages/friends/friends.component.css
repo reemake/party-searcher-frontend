@@ -80,3 +80,9 @@
     background-color: #DDD;
 }
 
+.searchOption {
+    display: block;
+    margin: 30px 0 0 50px;
+    line-height: 50px;
+    font-size: 24px;
+}

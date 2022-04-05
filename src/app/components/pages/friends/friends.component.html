@@ -1,5 +1,9 @@
 <div class="friends">
     <input type="search" class="search" placeholder="login" (change)="requestChange()" id="searchField" />
+    <select class="searchOption" id="searchOption">
+        <option class="dropContentFields">Поиск по логину</option>
+        <option class="dropContentFields">Поиск по имени и фамилии</option>
+    </select>
     <div class="listSelector" id="friend" *ngIf="friendsCheck">Друзья</div>
     <tbody class="listSelector" *ngIf="friendsCheck">
         <tr *ngFor=" let friend of friends">

@@ -45,20 +45,47 @@ export class FriendsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+
+
+
+
+
+
   requestChange(): void {
+    //console.log((<HTMLInputElement>document.getElementById("searchOption")).value);
     this.findCheck = false;
     var field = document.getElementById("searchField");
     if ((<HTMLInputElement>field).value != "") {
       this.hideFields();
-      this.userService.getUsers((<HTMLInputElement>field).value).subscribe((data: User[]) => {
-        this.users = data;
-        this.findCheck = true;
-      })
+      if ((<HTMLInputElement>document.getElementById("searchOption")).value == "Поиск по логину") {
+        this.userService.getUsersByLogin((<HTMLInputElement>field).value).subscribe((data: User[]) => {
+          this.users = data;
+          this.findCheck = true;
+        })
+      }
+      if ((<HTMLInputElement>document.getElementById("searchOption")).value == "Поиск по имени и фамилии") {
+        this.userService.getUsersByFirstLastName((<HTMLInputElement>field).value).subscribe((data: User[]) => {
+          this.users = data;
+          this.findCheck = true;
+        })
+      }
     } else {
       this.findCheck = false;
       this.enableFields();
     }
   }
+
+
+
+
+
+
+
+
+
+
+
 
   hideFields(): void {
     var headers = document.getElementsByClassName("listSelector");

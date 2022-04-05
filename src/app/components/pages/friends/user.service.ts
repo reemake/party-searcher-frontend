@@ -12,9 +12,19 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(login: string): Observable<User[]> {
+  getUsersByLogin(login: string): Observable<User[]> {
     const headers = { 'login': login }
-    return this.http.get<User[]>(BACKEND_URL + "/api/usersList", {headers});
+    return this.http.get<User[]>(BACKEND_URL + "/api/usersListByLogin", {headers});
+  }
+
+  getUsersByFirstLastName(name: string): Observable<User[]> {
+    var userData: string[] = name.split(" ");
+    console.log(userData);
+    const headers = { 
+      "firstName": userData[0],
+      "lastName": userData[1]
+     };
+    return this.http.get<User[]>(BACKEND_URL + "/api/usersListByName", {headers});
   }
 
   getRequests(): Observable<Relationship[]> {
