@@ -158,7 +158,7 @@ export class MapComponent implements AfterViewInit {
 
 
       switchMap.className = "mapBtn switchBtn"
-      switchMap.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/map-image.png"/>';
+      switchMap.innerHTML = ' <img alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" />';
       switchMap.addEventListener('click', () => {
         this.callListItem.emit(true);
       })
