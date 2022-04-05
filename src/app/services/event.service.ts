@@ -66,7 +66,8 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/api/events/assignOnEvent", null, {params: param});
   }
 
-  public setAddressByLonLat(event: Event, func: Function): void {
+
+  public setAddressByLonLat(event: any, func: Function): void {
 
     var lon = event.location?.location.coordinates[0];
     var lat = event.location?.location.coordinates[1];

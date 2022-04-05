@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-create',
@@ -12,6 +13,7 @@ import {debounceTime, Subject} from "rxjs";
 })
 export class EventCreateComponent implements OnInit {
   public message: string = "";
+  public location: string = "";
   public selectedEvents: Array<Event> = new Array<Event>();
   public events: Array<Event> = new Array<Event>();
   public event: Event | null = null;
@@ -25,9 +27,9 @@ export class EventCreateComponent implements OnInit {
   public maxGuestsCountInput: FormControl = new FormControl();
   public priceInput: FormControl = new FormControl();
   public isPrivateInput: FormControl = new FormControl();
-  public isOnlineInput: FormControl = new FormControl();
+  public isOnlineInput: FormControl = new FormControl(false);
   public locationInput: FormControl = new FormControl();
-  public urlInput: FormControl = new FormControl(null, [this.urlValidator()]);
+  public urlInput: FormControl;
   public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
   public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
   public error: string = "";
@@ -37,10 +39,14 @@ export class EventCreateComponent implements OnInit {
   private maxSW: number[] = [];
   private maxNE: number[] = [];
 
+  public locationChangeSubject: Subject<any> = new Subject<any>();
+
+
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
-  constructor(private eventService: EventService) {
+
+  constructor(private eventService: EventService, private router: Router, private changeDetector: ChangeDetectorRef) {
     this.locationInput.disable();
     this.formGroup = new FormGroup({
       name: this.nameInput,
@@ -52,10 +58,11 @@ export class EventCreateComponent implements OnInit {
       isPrivate: this.isPrivateInput,
       isOnline: this.isOnlineInput,
       location: this.locationInput,
-      url: this.urlInput,
+      url: new FormControl("", [this.urlValidator().bind(this.formGroup)]),
       theme: this.eventThemeInput,
       type: this.eventTypeInput
     });
+    this.urlInput = this.formGroup.controls['url'] as FormControl;
     this.changeBounds.pipe(
       debounceTime(500)
     )
@@ -63,25 +70,58 @@ export class EventCreateComponent implements OnInit {
         if (this.isSWandNEmore(event[2], event[3])) {
           this.eventService.getEventsWithinRadius(event[0], event[1])
             .subscribe((events: Event[]) => {
-              console.log("down")
               this.events = events;
               this.currentLocation = event[0];
             });
         }
       })
+    this.locationChangeSubject.pipe(debounceTime(2000))
+      .subscribe(location => {
+        var eventData: any = {
+          location: {
+            location: {
+              coordinates: location
+            }
+          }
+        };
+        this.eventService.setAddressByLonLat(eventData, () => {
+          this.location = eventData.location.name;
+        })
+      })
+
+    this.isOnlineInput.valueChanges.subscribe((val) => {
+      this.urlInput.updateValueAndValidity();
+    })
+  }
+
+
+  ngOnInit(): void {
+    this.eventService.getTypes().subscribe(types => {
+        this.eventTypes = types.map(event => event.name);
+      }, error1 => {
+        alert("При загрузке типов мероприятий произошла ошибка, повторите еще раз")
+      }
+    );
+  }
+
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
   }
 
   urlValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (this.isOnlineInput.value && (control.value === null || control.value == "")) {
+      console.log(this.isOnlineInput.value)
+      console.log(control.value === null)
+      console.log(control.value == "")
+      if (control.parent?.get('isOnline')?.value === true && (control.value === null || control.value == "")) {
         return ["url empty error"];
       }
 
       return null;
     }
-
-
   }
+
+
 
   closeEvent(): void {
     this.event = null;
@@ -154,11 +194,10 @@ export class EventCreateComponent implements OnInit {
           coordinates: this.currentLocation
         }
       };
-      console.log("first \n" + event);
       this.eventService.setAddressByLonLat(event, () => {
-        console.log(event);
         this.eventService.add(event).subscribe(event => {
-
+          alert("Событие успешно создано");
+          this.router.navigateByUrl("/events/map")
         }, error => {
           alert("При создании эвента произошла ошибка, повторите еще раз");
           this.error = error;
@@ -167,7 +206,8 @@ export class EventCreateComponent implements OnInit {
     } else
 
       this.eventService.add(event).subscribe(event => {
-        this.message = "Событие успешно создано"
+        alert("Событие успешно создано");
+        this.router.navigateByUrl("/events/map")
       }, error => {
         this.error = error;
       });
@@ -178,14 +218,5 @@ export class EventCreateComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    this.eventService.getTypes().subscribe(types => {
-        this.eventTypes = types.map(event => event.name);
-      }, error1 => {
-        console.log("GIVE ERROR");
-        alert("При загрузке типов мероприятий произошла ошибка, повторите еще раз")
-      }
-    );
-  }
 
 }

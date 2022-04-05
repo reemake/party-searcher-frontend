@@ -99,6 +99,7 @@ export class EventSearchComponent implements OnInit {
       this.eventService.filter(filterData).subscribe(e => {
         this.filterChanged.emit(filterData);
         this.eventsSearched.emit(e);
+        console.log(e);
       })
 
   }

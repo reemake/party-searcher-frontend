@@ -325,6 +325,8 @@ export class MapComponent implements AfterViewInit {
         }
       })
     }
+    console.log("map")
+    console.log(this.events)
     this.previousEventsMarkersLayer.changed();
   }
 
@@ -332,6 +334,7 @@ export class MapComponent implements AfterViewInit {
     navigator.geolocation.getCurrentPosition((position) => {
       this.center = [position.coords.longitude, position.coords.latitude];
       this.userLocation = [position.coords.longitude, position.coords.latitude];
+      this.changeLocation.emit(this.userLocation);
       if (this.map !== undefined)
         this.map.getView().setCenter(transform([this.center[0], this.center[1]], 'EPSG:4326', 'EPSG:3857'));
 
