@@ -1,5 +1,5 @@
 <div class="friends">
-    <input type="search" class="search" placeholder="login" (change)="requestChange()" id="searchField" />
+    <input type="search" class="search" placeholder="Найти пользователя" (change)="requestChange()" id="searchField" />
     <select class="searchOption" id="searchOption">
         <option class="dropContentFields">Поиск по логину</option>
         <option class="dropContentFields">Поиск по имени и фамилии</option>
@@ -69,7 +69,7 @@
             <td class="dropDown">
                 <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
                 <div class="dropContent">
-                    <button (click)="clickFriendButton(user.login)" class="dropContentFields" id={{user.login}}>
+                    <button (click)="clickFriendButton($event)" class="dropContentFields" id={{user.login}}>
                       Отправить заявку
                     </button>
                 </div>

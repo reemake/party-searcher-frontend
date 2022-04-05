@@ -33,7 +33,8 @@ const ROUTES: Routes = [
   {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent}, {
+  {path: 'register', component: RegistrationComponent},
+  {
     path: 'pages/survey.test',
     component: SurveyTest, canActivate: [AuthGuardService]
   },

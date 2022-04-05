@@ -45,15 +45,7 @@ export class FriendsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-
-
-
-
-
-
   requestChange(): void {
-    //console.log((<HTMLInputElement>document.getElementById("searchOption")).value);
     this.findCheck = false;
     var field = document.getElementById("searchField");
     if ((<HTMLInputElement>field).value != "") {
@@ -76,17 +68,6 @@ export class FriendsComponent implements OnInit {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
   hideFields(): void {
     var headers = document.getElementsByClassName("listSelector");
     for (let i = 0; i < headers.length; i++) {
@@ -108,10 +89,12 @@ export class FriendsComponent implements OnInit {
   clickFriendButton(event: any): void {
     var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
     var data = { "friendName": friendLogin};
-    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
+    console.log(friendLogin + " " + data);
+    this.httpClient.post<any>(BACKEND_URL + "/api/friends/requestFriend", null, {headers: data}).subscribe(e=> {
       console.log("sending data");
       location.reload();
     });
+    
   }
 
   clickRequestButton(event: any): void {
@@ -121,7 +104,7 @@ export class FriendsComponent implements OnInit {
         "friendName": userLogin,
         "friend": "1"
       };
-      this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
+      this.httpClient.post<any>(BACKEND_URL + "/api/friends/requestFriend", null, {headers: data}).subscribe(e=> {
         console.log("sending data");
         location.reload();
       });
@@ -130,7 +113,7 @@ export class FriendsComponent implements OnInit {
       var data1 = {
         "friendName": userLogin
       };
-      this.httpClient.post<any>(BACKEND_URL + "/api/cancelFriend", null, {headers: data1}).subscribe(e=> {
+      this.httpClient.post<any>(BACKEND_URL + "/api/friends/cancelFriend", null, {headers: data1}).subscribe(e=> {
         console.log("sending data");
         location.reload();
       });
@@ -146,7 +129,7 @@ export class FriendsComponent implements OnInit {
       var data = {
         "friendName": friendLogin
       }
-      this.httpClient.post<any>(BACKEND_URL + "/api/deleteFriend", null, {headers: data}).subscribe(e=> {
+      this.httpClient.post<any>(BACKEND_URL + "/api/friends/deleteFriend", null, {headers: data}).subscribe(e=> {
         console.log("sending data");
       });
       location.reload();
@@ -158,10 +141,9 @@ export class FriendsComponent implements OnInit {
     var data = {
       "friendName": friendLogin
     }
-    this.httpClient.post<any>(BACKEND_URL + "/api/deleteSendedRequest", null, {headers: data}).subscribe(e=> {
+    this.httpClient.post<any>(BACKEND_URL + "/api/friends/deleteSendedRequest", null, {headers: data}).subscribe(e=> {
       console.log("sending data");
     });
     location.reload();
   }
-
 }
