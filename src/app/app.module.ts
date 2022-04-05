@@ -26,7 +26,7 @@ import {ListComponent} from "./components/events/list/list.component";
 import {ChatComponent} from "./components/chat/chat.component";
 import {FriendsComponent} from "./components/pages/friends/friends.component";
 
-export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
+export const BACKEND_URL: string = "http://localhost:8080";
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
