@@ -117,7 +117,7 @@ export class FriendsComponent implements OnInit {
   clickRequestButton(event: any): void {
     var userLogin: string = (<HTMLInputElement>event.path[0]).id;
     if ((<HTMLInputElement>event.path[0]).textContent == "Принять заявку") {
-      var data = { 
+      var data = {
         "friendName": userLogin,
         "friend": "1"
       };

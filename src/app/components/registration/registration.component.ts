@@ -21,14 +21,13 @@ export class RegistrationComponent implements OnInit {
   registerUser() {
     this._service.registerUserFromRemote(this.user).subscribe(
       data => {
-
         console.log("response recieved");
         this.msg="Регистрация прошла успешно!";
-        this._router.navigate(['/profile/login']);
+        this._router.navigate(['login']);
       },
       error => {
         console.log("exception occured");
-        this.msg=error.error;
+        this.msg="Пользователь с данным логином уже существует!";
       }
     )
   }

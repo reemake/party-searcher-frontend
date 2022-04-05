@@ -5,7 +5,7 @@
   </div>
   <div class="form-row">
     <label for="wordInput">ключевые слова</label>
-    <input (change)="changeWords()" [formControl]="wordsInput" id="wordInput"/>
+    <input [formControl]="wordsInput" id="wordInput"/>
 
   </div>
   <ol>
@@ -25,14 +25,14 @@
     <input [formControl]="eventLengthFromInput" id="eventLengthFromInput" type="number"/>
     <select [formControl]="eventLengthMeasureFromInput">
       <option value="minutes">Минуты</option>
-      <option value="hours">Часы</option>
+      <option [defaultSelected]="true" value="hours">Часы</option>
       <option value="days">Дни</option>
     </select>
     <label for="eventLengthToInput">До</label>
     <input [formControl]="eventLengthToInput" id="eventLengthToInput" type="number"/>
     <select [formControl]="eventLengthMeasureToInput">
       <option value="minutes">Минуты</option>
-      <option value="hours">Часы</option>
+      <option [defaultSelected]="true" value="hours">Часы</option>
       <option value="days">Дни</option>
     </select>
   </div>
@@ -60,6 +60,10 @@
     <input [formControl]="priceToInput" id="priceToInput" type="number"/>
     <p>рублей</p>
   </div>
+  <div class="free-btn">
+    <label for="freeRadio">бесплатно</label>
+    <input [formControl]="freeEventInput" id="freeRadio" type="radio" value="true"/>
+  </div>
   <div class="form-row">
     <label for="themeInput">Тематика мероприятия</label>
     <input [formControl]="eventThemeInput" id="themeInput" type="text"/>
@@ -68,7 +72,10 @@
   <div class="form-row">
     <label for="maxDistanceInput">max расстояние</label>
     <input [formControl]="maxDistanceInput" id="maxDistanceInput" type="number"/>
-    <span>метров</span>
+    <select [formControl]="distanceMeasureInput">
+      <option value="METRES">М</option>
+      <option [selected]="true" value="KILOMETERS">КМ</option>
+    </select>
   </div>
 
   <div class="form-row">
@@ -78,7 +85,8 @@
 
   <div class="form-row">
     <label>Формат</label>
-    <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="offline"/>Offline</label>
+    <label> <input [checked]="true" [formControl]="eventFormatInput" name="formatInput" type="radio"
+                   value="offline"/>Offline</label>
     <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="online"/>Online</label>
     <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="all"/>ALL</label>
   </div>

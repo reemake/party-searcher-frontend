@@ -2,7 +2,10 @@
   <div class="left-part">
 
 
-    <a href="./login">
+    <a *ngIf="_authService.isAuth()" [routerLink]="['/profile/me']">
+      <img alt="Личный кабинет" src="./assets/img/header/profile.png"/>
+    </a>
+    <a *ngIf="!_authService.isAuth()" [routerLink]="['/login']">
       <img alt="Личный кабинет" src="./assets/img/header/profile.png"/>
     </a>
     <a href="./friends">
@@ -18,7 +21,7 @@
     </a>
   </div>
 
-  <div class="middle">
+  <div class="middle" [hidden]="!_authService.isAuth()">
     <a href="./events/add">
       <img alt="Добавить событие" src="./assets/img/header/add-sign.png"/>
     </a>

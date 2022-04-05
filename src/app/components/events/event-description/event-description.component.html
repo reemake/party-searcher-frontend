@@ -5,17 +5,15 @@
                                                                   src="./assets/img/mapImages/buttons/close-btn.png"/>
     </button>
   </div>
-  <div class="description-row">
 
-
-  </div>
 
   <div class="description-row">
     <div class="locationImage">
       <img *ngIf="event.isOnline" src="./assets/img/mapImages/online location.png"/>
       <img *ngIf="!event.isOnline" src="./assets/img/mapImages/event location.png"/>
     </div>
-    <p>{{event.url || event.location?.name}}</p>
+    <a *ngIf="event.url" href="{{event.url}}">{{event.url}}</a>
+    <p *ngIf="event?.location?.name">{{event?.location?.name}}</p>
 
   </div>
   <div class="description-row owner">
@@ -25,6 +23,18 @@
       <img src="./assets/img/rating-star-icon.png"/>
       <p>{{event.owner?.rating}}</p>
     </div>
+  </div>
+  <div class="description-row owner">
+    <p>Время начала</p>
+    <p>{{event.dateTimeStart | date:'dd.MM.YY HH:mm'}}</p>
+  </div>
+  <div *ngIf="event.dateTimeEnd!==null" class="description-row owner">
+    <p>Время окончания мероприятия</p>
+    <p>{{event.dateTimeEnd | date:'dd.MM.YY HH:mm'}}</p>
+  </div>
+  <div *ngIf="event.maxNumberOfGuests!==0" class="description-row owner">
+    <p>Макс кол-во участников</p>
+    <p>{{event.maxNumberOfGuests}}</p>
   </div>
   <div class="description-row">
     <p>Участники</p>
@@ -41,8 +51,20 @@
   </div>
   <div class="description-row description-buttons">
     <div class="description-button">
-      <button (click)="assignOnEvent()"><img src="./assets/img/mapImages/buttons/assign-event-btn.png"/></button>
-      <p>записаться на мероприятие</p>
+      <button (click)="removeFromEvent()" *ngIf="event.currentUserEntered"><img
+        src="./assets/img/mapImages/buttons/remove-from-event.png"/></button>
+      <p *ngIf="event.currentUserEntered">отменить запись</p>
+
+      <button (click)="assignOnEvent()" *ngIf="!event.currentUserEntered"><img
+        src="./assets/img/mapImages/buttons/assign-event-btn.png"/></button>
+      <p *ngIf="!event.currentUserEntered">записаться на мероприятие</p>
+    </div>
+    <div class="description-button">
+      <button (click)="createAndGoToChat()" *ngIf="event.chatId===undefined"><img
+        src="./assets/img/mapImages/buttons/group-chat.png"/></button>
+      <button (click)="goToChat(event.chatId)" *ngIf="event.chatId!==undefined"><img
+        src="./assets/img/mapImages/buttons/group-chat.png"/></button>
+      <p>групповой чат</p>
     </div>
     <div class="description-button">
       <button (click)="callEventOwner()"><img src="./assets/img/mapImages/buttons/chat_with_admin.png"/></button>
@@ -50,11 +72,17 @@
     </div>
     <div class="description-button">
       <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/></button>
-      <p>связь с организатором</p>
+      <p>пожаловаться на мероприятие</p>
     </div>
   </div>
+  <p *ngIf="error!==''">{{error}}</p>
 
   <div class="description-row tags">
     <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}}</h3>
+  </div>
+  <div class="price">
+    <img *ngIf="event.price==0" alt="free event" src="./assets/img/FREE%20PRICE.png"/>
+    <p *ngIf="event.price !==0">{{event.price}}</p>
+    <img *ngIf="event.price!==0" alt="paid event" src="./assets/img/ruble.png"/>
   </div>
 </div>

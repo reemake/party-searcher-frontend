@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
+import {debounceTime, Subject} from "rxjs";
 
 @Component({
   selector: 'app-event-create',
@@ -10,24 +11,33 @@ import {Tag} from "../../../entity/Event/Tag";
   styleUrls: ['./event-create.component.css']
 })
 export class EventCreateComponent implements OnInit {
+  public message: string = "";
+  public selectedEvents: Array<Event> = new Array<Event>();
+  public events: Array<Event> = new Array<Event>();
+  public event: Event | null = null;
+  private currentDistance = 0;
   public tagsCount: number = 0;
   public formGroup: FormGroup;
-  public nameInput: FormControl = new FormControl();
+  public nameInput: FormControl = new FormControl(null, [Validators.required]);
   public descriptionInput: FormControl = new FormControl();
-  public startTimeInput: FormControl = new FormControl();
+  public startTimeInput: FormControl = new FormControl(null, [Validators.required]);
   public endTimeInput: FormControl = new FormControl();
   public maxGuestsCountInput: FormControl = new FormControl();
   public priceInput: FormControl = new FormControl();
   public isPrivateInput: FormControl = new FormControl();
   public isOnlineInput: FormControl = new FormControl();
   public locationInput: FormControl = new FormControl();
-  public urlInput: FormControl = new FormControl();
-  public eventThemeInput: FormControl = new FormControl();
-  public eventTypeInput: FormControl = new FormControl();
+  public urlInput: FormControl = new FormControl(null, [this.urlValidator()]);
+  public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
+  public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
   public error: string = "";
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
+  public changeBounds: Subject<any> = new Subject<any>();
+  private maxSW: number[] = [];
+  private maxNE: number[] = [];
 
+  public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
   constructor(private eventService: EventService) {
@@ -46,12 +56,63 @@ export class EventCreateComponent implements OnInit {
       theme: this.eventThemeInput,
       type: this.eventTypeInput
     });
+    this.changeBounds.pipe(
+      debounceTime(500)
+    )
+      .subscribe(event => {
+        if (this.isSWandNEmore(event[2], event[3])) {
+          this.eventService.getEventsWithinRadius(event[0], event[1])
+            .subscribe((events: Event[]) => {
+              console.log("down")
+              this.events = events;
+              this.currentLocation = event[0];
+            });
+        }
+      })
+  }
+
+  urlValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (this.isOnlineInput.value && (control.value === null || control.value == "")) {
+        return ["url empty error"];
+      }
+
+      return null;
+    }
+
 
   }
 
-  setLocation(event: any): void {
-    this.currentLocation = [event[0], event[1]];
+  closeEvent(): void {
+    this.event = null;
+    this.mapWidth = "100%";
   }
+
+  private isSWandNEmore(SW: number[], NE: number[]): boolean {
+    if (this.maxNE.length == 0 || this.maxSW.length == 0) {
+      this.maxNE = NE;
+      this.maxSW = SW;
+      return true;
+    } else {
+      if (SW[0] < this.maxSW[0] || SW[1] < this.maxSW[0] || NE[0] > this.maxNE[0] || NE[1] > this.maxNE[1]) {
+        this.maxNE = NE;
+        this.maxSW = SW;
+        return true;
+
+      } else return false;
+    }
+  }
+
+  selectEvents(event: any): void {
+    if (event.length > 1) {
+      this.selectedEvents = event;
+    } else if (event.length == 1) {
+      this.mapWidth = "80%"
+      this.event = event[0];
+    }
+  }
+
+
 
   addTag(): void {
     let tag: FormControl = new FormControl();
@@ -60,6 +121,12 @@ export class EventCreateComponent implements OnInit {
   }
 
   submit(): void {
+    if (!this.formGroup.valid) {
+      this.formGroup.markAllAsTouched();
+      this.error = "Заполните все обязательные поля!";
+      return
+    }
+    this.error = "";
     let event: Event = {
       description: this.descriptionInput.value,
       theme: this.eventThemeInput.value,
@@ -93,13 +160,14 @@ export class EventCreateComponent implements OnInit {
         this.eventService.add(event).subscribe(event => {
 
         }, error => {
+          alert("При создании эвента произошла ошибка, повторите еще раз");
           this.error = error;
         });
       });
     } else
 
       this.eventService.add(event).subscribe(event => {
-
+        this.message = "Событие успешно создано"
       }, error => {
         this.error = error;
       });
@@ -112,8 +180,12 @@ export class EventCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventService.getTypes().subscribe(types => {
-      this.eventTypes = types.map(event => event.name);
-    });
+        this.eventTypes = types.map(event => event.name);
+      }, error1 => {
+        console.log("GIVE ERROR");
+        alert("При загрузке типов мероприятий произошла ошибка, повторите еще раз")
+      }
+    );
   }
 
 }

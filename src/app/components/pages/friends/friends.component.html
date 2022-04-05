@@ -69,7 +69,9 @@
             <td class="dropDown">
                 <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
                 <div class="dropContent">
-                    <button class="dropContentFields" id={{user.login}} (click)="clickFriendButton($event)">Отправить заявку</button>
+                    <button (click)="clickFriendButton(user.login)" class="dropContentFields" id={{user.login}}>
+                      Отправить заявку
+                    </button>
                 </div>
             </td>
         </tr>

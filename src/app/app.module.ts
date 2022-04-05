@@ -18,23 +18,31 @@ import {RegistrationComponent} from "./components/registration/registration.comp
 import {AuthInterceptor} from "./services/auth/auth.interceptor";
 import {SurveyComponent} from './components/survey/survey.component';
 import {SurveyTest} from './components/pages/survey.test/survey.test.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TypeComponent} from './components/type/type.component';
-import { FriendsComponent } from './components/pages/friends/friends.component';
-export const BACKEND_URL: string = "http://localhost:8080";
-declare global {
-  var HAS_AUTH: boolean;
-}
+import {AccountsComponent} from './components/profile/accounts/accounts.component';
+import {DataComponent} from './components/profile/data/data.component';
+import {AuthGuardService} from './services/auth/auth-guard.service';
+import {ListComponent} from "./components/events/list/list.component";
+import {ChatComponent} from "./components/chat/chat.component";
+import {FriendsComponent} from "./components/pages/friends/friends.component";
+
+export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
-  {path: "events/add", component: EventCreateComponent},
+  {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent},
-  {path: 'pages/survey.test', component: SurveyTest},
-  {path: 'api/survey', component: SurveyTest},
+  {path: 'register', component: RegistrationComponent}, {
+    path: 'pages/survey.test',
+    component: SurveyTest, canActivate: [AuthGuardService]
+  },
+  {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]},
+  {path: 'chat', component: ChatComponent},
   {path: 'friends', component: FriendsComponent}
+
+
 ];
 
 
@@ -45,7 +53,7 @@ const ROUTES: Routes = [
     LocationBtnComponent,
     EventsIndexComponent,
     EventSearchComponent,
-    EventDescriptionComponent ,
+    EventDescriptionComponent,
     HeaderComponent,
     EventCreateComponent,
     RegistrationComponent,
@@ -53,14 +61,17 @@ const ROUTES: Routes = [
     SurveyComponent,
     SurveyTest,
     TypeComponent,
-    FriendsComponent,
+    AccountsComponent,
+    DataComponent,
+    ListComponent,
+    ChatComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     CommonModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES) ,
     ReactiveFormsModule
   ],
@@ -75,5 +86,4 @@ const ROUTES: Routes = [
 })
 export class AppModule {
 }
-
 

@@ -5,5 +5,7 @@ export class User {
   email:string;
   password:string;
   phone:string;
+  commercialUser:boolean;
+  commercialUserCreated:boolean;
   constructor(){}
 }

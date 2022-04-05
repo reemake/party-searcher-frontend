@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {BACKEND_URL} from "../app.module";
-import {Coordinate} from "ol/coordinate";
 import {Event} from "../entity/Event/Event";
 import {EventType} from "../entity/Event/EventType";
+import {FilterData} from "../entity/filterData";
+import {EventPage} from "../entity/Event/EventPage";
 
 
 @Injectable({
@@ -16,17 +17,14 @@ export class EventService {
   }
 
 
-  public getEventsWithinRadius(location: Coordinate, radius: number): Observable<Array<Event>> {
-    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEventsWithinRadius", {
-      params: {
-        location: location,
-        radius: radius
-      }
-    });
-  }
-
   public getEvents(): Observable<Array<Event>> {
     return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEvents");
+  }
+
+  public getEventsWithinRadius(point: number[], radius: number): Observable<Array<Event>> {
+    var params: HttpParams = new HttpParams();
+    params = params.set("lon", point[0]).set("lat", point[1]).set("radius", radius);
+    return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEventsWithinRadius", {params: params});
   }
 
   /*  public getEventsAtUserMap(userMapBoundingBox: Coordinate[]): Observable<Array<Event>> {
@@ -40,12 +38,32 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/api/events", event);
   }
 
+  public removeCurrentUserFromEvent(id: number): Observable<any> {
+    return this.httpClient.delete(BACKEND_URL + "/api/events/deleteCurrentUserFromEvent", {params: {eventId: id}});
+  }
+
   public getWords(wordPart: string): Observable<string[]> {
-    return this.httpClient.get<Array<string>>(BACKEND_URL + "/api/events/getKeyWords", {params: {wordPart: wordPart}});
+    return this.httpClient.get<Array<string>>(BACKEND_URL + "/api/events/getWords", {params: {word: wordPart}});
   }
 
   public getTypes(): Observable<EventType[]> {
     return this.httpClient.get<Array<EventType>>(BACKEND_URL + "/api/eventTypes");
+  }
+
+  public filter(filter: FilterData): Observable<Event[]> {
+    return this.httpClient.post<Array<Event>>(BACKEND_URL + "/api/events/filter", filter);
+  }
+
+  public filterWithPaging(filter: FilterData, page: number, size: number): Observable<EventPage> {
+    var params: HttpParams = new HttpParams();
+    params = params.set("pageNum", page).set("size", size);
+    return this.httpClient.post<EventPage>(BACKEND_URL + "/api/events/filterWithPaging", filter, {params: params});
+  }
+
+  public assignOnEvent(id: number): Observable<any> {
+    var param: HttpParams = new HttpParams();
+    param = param.set("eventId", id);
+    return this.httpClient.post(BACKEND_URL + "/api/events/assignOnEvent", null, {params: param});
   }
 
   public setAddressByLonLat(event: Event, func: Function): void {

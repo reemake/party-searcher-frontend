@@ -1,0 +1,24 @@
+<div class="chat-div">
+  <h2>{{chat.name}}</h2>
+  <ul>
+    <li *ngFor="let message of messages">
+      <div class="message">
+        <h3>{{message.userId}}</h3>
+        <pre>{{message.text}}</pre>
+      </div>
+    </li>
+    <li *ngFor="let message of onlineMessages">
+      <div class="message">
+        <h3>{{message.userId}}</h3>
+        <pre>{{message.text}}</pre>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <form>
+    <input #text="ngModel" [(ngModel)]="message.text" name="text" type="text"/>
+    <button (click)="sendMessage()">отправить</button>
+  </form>
+</div>
