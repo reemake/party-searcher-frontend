@@ -87,7 +87,7 @@ export class EventSearchComponent implements OnInit {
       priceFrom: this.priceFromInput.value,
       priceTo: this.priceToInput.value,
       theme: this.eventThemeInput.value,
-      maxDistance: distance / Math.pow(10, 5),
+      maxDistance: distance / 100000 + 0.001,
       eventOwnerRating: this.ratingInput.value,
       userLocation: this.userLocation,
       eventFormats: formats,
