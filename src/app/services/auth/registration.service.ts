@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from '../../entity/User';
-import {AppModule, BACKEND_URL} from "../../app.module";
-import { APP_BASE_HREF } from '@angular/common';
+import {BACKEND_URL} from "../../app.module";
 
 @Injectable({
   providedIn: 'root'
