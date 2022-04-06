@@ -28,17 +28,41 @@ export class FriendsComponent implements OnInit {
       this.userService.getRequests().subscribe((data: Relationship[]) => {
         console.log("waiting requests");
         this.requests = data;
+        for (let i = 0; i < this.requests.length; i++) {
+          if (this.requests[i].id.friend.pictureUrl == null) {
+            this.requests[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.requests[i].id.owner.pictureUrl == null) {
+            this.requests[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
         if (this.requests.length > 0) this.requestsCheck = true;
       });
       this.userService.getFriends().subscribe((data: Relationship[]) => {
         console.log("waiting friends");
         this.friends = data;
+        for (let i = 0; i < this.friends.length; i++) {
+          if (this.friends[i].id.friend.pictureUrl == null) {
+            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.friends[i].id.owner.pictureUrl == null) {
+            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
         if (this.friends.length > 0) this.friendsCheck = true;
       }
       );
       this.userService.getSendedRequests().subscribe((data: Relationship[]) => {
         console.log("waiting sended requests");
         this.sendedRequests = data;
+        for (let i = 0; i < this.sendedRequests.length; i++) {
+          if (this.sendedRequests[i].id.friend.pictureUrl == null) {
+            this.sendedRequests[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.sendedRequests[i].id.owner.pictureUrl == null) {
+            this.sendedRequests[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
         console.log(this.sendedRequests);
         if (this.sendedRequests.length > 0) this.sendedRequestsCheck = true;
       }
@@ -59,12 +83,22 @@ export class FriendsComponent implements OnInit {
       if ((<HTMLInputElement>document.getElementById("searchOption")).value == "Поиск по логину") {
         this.userService.getUsersByLogin((<HTMLInputElement>field).value).subscribe((data: User[]) => {
           this.users = data;
+          for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].pictureUrl == null) {
+              this.users[i].pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+            }
+          }
           this.findCheck = true;
         })
       }
       if ((<HTMLInputElement>document.getElementById("searchOption")).value == "Поиск по имени и фамилии") {
         this.userService.getUsersByFirstLastName((<HTMLInputElement>field).value).subscribe((data: User[]) => {
           this.users = data;
+          for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].pictureUrl == null) {
+              this.users[i].pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+            }
+          }
           this.findCheck = true;
         })
       }

@@ -87,6 +87,12 @@
     font-size: 24px;
 }
 
+.listSelectorImage {
+    height: 53px;
+    width: 53px;
+    border-radius: 26px;
+}
+
 #autorisationAlert {
     width: calc(100% - 200px);
     text-align: center;

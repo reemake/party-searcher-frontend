@@ -77,7 +77,6 @@ const ROUTES: Routes = [
     FormsModule,
     CommonModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
     FileUploadModule,
