@@ -24,6 +24,11 @@ import { AccountsComponent } from './components/profile/accounts/accounts.compon
 import { DataComponent } from './components/profile/data/data.component';
 import { AuthGuardService } from './services/auth/auth-guard.service';
 
+import {FileUploadModule} from "ng2-file-upload";   
+import * as cloudinary from 'cloudinary-core';
+import cloudinaryConfiguration from './cloudinary_cfg';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
+
 export const BACKEND_URL: string = "http://localhost:8080";
 
 const ROUTES: Routes = [
@@ -63,6 +68,8 @@ const ROUTES: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
+    FileUploadModule,
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
   ],
   providers: [
     {
