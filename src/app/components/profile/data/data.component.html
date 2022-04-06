@@ -10,10 +10,14 @@
     </div>
 
     <div class="account-data">
-        <div class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+        <div *ngIf="!this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
                 <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
                 <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
         </div>
+        <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+    </div>
         <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
@@ -24,11 +28,18 @@
     <div class="content">
         <h2 id="title2">Мои данные</h2>
         <div class="data">
-           <div class="profileImage">
-               <label class="btn btn-default uploadImg">
-                    <input type="file" hidden><img alt="uploadImg" src="./assets/img/profile/add.png"/>
-               </label>
+
+            <!-- Image uploading field -->
+            <div *ngIf="!this.user.pictureUrl" class="profileImage">
+                <label class="btn btn-default uploadImg">
+                    <input type="file" ng2FileSelect [style.display]="'none'" [uploader]="uploader" #fileInput (change)="fileInput.value=''" (change)="photoSubmitOn()" hidden><img alt="uploadImg" src="./assets/img/profile/add.png"/>
+                </label>
             </div>
+
+
+            <img *ngIf="this.user.pictureUrl" class="profileImage" alt="accImg" src={{this.user.pictureUrl}}/>
+        
+        
             <div class="profileData">
                 <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
                 <p class="dataColumns">Логин: <b>{{user.login}}</b></p>
@@ -44,7 +55,7 @@
                     <div class="left-form">
                         <div class="form-group" id="email-form">
                             <input #email="ngModel" [(ngModel)]="userEdited.email" class="form-control" id="email" name="email"
-                                    placeholder="Введите адрес электронной почты" type="email"
+                                    placeholder="Адрес электронной почты" type="email"
                                     [class.is-invalid]="email.invalid" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
                             >
                         </div>
@@ -52,27 +63,27 @@
                         <div class="form-group" id="firstname-form">
                             <input #firstName="ngModel" [(ngModel)]="userEdited.firstName"
                                 class="form-control" id="firstName"
-                                name="firstName" placeholder="Введите имя"
+                                name="firstName" placeholder="Имя"
                                 type="text">
                         </div>
 
                         <div class="form-group" id="lastname-form">
                             <input #lastName="ngModel" [(ngModel)]="userEdited.lastName" class="form-control" id="lastName" name="lastName"
-                                placeholder="Введите фамилию" type="text">
+                                placeholder="Фамилия" type="text">
                         </div>
                     </div>
 
                     <div class="right-form">
                         <div class="form-group" id="phone-form">
                             <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone" name="phone"
-                                placeholder="Введите номер телефона" type="tel"
+                                placeholder="Номер телефона" type="tel"
                                 [class.is-invalid]="phone.invalid" pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$"
                             >
                         </div>
 
                         <div class="form-group" id="password-form">
                             <input #password="ngModel" [(ngModel)]="userEdited.password" class="form-control" id="pwd" name="password"
-                                placeholder="Введите новый пароль" type="password"
+                                placeholder="Новый пароль" type="password"
                             >
                         </div>
 
@@ -91,4 +102,24 @@
 
         </div>
     </div>
+
+    
+        <div *ngIf="this.isPhotoUploaded">
+            <div id="photoStatus" class="file" *ngFor="let response of responses; let i = index">
+                    <h3>{{response.file.name}}</h3>
+                    <div class="status">
+                        Uploading... {{response.progress}}%
+                        <div *ngIf="!response.status">In progress</div>
+                        <div class="status-code" *ngIf="response.status">Upload completed with status code {{response.status}}</div>
+                    </div>
+                    <div *ngIf="!response.status" class="progress-bar">
+                        <div class="progress" role="progressbar" [style.width.%]="response.progress"></div>
+                    </div>
+                    <button *ngIf="response.status" class="btn btn-lg btn-danger modalBtn"
+                            onclick="(document.getElementById('photoStatus').style.display='none')"
+                            onclick="(document.getElementById('photoStatus').innerHTML = '')"
+                            (click)="photoSubmitOff(response.data, dataChangeForm)">Закрыть
+                    </button>
+            </div>
+        </div>
 </div>

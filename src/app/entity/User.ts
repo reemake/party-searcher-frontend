@@ -7,5 +7,6 @@ export class User {
   phone:string;
   commercialUser:boolean;
   commercialUserCreated:boolean;
+  pictureUrl:string;
   constructor(){}
 }

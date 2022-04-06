@@ -26,6 +26,11 @@ import {ListComponent} from "./components/events/list/list.component";
 import {ChatComponent} from "./components/chat/chat.component";
 import {FriendsComponent} from "./components/pages/friends/friends.component";
 
+import {FileUploadModule} from "ng2-file-upload";   
+import * as cloudinary from 'cloudinary-core';
+import cloudinaryConfiguration from './cloudinary_cfg';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
+
 export const BACKEND_URL: string = "http://localhost:8080";
 
 const ROUTES: Routes = [
@@ -45,7 +50,6 @@ const ROUTES: Routes = [
 
 
 ];
-
 
 @NgModule({
   declarations: [
@@ -73,8 +77,11 @@ const ROUTES: Routes = [
     FormsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES) ,
-    ReactiveFormsModule
+    BrowserAnimationsModule,
+    RouterModule.forRoot(ROUTES),
+    ReactiveFormsModule,
+    FileUploadModule,
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
   ],
   providers: [
     {
