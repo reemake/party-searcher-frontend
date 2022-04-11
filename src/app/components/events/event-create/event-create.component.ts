@@ -32,6 +32,7 @@ export class EventCreateComponent implements OnInit {
   public urlInput: FormControl;
   public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
   public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
+  public hasChatWithOwnerInput: FormControl = new FormControl(false);
   public error: string = "";
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
@@ -180,7 +181,8 @@ export class EventCreateComponent implements OnInit {
       maxNumberOfGuests: this.maxGuestsCountInput.value,
       price: this.priceInput.value,
       tags: [],
-      guests: []
+      guests: [],
+      hasChatWithOwner: !this.hasChatWithOwnerInput.value
     };
     this.tagsInputs.forEach(val => {
       let tag: Tag = {name: String(val.value).toUpperCase()};

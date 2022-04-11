@@ -38,6 +38,10 @@ export class ChatService {
     return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createEventChat", event);
   }
 
+  public createChatWithUser(username: string): Observable<number> {
+    return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createChatWithUser", {}, {params: {username: username}});
+  }
+
   public getMessages(chatId: number): Observable<Array<Message>> {
     return this.httpClient.get<Array<Message>>(BACKEND_URL + "/api/chat/getMessages", {params: {chatId: chatId}});
   }

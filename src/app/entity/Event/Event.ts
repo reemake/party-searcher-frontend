@@ -22,6 +22,7 @@ export interface Event {
   currentUserEntered?: boolean,
   theme: string,
   tags: Array<Tag>
-  guests: Array<EventAttendance>
+  guests: Array<EventAttendance>,
+  hasChatWithOwner: boolean
 
 }

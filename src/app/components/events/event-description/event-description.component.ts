@@ -42,8 +42,11 @@ export class EventDescriptionComponent implements OnInit {
       this.eventService.removeCurrentUserFromEvent(this.event.id)
         .subscribe(success => {
           if (this.event) {
+            console.log(success)
             this.event.currentUserEntered = false;
+            console.log(this.event.guests)
             this.event.guests = this.event.guests.filter(guest => guest.user.login !== success.response);
+            console.log(this.event.guests)
           }
         }, error1 => {
           alert("Произошла ошибка")

@@ -26,6 +26,9 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(request).pipe(tap((val) => {
         if (val instanceof HttpResponse) {
+          var username = val.headers.get("username");
+          if (localStorage.getItem('username') !== username && username)
+            localStorage.setItem("username", username);
           this.authService.setAuth(val);
         }
       }), catchError(error => {

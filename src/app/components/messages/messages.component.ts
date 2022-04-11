@@ -4,6 +4,8 @@ import {Chat} from "../../entity/Chat/Chat";
 import {UserService} from "../pages/friends/user.service";
 import {Subscription} from "rxjs";
 import {Message} from "../../entity/Chat/Message";
+import {FormControl} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-messages',
@@ -11,6 +13,7 @@ import {Message} from "../../entity/Chat/Message";
   styleUrls: ['./messages.component.css']
 })
 export class MessagesComponent implements OnInit, OnDestroy {
+  public inputCntrl: FormControl = new FormControl("");
   public searchString: string = "";
   public chats: Chat[] = [];
   public searchedChats: Chat[] = [];
@@ -18,7 +21,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   public subscribes: Subscription[] = []
   private chatsMap: Map<number, Chat> = new Map<number, Chat>();
 
-  constructor(private chatService: ChatService, private userService: UserService) {
+  constructor(private chatService: ChatService, private userService: UserService, private router: Router) {
   }
 
   ngOnDestroy(): void {
@@ -26,6 +29,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.inputCntrl.valueChanges.subscribe(val => this.searchChats(val));
     this.chatService.getCurrentChatsAndMessages().subscribe(chats => {
       this.chats = chats;
       this.chats.forEach(chat => {
@@ -44,8 +48,15 @@ export class MessagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public searchChats(): void {
-    if (this.searchString === "") {
+  public createChatWithFriend(username: string): void {
+    this.chatService.createChatWithUser(username).subscribe(chatId => {
+      this.router.navigate(['/chat', {id: chatId}]);
+    });
+  }
+
+  public searchChats(str: string): void {
+    this.searchString = str;
+    if (this.searchString === "" || !this.searchString) {
       this.searchedChats = [];
       this.isChatsSearched = false;
     } else {
@@ -53,21 +64,23 @@ export class MessagesComponent implements OnInit, OnDestroy {
       this.searchedChats = this.chats.filter(chat => chat.name.toLowerCase().startsWith(this.searchString.toLowerCase()));
       this.userService.getFriends().subscribe(friends => {
         friends.map(friend => {
-          if (this.searchedChats.filter(filterChats => filterChats.name === `${friend.id.friend.firstName} ${friend.id.friend.lastName}` && filterChats.isPrivate &&
-            filterChats.users.filter(u => u.login === friend.id.friend.login).length == 0).length == 0) {
+          console.log(friend)
+          if (this.searchedChats.filter(filterChats => filterChats.name === `${friend.id.owner.firstName} ${friend.id.owner.lastName}` && filterChats.isPrivate &&
+              filterChats.users.filter(u => u.login === friend.id.owner.login).length == 0).length == 0 &&
+            `${friend.id.owner.firstName} ${friend.id.owner.lastName}`.toLowerCase().startsWith(this.searchString)) {
             this.searchedChats.push({
               isNewFriendChat: true,
               isPrivate: true,
-              name: `${friend.id.friend.firstName} ${friend.id.friend.lastName}`,
+              name: `${friend.id.owner.firstName} ${friend.id.owner.lastName}`,
               id: -1,
               users:
                 [{
-                  login: friend.id.friend.login,
+                  login: friend.id.owner.login,
                   commercialUser: false,
                   commercialUserCreated: false,
-                  pictureUrl: friend.id.friend.pictureUrl,
-                  firstName: friend.id.friend.firstName,
-                  lastName: friend.id.friend.lastName,
+                  pictureUrl: friend.id.owner.pictureUrl,
+                  firstName: friend.id.owner.firstName,
+                  lastName: friend.id.owner.lastName,
                   email: '',
                   password: '',
                   phone: ''
