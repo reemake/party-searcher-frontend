@@ -1,5 +1,5 @@
 import {Message} from "./Message";
-import {User} from "../User";
+import {ChatUser} from "./ChatUser";
 
 export interface Chat {
   id: number,
@@ -7,5 +7,5 @@ export interface Chat {
   private: boolean
   message?: Message
   isNewFriendChat?: boolean
-  users: User[];
+  chatUsers: ChatUser[];
 }

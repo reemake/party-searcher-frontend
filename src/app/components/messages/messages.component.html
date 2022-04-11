@@ -11,7 +11,8 @@
     <li *ngFor="let chat of searchedChats">
       <a *ngIf="!chat.isNewFriendChat" href="/chat;id={{chat.id}}">{{chat.name}}</a>
       <p *ngIf="chat.isNewFriendChat">{{chat.name}}</p>
-      <button (click)="createChatWithFriend(chat.users[0]?.login||'')" *ngIf="chat.isNewFriendChat" class="beginDialog">
+      <button (click)="createChatWithFriend(chat.chatUsers[0]?.user?.login||'')" *ngIf="chat.isNewFriendChat"
+              class="beginDialog">
         начать диалог
       </button>
       <p *ngIf="!chat.isNewFriendChat">{{chat.message?.text}}</p>

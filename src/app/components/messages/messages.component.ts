@@ -32,6 +32,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.inputCntrl.valueChanges.subscribe(val => this.searchChats(val));
     this.chatService.getCurrentChatsAndMessages().subscribe(chats => {
+      console.log(chats)
       this.chats = chats;
       this.chats.forEach(chat => {
         this.chatsMap.set(chat.id, chat);
@@ -75,24 +76,27 @@ export class MessagesComponent implements OnInit, OnDestroy {
     var privateChats = this.searchedChats.filter(chat => chat.private);
     friends.map(friend => {
 
-      if (privateChats.filter(chat => chat.users.filter(user => user.login === friend.id.owner.login).length != 0).length == 0) {
+      if (privateChats.filter(chat => chat.chatUsers.filter(user => user.user.login === friend.id.owner.login).length != 0).length == 0) {
         if (`${friend.id.owner.firstName} ${friend.id.owner.lastName}`.toLowerCase().startsWith(this.searchString.toLowerCase()))
           this.searchedChats.push({
             isNewFriendChat: true,
             private: true,
             name: `${friend.id.owner.firstName} ${friend.id.owner.lastName}`,
             id: -1,
-            users:
+            chatUsers:
               [{
-                login: friend.id.owner.login,
-                commercialUser: false,
-                commercialUserCreated: false,
-                pictureUrl: friend.id.owner.pictureUrl,
-                firstName: friend.id.owner.firstName,
-                lastName: friend.id.owner.lastName,
-                email: '',
-                password: '',
-                phone: ''
+                user: {
+                  login: friend.id.owner.login,
+                  commercialUser: false,
+                  commercialUserCreated: false,
+                  pictureUrl: friend.id.owner.pictureUrl,
+                  firstName: friend.id.owner.firstName,
+                  lastName: friend.id.owner.lastName,
+                  email: '',
+                  password: '',
+                  phone: ''
+                },
+                chatUserType: ''
               }]
           });
       }
