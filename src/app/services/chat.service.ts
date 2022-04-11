@@ -3,11 +3,11 @@ import {IMessage, StompHeaders} from "@stomp/stompjs";
 import {Observable, Subject} from "rxjs";
 import {AuthenticationService} from "./auth/authentication.service";
 import {BACKEND_URL} from "../app.module";
-import {Message} from "../entity/Message";
+import {Message} from "../entity/Chat/Message";
 import {RxStomp} from "@stomp/rx-stomp";
 import {HttpClient} from "@angular/common/http";
 import {Event} from "../entity/Event/Event";
-import {Chat} from "../entity/Chat";
+import {Chat} from "../entity/Chat/Chat";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class ChatService {
       brokerURL: this.url
     })
     this.url = BACKEND_URL;
-    this.url = this.url.replace("https://", "wss://") + "/chatService";
+    this.url = this.url.replace("http://", "ws://") + "/chatService";
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["jwt"] = this.authService.getToken();
     this.rxStomp.configure({
@@ -29,6 +29,7 @@ export class ChatService {
       debug: console.log,
       connectHeaders: stompHeaders
     });
+    this.rxStomp.activate();
 
   }
 
@@ -42,8 +43,6 @@ export class ChatService {
   }
 
   public subscribe(chatId: number): Observable<IMessage> {
-    if (!this.rxStomp.active)
-      this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["chatId"] = chatId.toString();
     var observer: Subject<any> = new Subject<any>();
@@ -52,8 +51,6 @@ export class ChatService {
   }
 
   public sendMessage(message: Message): void {
-    if (!this.rxStomp.active)
-      this.rxStomp.activate();
     this.rxStomp.publish({
       destination: "/app/sendMessage/" + message.chatId,
       body: JSON.stringify(message)
@@ -62,5 +59,9 @@ export class ChatService {
 
   public get(id: number): Observable<Chat> {
     return this.httpClient.get<Chat>(BACKEND_URL + "/api/chat", {params: {chatId: id}});
+  }
+
+  public getCurrentChatsAndMessages(): Observable<Chat[]> {
+    return this.httpClient.get<Chat[]>(BACKEND_URL + "/api/chat/getCurrentChats");
   }
 }

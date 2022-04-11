@@ -1,0 +1,16 @@
+<input (ngModelChange)="searchChats()" [(ngModel)]="searchString" type="text"/>
+<button>Создать беседу</button>
+<div>
+  <ul *ngIf="!isChatsSearched">
+    <li *ngFor="let chat of chats">
+      <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
+      <p>{{chat.message?.text}}</p>
+    </li>
+  </ul>
+  <ul *ngIf="isChatsSearched">
+    <li *ngFor="let chat of searchedChats">
+      <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
+      <p>{{chat.message?.text}}</p>
+    </li>
+  </ul>
+</div>
