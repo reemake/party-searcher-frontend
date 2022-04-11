@@ -21,19 +21,30 @@ export class ChatService {
       brokerURL: this.url
     })
     this.url = BACKEND_URL;
-    this.url = this.url.replace("https://", "wss://") + "/chatService";
+    this.url = this.url.replace("http://", "ws://") + "/chatService";
     var stompHeaders: StompHeaders = new StompHeaders();
-    stompHeaders["jwt"] = this.authService.getToken();
+    stompHeaders["Authorization"] = this.authService.getToken();
     this.rxStomp.configure({
       brokerURL: this.url,
       debug: console.log,
       connectHeaders: stompHeaders
     });
-    this.rxStomp.activate();
+    this.authService.updateJWT.subscribe(val => {
+      var stompHeaders: StompHeaders = new StompHeaders();
+      stompHeaders["Authorization"] = val;
+      this.rxStomp.configure({
+        brokerURL: this.url,
+        debug: console.log,
+        connectHeaders: stompHeaders
+      });
+
+    })
 
   }
 
   public createChat(event: Event): Observable<number> {
+    if (!this.rxStomp.active)
+      this.rxStomp.activate();
     console.log(event);
     return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createEventChat", event);
   }
@@ -47,6 +58,8 @@ export class ChatService {
   }
 
   public subscribe(chatId: number): Observable<IMessage> {
+    if (!this.rxStomp.active)
+      this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["chatId"] = chatId.toString();
     var observer: Subject<any> = new Subject<any>();
@@ -55,6 +68,8 @@ export class ChatService {
   }
 
   public sendMessage(message: Message): void {
+    if (!this.rxStomp.active)
+      this.rxStomp.activate();
     this.rxStomp.publish({
       destination: "/app/sendMessage/" + message.chatId,
       body: JSON.stringify(message)

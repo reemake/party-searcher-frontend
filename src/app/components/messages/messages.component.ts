@@ -22,7 +22,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   public subscribes: Subscription[] = []
   private chatsMap: Map<number, Chat> = new Map<number, Chat>();
   private maxMessageLength = 80;
-
+  public imagesMaps: Map<number, string> = new Map<number, string>();
   constructor(private chatService: ChatService, private userService: UserService, private router: Router) {
   }
 
@@ -33,9 +33,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.inputCntrl.valueChanges.subscribe(val => this.searchChats(val));
     this.chatService.getCurrentChatsAndMessages().subscribe(chats => {
-      console.log(chats)
       this.chats = chats;
+      this.sortChats();
       this.chats.forEach(chat => {
+        if (chat.private) {
+          this.imagesMaps = this.imagesMaps.set(chat.id, chat.chatUsers.filter(cu => cu.user.login !== localStorage.getItem("username"))[0].user.pictureUrl);
+        }
         this.chatsMap.set(chat.id, chat)
         if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
           chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
@@ -54,8 +57,22 @@ export class MessagesComponent implements OnInit, OnDestroy {
         if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
           chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
         }
+        this.sortChats();
       }
     }
+  }
+
+
+  public sortChats(): void {
+    this.chats.sort((chat: Chat, chat2: Chat) => {
+      if (chat.message?.sendTime && chat2.message?.sendTime)
+        if (chat.message?.sendTime > chat2.message?.sendTime) {
+          return -1;
+        } else if (chat.message?.sendTime < chat2.message?.sendTime) {
+          return 1;
+        }
+      return 0;
+    });
   }
 
   public createChatWithFriend(username: string): void {

@@ -7,6 +7,9 @@
   <div>
     <ul *ngIf="!isChatsSearched">
       <li *ngFor="let chat of chats">
+        <img *ngIf="!chat.private " class="miniImage" src="assets/img/group-chat.png"/>
+        <img *ngIf="chat.private && !imagesMaps.get(chat.id)" class="miniImage" src="assets/img/profile/user.png"/>
+        <img *ngIf="chat.private && imagesMaps.get(chat.id)" class="miniImage" src="{{imagesMaps.get(chat.id)}}"/>
         <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
         <p>{{chat.message?.text}}</p>
         <hr/>
@@ -15,6 +18,9 @@
     </ul>
   <ul *ngIf="isChatsSearched">
     <li *ngFor="let chat of searchedChats">
+      <img *ngIf="!chat.private " class="miniImage" src="assets/img/group-chat.png"/>
+      <img *ngIf="chat.private && !imagesMaps.get(chat.id)" class="miniImage" src="assets/img/profile/user.png"/>
+      <img *ngIf="chat.private && imagesMaps.get(chat.id)" class="miniImage" src="{{imagesMaps.get(chat.id)}}"/>
       <a *ngIf="!chat.isNewFriendChat" href="/chat;id={{chat.id}}">{{chat.name}}</a>
       <p *ngIf="chat.isNewFriendChat">{{chat.name}}</p>
       <button (click)="createChatWithFriend(chat.chatUsers[0]?.user?.login||'')" *ngIf="chat.isNewFriendChat"

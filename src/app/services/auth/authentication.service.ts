@@ -1,6 +1,6 @@
 import {HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {BACKEND_URL} from 'src/app/app.module';
 import {Jwt} from 'src/app/entity/Jwt';
 import {Router} from "@angular/router";
@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class AuthenticationService {
 
+  public updateJWT: Subject<string> = new Subject<string>();
   private hasAuth: boolean = false;
 
   constructor(private httpClient: HttpClient, private router: Router) {
@@ -43,9 +44,10 @@ export class AuthenticationService {
     return localStorage.getItem("token") || "";
   }
 
+
   public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
     if (httpEvent instanceof HttpErrorResponse) {
-      if (httpEvent.status == 403) {
+      if (httpEvent.status == 403 || httpEvent.status == 401) {
         console.log("SET BAD")
         this.hasAuth = false;
         return this.refreshToken();
