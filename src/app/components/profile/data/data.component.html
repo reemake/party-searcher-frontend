@@ -38,7 +38,7 @@
 
 
             <img *ngIf="this.user.pictureUrl" class="profileImage" alt="accImg" src={{this.user.pictureUrl}}/>
-            <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3">Удалить фото</button>
+            <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3" (click)="deletePhoto(dataChangeForm)">Удалить фото</button>
         
             <div class="profileData">
                 <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>

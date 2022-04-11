@@ -271,6 +271,7 @@ export class DataComponent implements OnInit {
       result => {
           console.log("user successfully updated with photo");
           dataChangeForm.reset();
+          window.location.reload();
           this.getUserInfo();
       },
       error => {
@@ -292,7 +293,35 @@ export class DataComponent implements OnInit {
       this.photoUrl = properties[15].value;
       this.updateUserWithPhoto(dataChangeForm);
 
+    }
   }
+
+  deletePhoto(dataChangeForm: NgForm) {
+    this.userEdited.login = this.user.login;
+    if (this.userEdited.email == null)
+      this.userEdited.email = this.user.email;
+    if (this.userEdited.firstName == null)
+      this.userEdited.firstName = this.user.firstName;
+    if (this.userEdited.lastName == null)
+      this.userEdited.lastName = this.user.lastName;
+    if (this.userEdited.phone == null)
+      this.userEdited.phone = this.user.phone;
+    if (this.userEdited.pictureUrl == null)
+      this.userEdited.pictureUrl = this.user.pictureUrl;
+    console.log(this.userEdited);
+    this.userService.deleteUserPhoto(this.userEdited).subscribe(
+      result => {
+          console.log("user photo successfully deleted");
+          dataChangeForm.reset();
+          this.photoUrl = '';
+          this.user.pictureUrl = '';
+          window.location.reload();
+          this.getUserInfo();
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
     
 }
