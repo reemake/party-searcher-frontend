@@ -12,16 +12,32 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(login: string): Observable<User[]> {
-    const headers = { 'login': login }
-    return this.http.get<User[]>(BACKEND_URL + "/api/usersList", {headers});
+  getUsersByLogin(login: string): Observable<User[]> {
+    const params = { 'login': login }
+    console.log("waiting data");
+    return this.http.get<User[]>(BACKEND_URL + "/api/users/usersListByLogin", {params: params});
+  }
+
+  getUsersByFirstLastName(name: string): Observable<User[]> {
+    const headers = { 
+      "name": name
+     };
+     console.log("waiting data");
+     return this.http.get<User[]>(BACKEND_URL + "/api/users/usersListByName", {params: headers});
   }
 
   getRequests(): Observable<Relationship[]> {
-    return this.http.get<Relationship[]>(BACKEND_URL + "/api/getRequests");
+    console.log("waiting data");
+    return this.http.get<Relationship[]>(BACKEND_URL + "/api/friends/getRequests");
   }
 
   getFriends(): Observable<Relationship[]> {
-    return this.http.get<Relationship[]>(BACKEND_URL + "/api/getFriends");
+    console.log("waiting data");
+    return this.http.get<Relationship[]>(BACKEND_URL + "/api/friends/getFriends");
+  }
+
+  getSendedRequests(): Observable<Relationship[]> {
+    console.log("waiting data");
+    return this.http.get<Relationship[]>(BACKEND_URL + "/api/friends/getSendedRequests");
   }
 }

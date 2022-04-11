@@ -114,7 +114,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-    this.projection = GetProjection('EPSG:3857');
+    this.projection = GetProjection('EPSG:3857') || undefined;
     this.view = new View({
       center: this.center,
       zoom: this.zoom,

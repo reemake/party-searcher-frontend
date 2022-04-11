@@ -25,9 +25,13 @@ import {AuthGuardService} from './services/auth/auth-guard.service';
 import {ListComponent} from "./components/events/list/list.component";
 import {ChatComponent} from "./components/chat/chat.component";
 import {FriendsComponent} from "./components/pages/friends/friends.component";
+import {FileUploadModule} from "ng2-file-upload";
+import * as cloudinary from 'cloudinary-core';
+import cloudinaryConfiguration from './cloudinary_cfg';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
 
-//export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
-export const BACKEND_URL: string = "http://localhost:8080";
+export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
+
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
@@ -73,7 +77,9 @@ const ROUTES: Routes = [
     CommonModule,
     HttpClientModule,
     RouterModule.forRoot(ROUTES) ,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule,
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
   ],
   providers: [
     {
