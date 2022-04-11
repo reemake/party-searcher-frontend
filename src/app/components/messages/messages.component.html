@@ -1,12 +1,18 @@
-<input [formControl]="inputCntrl" type="text"/>
-<button>Создать беседу</button>
-<div>
-  <ul *ngIf="!isChatsSearched">
-    <li *ngFor="let chat of chats">
-      <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
-      <p>{{chat.message?.text}}</p>
-    </li>
-  </ul>
+<div class="messages-div">
+  <div class="messages-header">
+    <input [formControl]="inputCntrl" class="form-control border-3 border-info" type="text"/>
+    <button class="btn btn-secondary">Создать беседу</button>
+  </div>
+
+  <div>
+    <ul *ngIf="!isChatsSearched">
+      <li *ngFor="let chat of chats">
+        <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
+        <p>{{chat.message?.text}}</p>
+        <hr/>
+      </li>
+
+    </ul>
   <ul *ngIf="isChatsSearched">
     <li *ngFor="let chat of searchedChats">
       <a *ngIf="!chat.isNewFriendChat" href="/chat;id={{chat.id}}">{{chat.name}}</a>
@@ -16,6 +22,8 @@
         начать диалог
       </button>
       <p *ngIf="!chat.isNewFriendChat">{{chat.message?.text}}</p>
+      <hr/>
     </li>
   </ul>
+  </div>
 </div>

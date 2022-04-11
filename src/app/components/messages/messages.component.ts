@@ -21,6 +21,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   public isChatsSearched = false;
   public subscribes: Subscription[] = []
   private chatsMap: Map<number, Chat> = new Map<number, Chat>();
+  private maxMessageLength = 80;
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router) {
   }
@@ -35,7 +36,10 @@ export class MessagesComponent implements OnInit, OnDestroy {
       console.log(chats)
       this.chats = chats;
       this.chats.forEach(chat => {
-        this.chatsMap.set(chat.id, chat);
+        this.chatsMap.set(chat.id, chat)
+        if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
+          chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
+        }
         this.subscribes.push(this.chatService.subscribe(chat.id).subscribe(message => this.addMessage(JSON.parse(message.body))));
       })
     });
@@ -45,7 +49,11 @@ export class MessagesComponent implements OnInit, OnDestroy {
     var chat = this.chatsMap.get(message.chatId);
     if (chat) {
       if (chat.message?.sendTime && chat.message?.sendTime < message.sendTime) {
+
         chat.message = message;
+        if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
+          chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
+        }
       }
     }
   }
