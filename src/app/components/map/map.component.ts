@@ -25,7 +25,6 @@ export class MapComponent implements AfterViewInit {
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
-  eventsId: Set<number> = new Set<number>();
   _events: Array<Event> = new Array<Event>();
 
   public get events(): Array<Event> {
@@ -61,9 +60,7 @@ export class MapComponent implements AfterViewInit {
    * @private
    */
   private userLocation: Coordinate = [54, 54];
-  private clickedLocation: number[] = [];
   private eventsMap: WeakMap<Feature<any>, Event[]> = new WeakMap<Feature<any>, Event[]>()
-  private features: Feature<any>[] = [];
   private previousEventsMarkersLayer: VectorLayer<any> = new VectorLayer({});
   private previousCurrentUserLocationICON: VectorLayer<any> = new VectorLayer<any>();
   private previousClickedLocationICON: VectorLayer<any> = new VectorLayer<any>();
@@ -117,7 +114,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private initMap(): void {
-    this.projection = GetProjection('EPSG:3857');
+    this.projection = GetProjection('EPSG:3857') || undefined;
     this.view = new View({
       center: this.center,
       zoom: this.zoom,
@@ -158,7 +155,7 @@ export class MapComponent implements AfterViewInit {
 
 
       switchMap.className = "mapBtn switchBtn"
-      switchMap.innerHTML = ' <img alt="поиск" src="./assets/img/mapImages/map-image.png"/>';
+      switchMap.innerHTML = ' <img alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" />';
       switchMap.addEventListener('click', () => {
         this.callListItem.emit(true);
       })
@@ -226,8 +223,6 @@ export class MapComponent implements AfterViewInit {
     if (this.previousEventsMarkersLayer.getSource() === null) {
       this.events.forEach(event => {
         if (event.location !== undefined) {
-          if (event.id)
-            this.eventsId.add(event.id);
           let feature: any = null;
 
           var locationStr = JSON.stringify(event.location.location);
@@ -267,11 +262,7 @@ export class MapComponent implements AfterViewInit {
     } else {
       var source: VectorSource<any> = this.previousEventsMarkersLayer.getSource();
       var features1 = new Array<Feature<any>>();
-      var localSet = new Set();
       this.events.forEach(event => {
-        localSet = localSet.add(event.id);
-        if (!this.eventsId.has(<number>event.id)) {
-          this.eventsId.add(<number>event.id)
           if (event.location !== undefined) {
             var locationStr = JSON.stringify(event.location.location);
             var feature = null;
@@ -300,31 +291,11 @@ export class MapComponent implements AfterViewInit {
               this.eventsMap.get(feature)?.push(event);
             }
           }
-        }
       });
-      if (this.events.length == 0) {
-        source.clear();
-        this.eventsId.clear();
-      }
+      source.clear();
       source.addFeatures(features1);
-      this.features.forEach((key) => {
-        var count = 0;
-        var val = this.eventsMap.get(key);
-        val?.forEach(v => {
-          if (!localSet.has(v.id)) {
-            count++;
-            if (v.id != null) {
-              this.eventsId.delete(v.id)
-            }
-          }
-        })
-        if (count == val?.length) {
-          source.removeFeature(key);
-          this.eventsMap.delete(key)
-          this.features = this.features.filter(v => v !== key);
-        }
-      })
     }
+
     this.previousEventsMarkersLayer.changed();
   }
 
@@ -332,6 +303,7 @@ export class MapComponent implements AfterViewInit {
     navigator.geolocation.getCurrentPosition((position) => {
       this.center = [position.coords.longitude, position.coords.latitude];
       this.userLocation = [position.coords.longitude, position.coords.latitude];
+      this.changeLocation.emit(this.userLocation);
       if (this.map !== undefined)
         this.map.getView().setCenter(transform([this.center[0], this.center[1]], 'EPSG:4326', 'EPSG:3857'));
 
@@ -349,7 +321,8 @@ export class MapComponent implements AfterViewInit {
     feature.setStyle(new Style({
       image: new Icon(({
         crossOrigin: 'anonymous',
-        src: '../assets/img/mapImages/currentPosition.png'
+        src: '../assets/img/mapImages/currentPosition.png',
+        opacity: 0.5
       }))
     }));
 

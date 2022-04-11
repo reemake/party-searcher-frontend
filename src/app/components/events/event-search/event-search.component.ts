@@ -36,8 +36,8 @@ export class EventSearchComponent implements OnInit {
   public ratingInput: FormControl = new FormControl();
   public eventFormatInput: FormControl = new FormControl("offline");
   public eventTypeInput: FormControl = new FormControl();
-  public distanceMeasureInput: FormControl = new FormControl();
-  public freeEventInput: FormControl = new FormControl();
+  public distanceMeasureInput: FormControl = new FormControl("KILOMETERS");
+  public paidEventInput: FormControl = new FormControl();
 
   constructor(private eventService: EventService) {
   }
@@ -87,11 +87,11 @@ export class EventSearchComponent implements OnInit {
       priceFrom: this.priceFromInput.value,
       priceTo: this.priceToInput.value,
       theme: this.eventThemeInput.value,
-      maxDistance: distance / Math.pow(10, 5),
+      maxDistance: distance > 0 ? distance / 100000 + 0.001 : 0,
       eventOwnerRating: this.ratingInput.value,
       userLocation: this.userLocation,
       eventFormats: formats,
-      freeEvents: this.freeEventInput.value
+      freeEvents: !this.paidEventInput.value
     };
     if (this.isPagingUsed) {
       this.filterChanged.emit(filterData);
@@ -99,6 +99,7 @@ export class EventSearchComponent implements OnInit {
       this.eventService.filter(filterData).subscribe(e => {
         this.filterChanged.emit(filterData);
         this.eventsSearched.emit(e);
+        console.log(e);
       })
 
   }

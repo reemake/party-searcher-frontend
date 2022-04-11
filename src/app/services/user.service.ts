@@ -23,8 +23,8 @@ export class UserService {
     return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateUser", user);
   }
 
-  public approvePassword(login: string, password: string): Observable<any> {
-    return this.httpClient.get<any>(BACKEND_URL + "/api/users/approvePassword", {params: {login, password}});
+  public approvePassword(login: string, password: string): Observable<boolean> {
+    return this.httpClient.get<boolean>(BACKEND_URL + "/api/users/approvePassword", {params: {login, password}});
   }
 
 }

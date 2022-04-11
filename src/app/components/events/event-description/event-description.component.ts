@@ -28,8 +28,8 @@ export class EventDescriptionComponent implements OnInit {
           if (this.event !== null) {
             this.event.currentUserEntered = true;
             var user = new User();
-            user.login = resp.response;
-            this.event.guests.push({user: user})
+            user.login = localStorage.getItem("username") || '';
+            this.event.guests.push({id: {userId: user.login, eventId: this.event.id || -1}})
           }
         }, error => {
           this.error = "Произошла ошибка при записи на событие";
@@ -42,8 +42,12 @@ export class EventDescriptionComponent implements OnInit {
       this.eventService.removeCurrentUserFromEvent(this.event.id)
         .subscribe(success => {
           if (this.event) {
+            console.log(this.event)
+            console.log(success)
             this.event.currentUserEntered = false;
-            this.event.guests = this.event.guests.filter(guest => guest.user.login !== success.response);
+            console.log(this.event.guests)
+            this.event.guests = this.event.guests.filter(guest => guest.id.userId !== localStorage.getItem("username") || '');
+            console.log(this.event.guests)
           }
         }, error1 => {
           alert("Произошла ошибка")
@@ -51,7 +55,8 @@ export class EventDescriptionComponent implements OnInit {
   }
 
   callEventOwner(): void {
-
+    if (this.event?.owner)
+      this.chatService.createChatWithUser(this.event?.owner.login).subscribe(id => this.router.navigate(['/chat', {id: id}]));
   }
 
 

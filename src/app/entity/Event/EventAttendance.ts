@@ -1,5 +1,5 @@
-import {User} from "../User";
+import {UserEventKey} from "./UserEventKey";
 
 export interface EventAttendance {
-  user: User
+  id: UserEventKey
 }

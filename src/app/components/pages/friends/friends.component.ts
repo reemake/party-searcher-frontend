@@ -16,22 +16,60 @@ export class FriendsComponent implements OnInit {
   users: User[];
   requests: Relationship[];
   friends: Relationship[];
+  sendedRequests: Relationship[];
   requestsCheck: boolean = false;
   friendsCheck: boolean = false;
+  sendedRequestsCheck: boolean = false;
+  autorisationCheck: boolean;
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
-    this.userService.getRequests().subscribe((data: Relationship[]) => {
-      console.log("waiting requests");
-      this.requests = data;
-      if (this.requests.length > 0) this.requestsCheck = true;
-    });
-    this.userService.getFriends().subscribe((data: Relationship[]) => {
-      console.log("waiting friends");
-      this.friends = data;
-      if (this.friends.length > 0) this.friendsCheck = true;
+    if (localStorage.getItem("token")) {
+      this.autorisationCheck = true;
+      this.userService.getRequests().subscribe((data: Relationship[]) => {
+        console.log("waiting requests");
+        this.requests = data;
+        for (let i = 0; i < this.requests.length; i++) {
+          if (this.requests[i].id.friend.pictureUrl == null) {
+            this.requests[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.requests[i].id.owner.pictureUrl == null) {
+            this.requests[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
+        if (this.requests.length > 0) this.requestsCheck = true;
+      });
+      this.userService.getFriends().subscribe((data: Relationship[]) => {
+        console.log("waiting friends");
+        this.friends = data;
+        for (let i = 0; i < this.friends.length; i++) {
+          if (this.friends[i].id.friend.pictureUrl == null) {
+            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.friends[i].id.owner.pictureUrl == null) {
+            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
+        if (this.friends.length > 0) this.friendsCheck = true;
+      }
+      );
+      this.userService.getSendedRequests().subscribe((data: Relationship[]) => {
+        console.log("waiting sended requests");
+        this.sendedRequests = data;
+        for (let i = 0; i < this.sendedRequests.length; i++) {
+          if (this.sendedRequests[i].id.friend.pictureUrl == null) {
+            this.sendedRequests[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.sendedRequests[i].id.owner.pictureUrl == null) {
+            this.sendedRequests[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
+        console.log(this.sendedRequests);
+        if (this.sendedRequests.length > 0) this.sendedRequestsCheck = true;
+      }
+      );
+    } else {
+      this.autorisationCheck = false;
     }
-
-    );
   }
 
   ngOnInit(): void {
@@ -42,10 +80,28 @@ export class FriendsComponent implements OnInit {
     var field = document.getElementById("searchField");
     if ((<HTMLInputElement>field).value != "") {
       this.hideFields();
-      this.userService.getUsers((<HTMLInputElement>field).value).subscribe((data: User[]) => {
-        this.users = data;
-        this.findCheck = true;
-      })
+      if ((<HTMLInputElement>document.getElementById("searchOption")).value == "Поиск по логину") {
+        this.userService.getUsersByLogin((<HTMLInputElement>field).value).subscribe((data: User[]) => {
+          this.users = data;
+          for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].pictureUrl == null) {
+              this.users[i].pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+            }
+          }
+          this.findCheck = true;
+        })
+      }
+      if ((<HTMLInputElement>document.getElementById("searchOption")).value == "Поиск по имени и фамилии") {
+        this.userService.getUsersByFirstLastName((<HTMLInputElement>field).value).subscribe((data: User[]) => {
+          this.users = data;
+          for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].pictureUrl == null) {
+              this.users[i].pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+            }
+          }
+          this.findCheck = true;
+        })
+      }
     } else {
       this.findCheck = false;
       this.enableFields();
@@ -73,9 +129,12 @@ export class FriendsComponent implements OnInit {
   clickFriendButton(event: any): void {
     var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
     var data = { "friendName": friendLogin};
-    this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
+    console.log(friendLogin + " " + data);
+    this.httpClient.post<any>(BACKEND_URL + "/api/friends/requestFriend", null, {headers: data}).subscribe(e=> {
       console.log("sending data");
+      location.reload();
     });
+    
   }
 
   clickRequestButton(event: any): void {
@@ -85,19 +144,19 @@ export class FriendsComponent implements OnInit {
         "friendName": userLogin,
         "friend": "1"
       };
-      this.httpClient.post<any>(BACKEND_URL + "/api/requestFriend", null, {headers: data}).subscribe(e=> {
+      this.httpClient.post<any>(BACKEND_URL + "/api/friends/requestFriend", null, {headers: data}).subscribe(e=> {
         console.log("sending data");
+        location.reload();
       });
-      location.reload();
     }
     if ((<HTMLInputElement>event.path[0]).textContent == "Отклонить заявку") {
       var data1 = {
         "friendName": userLogin
       };
-      this.httpClient.post<any>(BACKEND_URL + "/api/cancelFriend", null, {headers: data1}).subscribe(e=> {
+      this.httpClient.post<any>(BACKEND_URL + "/api/friends/cancelFriend", null, {headers: data1}).subscribe(e=> {
         console.log("sending data");
+        location.reload();
       });
-      location.reload();
     }
   }
 
@@ -110,11 +169,21 @@ export class FriendsComponent implements OnInit {
       var data = {
         "friendName": friendLogin
       }
-      this.httpClient.post<any>(BACKEND_URL + "/api/deleteFriend", null, {headers: data}).subscribe(e=> {
+      this.httpClient.post<any>(BACKEND_URL + "/api/friends/deleteFriend", null, {headers: data}).subscribe(e=> {
         console.log("sending data");
       });
       location.reload();
     }
   }
 
+  clickSendedRequestButton(event: any): void {
+    var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
+    var data = {
+      "friendName": friendLogin
+    }
+    this.httpClient.post<any>(BACKEND_URL + "/api/friends/deleteSendedRequest", null, {headers: data}).subscribe(e=> {
+      console.log("sending data");
+    });
+    location.reload();
+  }
 }

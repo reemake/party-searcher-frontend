@@ -1,17 +1,17 @@
 
 <form (submit)="submit()" [formGroup]="formGroup">
   <label for="name">Название мероприятия</label>
-  <input [formControl]="nameInput" id="name" type="text"/>
+  <input [formControl]="nameInput" class="form-control" id="name" type="text"/>
   <div *ngIf="nameInput.errors?.['required']&& (nameInput.dirty || nameInput.touched)" class="alert alert-danger">
     Название не заполнено
   </div>
   <label for="theme">Тема мероприятия</label>
-  <input [formControl]="eventThemeInput" id="theme" type="text"/>
+  <input [formControl]="eventThemeInput" class="form-control" id="theme" type="text"/>
   <div *ngIf="eventThemeInput.errors?.['required']&& (eventThemeInput.dirty || eventThemeInput.touched)"
        class="alert alert-danger">Тема мероприятия не заполнена
   </div>
   <label for="type">Тип мероприятия</label>
-  <select [formControl]="eventTypeInput" id="type">
+  <select [formControl]="eventTypeInput" class="form-control" id="type">
     <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
   </select>
   <div *ngIf="eventTypeInput.errors?.['required'] && (eventTypeInput.dirty || eventTypeInput.touched)"
@@ -19,49 +19,50 @@
   </div>
 
   <label for="description">Описание</label>
-  <textarea [formControl]="descriptionInput" id="description"></textarea>
+  <textarea [formControl]="descriptionInput" class="form-control" id="description"></textarea>
 
   <label *ngIf="!isOnlineInput.value" for="location">Местоположение</label>
-  <input *ngIf="!isOnlineInput.value" [formControl]="locationInput" id="location" type="text"
-         value="lon={{currentLocation[0]}}  lat={{currentLocation[1]}}"/>
+  <input *ngIf="!isOnlineInput.value" [formControl]="locationInput" class="form-control" id="location" type="text"
+         value="{{location}}"/>
 
   <label for="begin">Время начала мероприятия</label>
-  <input [formControl]="startTimeInput" id="begin" required type="datetime-local"/>
+  <input [formControl]="startTimeInput" class="form-control" id="begin" required type="datetime-local"/>
   <div *ngIf="startTimeInput.errors?.['required'] && (startTimeInput.dirty || startTimeInput.touched)"
        class="alert alert-danger">Дата начала не заполнена
   </div>
   <label for="end">Время</label>
-  <input [formControl]="endTimeInput" id="end" type="datetime-local"/>
+  <input [formControl]="endTimeInput" class="form-control" id="end" type="datetime-local"/>
   <label for="maxCount">Максимальное кол-во участников</label>
-  <input [formControl]="maxGuestsCountInput" id="maxCount" type="number"/>
+  <input [formControl]="maxGuestsCountInput" class="form-control" id="maxCount" type="number"/>
   <label for="price">Цена</label>
-  <input [formControl]="priceInput" id="price" type="number"/>
+  <input [formControl]="priceInput" class="form-control" id="price" type="number"/>
+  <label for="isCloseChat">Закрыть личный чат с организатором</label>
+  <input [formControl]="hasChatWithOwnerInput" class="mat-checkbox" id="isCloseChat" type="checkbox"/>
   <label for="private">Приватное мероприятие</label>
-  <input [formControl]="isPrivateInput" id="private" type="checkbox"/>
+  <input [formControl]="isPrivateInput" class="form-check-input" id="private" type="checkbox"/>
   <label for="online">Онлайн</label>
-  <input [formControl]="isOnlineInput" id="online" type="checkbox"/>
+  <input [formControl]="isOnlineInput" class="form-check-input" id="online" type="checkbox"/>
 
 
   <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
-  <input *ngIf="isOnlineInput.value===true" [formControl]="urlInput" id="urlInput" type="text"/>
+  <input [formControl]="urlInput" [hidden]="isOnlineInput.value!==true" class="form-control" id="urlInput" type="text"/>
   <div *ngIf="urlInput.errors && (urlInput.dirty || urlInput.touched)"
        class="alert alert-danger">Ссылка на мероприятие не заполнена
   </div>
-  <input type="submit" value="Создать">
+  <input class="btn btn-primary" type="submit" value="Создать">
   <div *ngFor="let theme of tagsInputs">
     <label for="tags">Тег</label>
-    <input [formControl]="theme" id="tags" type="text"/>
-    <button (click)="remove(theme)" class="remove-btn"><img alt="remove" height="15" src="./assets/img/remove-icon.png"
-                                                            width="25"/></button>
+    <input [formControl]="theme" class="form-control" id="tags" style="margin-bottom: 10px;" type="text"/>
+    <button (click)="remove(theme)" class="btn btn-danger" style="margin-bottom: 10px;" t>удалить</button>
   </div>
   <p *ngIf="error!==''" class="alert-danger alert">{{error|json}}</p>
 </form>
-<button (click)="addTag()">add tag</button>
+<button (click)="addTag()" class="btn btn-secondary">add tag</button>
 <h3 *ngIf="message!==''">{{message}}</h3>
 <div class="mycontainer">
   <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
   <app-map
-    (changeLocation)="currentLocation=$event"
+    (changeLocation)="locationChangeSubject.next($event)"
     [mapBoundsChange]="changeBounds"
     (selectEvents)="selectEvents($event)"
     [events]="events"
