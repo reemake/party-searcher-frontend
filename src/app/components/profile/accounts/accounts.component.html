@@ -10,10 +10,14 @@
     </div>
 
     <div class="account-data">
-        <div class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
-                <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
-                <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
-        </div>
+        <div *ngIf="!this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+    </div>
+    <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
+        <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+        <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+    </div>
         <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>

@@ -190,6 +190,23 @@
     margin-left: 20px;
   }
 
+  .accBtn3 {
+    width: 140px;
+    height: 35px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    line-height: 5px;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-top: 15px;
+    margin-left: 50px;
+  }
+
   .accLine {
     width: 255px;
   }
@@ -228,7 +245,7 @@
     background: #FFFFFF;
     border-radius: 50%;
 
-    margin-top: 35px;
+    margin-top: 20px;
     margin-left: 30px;
 
     display: grid;
@@ -241,7 +258,7 @@
 
   .profileData {
     margin-left: 270px;
-    margin-top: -210px;
+    margin-top: -240px;
   }
 
   .form-control {

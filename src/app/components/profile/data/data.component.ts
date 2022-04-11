@@ -23,7 +23,7 @@ export class DataComponent implements OnInit {
   hasBaseDropZoneOver: boolean = false;
   uploader: FileUploader;
   title: string;
-  isPhotoUploaded: boolean = false;
+  isPhotoUploading: boolean = false;
   photoUrl: string = '';
 
 
@@ -244,9 +244,9 @@ export class DataComponent implements OnInit {
   }
 
   photoSubmitOn() {
-    console.log(this.isPhotoUploaded);
-    this.isPhotoUploaded = true;
-    console.log(this.isPhotoUploaded);
+    console.log(this.isPhotoUploading);
+    this.isPhotoUploading = true;
+    console.log(this.isPhotoUploading);
     console.log(this.photoUrl);
   }
 
@@ -257,10 +257,6 @@ export class DataComponent implements OnInit {
     this.userEdited.login = this.user.login;
     if (this.userEdited.email == null)
       this.userEdited.email = this.user.email;
-    if (this.userEdited.password == null) {
-      this.userEdited.password = this.currentPassword;
-      console.log(this.userEdited.password);
-    }
     if (this.userEdited.firstName == null)
       this.userEdited.firstName = this.user.firstName;
     if (this.userEdited.lastName == null)
@@ -271,9 +267,9 @@ export class DataComponent implements OnInit {
       this.userEdited.pictureUrl = this.user.pictureUrl;
 
     console.log(this.userEdited);
-    this.userService.updateUser(this.userEdited).subscribe(
+    this.userService.updateUserPhoto(this.userEdited).subscribe(
       result => {
-          console.log("user successfully updated");
+          console.log("user successfully updated with photo");
           dataChangeForm.reset();
           this.getUserInfo();
       },
@@ -284,9 +280,9 @@ export class DataComponent implements OnInit {
   }
 
   photoSubmitOff(responseData: any, dataChangeForm: NgForm) {
-    console.log(this.isPhotoUploaded);
-    this.isPhotoUploaded = false;
-    console.log(this.isPhotoUploaded);
+    console.log(this.isPhotoUploading);
+    this.isPhotoUploading = false;
+    console.log(this.isPhotoUploading);
 
     console.log(responseData);
     var properties = this.getFileProperties(responseData);
