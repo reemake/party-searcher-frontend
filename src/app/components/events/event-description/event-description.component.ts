@@ -67,7 +67,6 @@ export class EventDescriptionComponent implements OnInit {
   createAndGoToChat(): void {
 
     if (this.event !== null) {
-      console.log(this.event)
       this.chatService.createChat(this.event).subscribe(chatId => {
         this.goToChat(chatId);
       });
