@@ -37,8 +37,11 @@ export class MessagesComponent implements OnInit, OnDestroy {
       this.sortChats();
       this.chats.forEach(chat => {
         if (chat.private) {
-          this.imagesMaps = this.imagesMaps.set(chat.id, chat.chatUsers.filter(cu => cu.user.login !== localStorage.getItem("username"))[0].user.pictureUrl);
+          var otherUser = chat.chatUsers.filter(cu => cu.user.login !== localStorage.getItem("username"))[0];
+          if (otherUser)
+            this.imagesMaps = this.imagesMaps.set(chat.id, otherUser.user.pictureUrl);
         }
+
         this.chatsMap.set(chat.id, chat)
         if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
           chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
