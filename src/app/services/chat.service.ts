@@ -62,8 +62,7 @@ export class ChatService {
       this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["chatId"] = chatId.toString();
-    var observer: Subject<any> = new Subject<any>();
-
+    new Subject<any>();
     return this.rxStomp.watch({destination: "/chat/messages/" + chatId, subHeaders: stompHeaders});
   }
 
@@ -82,5 +81,14 @@ export class ChatService {
 
   public getCurrentChatsAndMessages(): Observable<Chat[]> {
     return this.httpClient.get<Chat[]>(BACKEND_URL + "/api/chat/getCurrentChats");
+  }
+
+  public setMessageAsRead(chatId: number, messageId: number): Observable<any> {
+    return this.httpClient.patch(BACKEND_URL + "/api/chat/updateLastReadMessage", {}, {
+      params: {
+        messageId: messageId,
+        chatId: chatId
+      }
+    });
   }
 }

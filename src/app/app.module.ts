@@ -30,6 +30,8 @@ import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
 import cloudinaryConfiguration from './cloudinary_cfg';
 import {CloudinaryModule} from '@cloudinary/angular-5.x';
+import {InViewportModule} from "ng-in-viewport";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -79,10 +81,12 @@ const ROUTES: Routes = [
     FormsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES) ,
+    RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
     FileUploadModule,
-    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
+    InViewportModule,
+    InfiniteScrollModule
 
   ],
   providers: [
