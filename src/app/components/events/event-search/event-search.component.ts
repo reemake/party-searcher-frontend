@@ -77,7 +77,7 @@ export class EventSearchComponent implements OnInit {
     }
     var filterData: FilterData = {
       keyWords: this.wordsInput.value !== null ? (String(this.wordsInput.value).trim().split(" ")) : [],
-      eventType: this.eventTypeInput.value ? {name: this.eventTypeInput.value} : null,
+      eventType: this.eventTypeInput.value && this.eventTypeInput.value !== '' ? {name: this.eventTypeInput.value} : null,
       eventBeginTimeFrom: this.eventBeginTimeInput.value,
       eventBeginTimeTo: this.eventEndTimeInput.value,
       eventLengthFrom: numbers[0],

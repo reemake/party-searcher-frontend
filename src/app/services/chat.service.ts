@@ -85,4 +85,8 @@ export class ChatService {
       }
     });
   }
+
+  public getMessageBefore(chatId: number, id: number): Observable<Message> {
+    return this.httpClient.get<Message>(BACKEND_URL + '/api/chat/getMessageBefore', {params: {chatId: chatId, id: id}});
+  }
 }

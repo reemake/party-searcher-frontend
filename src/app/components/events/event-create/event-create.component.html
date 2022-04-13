@@ -30,7 +30,7 @@
   <div *ngIf="startTimeInput.errors?.['required'] && (startTimeInput.dirty || startTimeInput.touched)"
        class="alert alert-danger">Дата начала не заполнена
   </div>
-  <label for="end">Время</label>
+  <label for="end">Время окончания мероприятия</label>
   <input [formControl]="endTimeInput" class="form-control" id="end" type="datetime-local"/>
   <label for="maxCount">Максимальное кол-во участников</label>
   <input [formControl]="maxGuestsCountInput" class="form-control" id="maxCount" type="number"/>

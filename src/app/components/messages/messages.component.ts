@@ -35,7 +35,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.inputCntrl.valueChanges.subscribe(val => this.searchChats(val));
     this.chatService.getCurrentChatsAndMessages().subscribe(chats => {
       this.chats = chats;
-      console.log(chats)
       this.sortChats();
       this.chats.forEach(chat => {
         if (chat.private) {
@@ -60,9 +59,17 @@ export class MessagesComponent implements OnInit, OnDestroy {
         if (!chat.unReadCount)
           chat.unReadCount = 0;
         if (chat.lastReadMessage && message.id && message.id >= chat.lastReadMessage) {
-          chat.unReadCount--;
-        } else if (message.id === chat.message?.id) {
-          chat.unReadCount--;
+          chat.unReadCount--
+        }
+        if (message.id === chat.message?.id) {
+
+          this.chatService.getMessageBefore(chat.id, message.id || -1).subscribe(message => {
+            if (message && chat) {
+              if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
+                chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
+              } else chat.message = message;
+            }
+          })
         }
       } else if (chat.message?.sendTime && chat.message?.sendTime < message.sendTime) {
 
