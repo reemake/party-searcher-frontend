@@ -23,6 +23,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   private chatsMap: Map<number, Chat> = new Map<number, Chat>();
   private maxMessageLength = 80;
   public imagesMaps: Map<number, string> = new Map<number, string>();
+
   constructor(private chatService: ChatService, private userService: UserService, private router: Router) {
   }
 
@@ -34,6 +35,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.inputCntrl.valueChanges.subscribe(val => this.searchChats(val));
     this.chatService.getCurrentChatsAndMessages().subscribe(chats => {
       this.chats = chats;
+      console.log(chats)
       this.sortChats();
       this.chats.forEach(chat => {
         if (chat.private) {
@@ -60,6 +62,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
         if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
           chat.message.text = chat.message.text.substring(0, this.maxMessageLength) + '...';
         }
+
+        var chat1 = this.chatsMap.get(message.chatId);
+        if (chat1?.unReadCount) {
+          chat1.unReadCount++;
+        } else if (chat1)
+          chat1.unReadCount = 1;
         this.sortChats();
       }
     }

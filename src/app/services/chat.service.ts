@@ -38,14 +38,12 @@ export class ChatService {
         connectHeaders: stompHeaders
       });
 
-    })
+    });
+    this.rxStomp.activate();
 
   }
 
   public createChat(event: Event): Observable<number> {
-    if (!this.rxStomp.active)
-      this.rxStomp.activate();
-    console.log(event);
     return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createEventChat", event);
   }
 
@@ -58,8 +56,6 @@ export class ChatService {
   }
 
   public subscribe(chatId: number): Observable<IMessage> {
-    if (!this.rxStomp.active)
-      this.rxStomp.activate();
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["chatId"] = chatId.toString();
     new Subject<any>();
@@ -67,8 +63,6 @@ export class ChatService {
   }
 
   public sendMessage(message: Message): void {
-    if (!this.rxStomp.active)
-      this.rxStomp.activate();
     this.rxStomp.publish({
       destination: "/app/sendMessage/" + message.chatId,
       body: JSON.stringify(message)
