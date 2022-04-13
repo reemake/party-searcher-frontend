@@ -56,7 +56,15 @@ export class MessagesComponent implements OnInit, OnDestroy {
   public addMessage(message: Message): void {
     var chat = this.chatsMap.get(message.chatId);
     if (chat) {
-      if (chat.message?.sendTime && chat.message?.sendTime < message.sendTime) {
+      if (message.removed) {
+        if (!chat.unReadCount)
+          chat.unReadCount = 0;
+        if (chat.lastReadMessage && message.id && message.id >= chat.lastReadMessage) {
+          chat.unReadCount--;
+        } else if (message.id === chat.message?.id) {
+          chat.unReadCount--;
+        }
+      } else if (chat.message?.sendTime && chat.message?.sendTime < message.sendTime) {
 
         chat.message = message;
         if (chat.message?.text && chat.message.text.length > this.maxMessageLength) {
