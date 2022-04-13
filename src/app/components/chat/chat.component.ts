@@ -28,7 +28,8 @@ export class ChatComponent implements OnDestroy, DoCheck {
   public usersImages: Map<string, string> = new Map<string, string>();
   public maxReadedMessageId: number = 0;
   private lastMessageIdSCROLL = 0;
-
+  public isAdmin = false;
+  public username = localStorage.getItem("username") || '';
   private messageContainer: HTMLElement | null;
 
   constructor(private chatService: ChatService, private route: ActivatedRoute, private userService: UserService,
@@ -40,7 +41,10 @@ export class ChatComponent implements OnDestroy, DoCheck {
       this.chatService.get(id).subscribe(chat => {
         this.chat = chat;
         this.maxReadedMessageId = chat.lastReadMessage || 0;
-
+        var chatUser = this.chat.chatUsers.filter(e => e.user.login === localStorage.getItem("username") || '')[0];
+        if (chatUser.chatUserType === 'MAIN_ADMIN' || chatUser.chatUserType === 'ADMIN') {
+          this.isAdmin = true;
+        }
         if (chat.private) {
           var user = chat.chatUsers.filter(cu => cu.user.login !== localStorage.getItem('username'))[0];
           chat.name = `${user.user.firstName} ${user.user.lastName}`;
@@ -51,12 +55,17 @@ export class ChatComponent implements OnDestroy, DoCheck {
       });
       this.messagesSubscribes = this.chatService.subscribe(id).subscribe(message => {
         var messageParsed = JSON.parse(message.body);
+        if (messageParsed.removed) {
+          this.messages = this.messages.filter(e => e.id !== messageParsed.id);
+          this.onlineMessages = this.onlineMessages.filter(e => e.id !== messageParsed.id);
+        } else
+          this.onlineMessages.push(messageParsed);
         if (this.usersImages.get(messageParsed.userId) !== undefined) {
           this.userService.getUser(messageParsed.userId).subscribe(u => {
             this.usersImages.set(u.login, u.pictureUrl);
           })
         }
-        return this.onlineMessages.push(messageParsed);
+
       });
       this.chatService.getMessages(id).subscribe(messages => {
         this.messages = messages;
@@ -67,6 +76,12 @@ export class ChatComponent implements OnDestroy, DoCheck {
         })
       });
     });
+  }
+
+
+  removeMessage(message: Message): void {
+    message.removed = true;
+    this.chatService.sendMessage(message);
   }
 
   ngDoCheck(): void {
@@ -99,7 +114,6 @@ export class ChatComponent implements OnDestroy, DoCheck {
   public sendMessage(): void {
     this.message.sendTime = new Date();
     this.chatService.sendMessage(this.message)
-    console.log(this.messageContainer)
   }
 
 

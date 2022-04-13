@@ -4,8 +4,11 @@
     <h2>{{chat.name}}</h2>
     <hr/>
     <ul appScrollDirective id="messages-list">
-      <li (inViewportAction)="setMessageAsRead(message)" *ngFor="let message of messages" id="message{{message.id}}"
+      <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
+          (mouseleave)="message.focus=false" *ngFor="let message of messages" id="message{{message.id}}"
           inViewport>
+        <button (click)="removeMessage(message)" *ngIf="message.focus &&(message.userId===username || isAdmin)"
+                class="remove-btn"><img alt="remove" src="assets/img/remove-icon.png"/></button>
         <img alt="user-image" class="user-img"
              src="{{usersImages.get(message.userId)||'assets/img/profile/user.png'}}"/>
         <div class="message">
@@ -13,8 +16,11 @@
           <pre>{{message.text}}</pre>
         </div>
       </li>
-      <li (inViewportAction)="setMessageAsRead(message)" *ngFor="let message of onlineMessages"
+      <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
+          (mouseleave)="message.focus=false" *ngFor="let message of onlineMessages"
           id="message{{message.id}}" inViewport>
+        <button (click)="removeMessage(message)" *ngIf="message.focus&&(message.userId===username || isAdmin)"
+                class="remove-btn"><img alt="remove" src="assets/img/remove-icon.png"/></button>
         <img alt="user-image" class="user-img"
              src="{{usersImages.get(message.userId)||'assets/img/profile/user.png'}}"/>
         <div class="message">
