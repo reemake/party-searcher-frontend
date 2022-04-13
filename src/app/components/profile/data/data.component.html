@@ -10,9 +10,13 @@
     </div>
 
     <div class="account-data">
-        <div *ngIf="!this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+        <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
                 <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
                 <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
         </div>
         <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
             <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>

@@ -167,6 +167,10 @@ export class DataComponent implements OnInit {
             this.userEdited.phone = this.user.phone;
           if (this.userEdited.pictureUrl == null)
             this.userEdited.pictureUrl = this.user.pictureUrl;
+          if (this.userEdited.commercialUser == null)
+            this.userEdited.commercialUser = this.user.commercialUser;
+          if (this.userEdited.commercialUserCreated == null)
+            this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
     
           console.log(this.userEdited);
           this.userService.updateUser(this.userEdited).subscribe(
@@ -265,6 +269,10 @@ export class DataComponent implements OnInit {
       this.userEdited.phone = this.user.phone;
     if (this.userEdited.pictureUrl == null)
       this.userEdited.pictureUrl = this.user.pictureUrl;
+    if (this.userEdited.commercialUser == null)
+      this.userEdited.commercialUser = this.user.commercialUser;
+    if (this.userEdited.commercialUserCreated == null)
+      this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
 
     console.log(this.userEdited);
     this.userService.updateUserPhoto(this.userEdited).subscribe(

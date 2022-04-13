@@ -31,8 +31,12 @@ export class UserService {
     return this.httpClient.get<boolean>(BACKEND_URL + "/api/users/approvePassword", {params: {login, password}});
   }
 
-  public deleteUserPhoto(user: User) : Observable<any> {
+  public deleteUserPhoto(user: User): Observable<any> {
     return this.httpClient.patch<any>(BACKEND_URL + "/api/users/deleteUserPhoto", user);
+  }
+
+  public updateCommercialAcc(user: User): Observable<any> {
+    return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateCommercialAcc", user);
   }
 
 }

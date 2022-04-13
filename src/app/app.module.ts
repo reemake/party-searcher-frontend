@@ -28,6 +28,7 @@ import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
 import cloudinaryConfiguration from './cloudinary_cfg';
 import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
+import { CommercialRegisterComponent } from './components/commercial-register/commercial-register.component';
 
 export const BACKEND_URL: string = "http://localhost:8080";
 
@@ -39,7 +40,8 @@ const ROUTES: Routes = [
   {path: 'register', component: RegistrationComponent},
   {path: 'pages/survey.test', component: SurveyTest, canActivate: [AuthGuardService]},
   {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
-  {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]}
+  {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]}
 ];
 
 @NgModule({
@@ -58,7 +60,8 @@ const ROUTES: Routes = [
     SurveyTest,
     TypeComponent,
     AccountsComponent,
-    DataComponent
+    DataComponent,
+    CommercialRegisterComponent
   ],
   imports: [
     BrowserModule,
