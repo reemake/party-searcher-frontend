@@ -3,6 +3,7 @@ import {Location} from "../Location";
 import {EventAttendance} from "./EventAttendance";
 import {Tag} from "./Tag";
 import {EventType} from "./EventType";
+import { User } from "../User";
 
 export interface Event {
   id?: number
@@ -21,7 +22,7 @@ export interface Event {
   chatId?: number
   currentUserEntered?: boolean,
   theme: string,
-  tags: Array<Tag>
-  guests: Array<EventAttendance>
-
+  tags: Array<Tag>,
+  guests: Array<EventAttendance>,
+  invitedGuests: Array<User>
 }

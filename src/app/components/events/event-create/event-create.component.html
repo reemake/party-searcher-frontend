@@ -42,6 +42,28 @@
   <input [formControl]="isOnlineInput" id="online" type="checkbox"/>
 
 
+
+
+
+  <div *ngIf="invitedFriendsCheck">
+    Приглашенные пользователи:
+    <td *ngFor="let friend of invitedFriendsLogins" class="invitedUsers">
+      {{friend}}
+      <div class="deleteButton" id={{friend}} (click)="removeInvate($event)">x</div>
+    </td>
+  </div>
+
+
+  <select [formControl]="invateUser" class="invateUser" (change)="friendInvate()" *ngIf="friendsCheck">
+    <option class="">Пригласить пользователя</option>
+    <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}} ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})</option>
+  </select>
+
+
+
+
+
+
   <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
   <input *ngIf="isOnlineInput.value===true" [formControl]="urlInput" id="urlInput" type="text"/>
   <div *ngIf="urlInput.errors && (urlInput.dirty || urlInput.touched)"

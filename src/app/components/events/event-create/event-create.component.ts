@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {AbstractControl, Form, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
+import { Relationship } from '../../pages/friends/Relationship';
+import {UserService} from '../../pages/friends/user.service';
+import { User } from 'src/app/entity/User';
+import {EventAttendance} from "../../../entity/Event/EventAttendance";
 
 @Component({
   selector: 'app-event-create',
@@ -27,6 +31,7 @@ export class EventCreateComponent implements OnInit {
   public isPrivateInput: FormControl = new FormControl();
   public isOnlineInput: FormControl = new FormControl();
   public locationInput: FormControl = new FormControl();
+  public invateUser: FormControl = new FormControl();
   public urlInput: FormControl = new FormControl(null, [this.urlValidator()]);
   public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
   public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
@@ -37,10 +42,29 @@ export class EventCreateComponent implements OnInit {
   private maxSW: number[] = [];
   private maxNE: number[] = [];
 
+  public friends: Relationship[];
+  public friendsCheck: boolean = false;
+  public invitedFriendsCheck: boolean = false;
+  public invitedFriendsLogins: string[] = new Array;
+
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private userService: UserService) {
+    this.userService.getFriends().subscribe((data: Relationship[]) => {
+      console.log("waiting friends");
+      this.friends = data;
+      for (let i = 0; i < this.friends.length; i++) {
+        if (this.friends[i].id.friend.pictureUrl == null) {
+          this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+        }
+        if (this.friends[i].id.owner.pictureUrl == null) {
+          this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+        }
+      }
+      if (this.friends.length > 0) this.friendsCheck = true;
+    }
+    );
     this.locationInput.disable();
     this.formGroup = new FormGroup({
       name: this.nameInput,
@@ -127,6 +151,19 @@ export class EventCreateComponent implements OnInit {
       return
     }
     this.error = "";
+    
+
+
+    for (let i = 0; i < this.invitedFriendsLogins.length; i++) this.invitedFriendsLogins[i] = this.invitedFriendsLogins[i].split(" (")[0];
+    var tempUser: User;
+    var tempArray: User[] = new Array();
+    for (let i = 0; i < this.invitedFriendsLogins.length; i++) {
+      tempUser = new User;
+      tempUser.login = this.invitedFriendsLogins[i];
+      tempArray.push(tempUser);
+    }
+
+
     let event: Event = {
       description: this.descriptionInput.value,
       theme: this.eventThemeInput.value,
@@ -140,7 +177,8 @@ export class EventCreateComponent implements OnInit {
       maxNumberOfGuests: this.maxGuestsCountInput.value,
       price: this.priceInput.value,
       tags: [],
-      guests: []
+      guests: [],
+      invitedGuests: tempArray
     };
     this.tagsInputs.forEach(val => {
       let tag: Tag = {name: String(val.value).toUpperCase()};
@@ -186,6 +224,45 @@ export class EventCreateComponent implements OnInit {
         alert("При загрузке типов мероприятий произошла ошибка, повторите еще раз")
       }
     );
+  }
+
+  public friendInvate(): void {
+    try {
+      for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+        if (this.invitedFriendsLogins[i] == this.invateUser.value) {
+          alert("Данный пользователь уже приглашен!");
+          return;
+        }
+      }
+      if (this.invateUser.value != "Пригласить пользователя") {
+        this.invitedFriendsCheck = false;
+        var tempLogin: string = this.invateUser.value;
+        this.invitedFriendsLogins.push(tempLogin);
+        this.invitedFriendsCheck = true;
+      }
+    } catch(e) { console.log("error: " + e); }
+  }
+
+  public removeInvate(event: any): void {
+    for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+      if (this.invitedFriendsLogins[i] == event.path[0].id) {
+        if (this.invitedFriendsLogins.length > 1) {
+          this.invitedFriendsCheck = false;
+          var tempArray: string[] = new Array();
+          for (var j = 0; j < i; j++) tempArray.push(this.invitedFriendsLogins[j]);
+          if (i + 1 < this.invitedFriendsLogins.length) {
+            for (j = i + 1; j < this.invitedFriendsLogins.length; j++) tempArray.push(this.invitedFriendsLogins[j]);
+          }
+          this.invitedFriendsLogins = tempArray;
+          this.invitedFriendsCheck = true;
+          return;
+        } else {
+          this.invitedFriendsCheck = false;
+          this.invitedFriendsLogins = [];
+          return;
+        }
+      }
+    }
   }
 
 }
