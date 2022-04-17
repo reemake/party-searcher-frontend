@@ -47,11 +47,11 @@ export class AuthInterceptor implements HttpInterceptor {
               return next.handle(request);
             }
           ), catchError((error) => {
-            return next.handle(request);
+            return new Observable<HttpResponse<any>>();
           }))
       } else {
 
-        return next.handle(request);
+        return new Observable<HttpResponse<any>>();
       }
       })
     );

@@ -18,17 +18,26 @@
 
       <div class="form-group" id="password-form">
         <label for="pwd">Пароль:</label>
-        <input type="password" class="form-control" placeholder="Введите пароль" name="password" [(ngModel)]="user.password" #password="ngModel" required
-        [class.is-invalid]="password.invalid && password.touched"
+        <input type="password" class="form-control" placeholder="Введите пароль" name="password"
+               [(ngModel)]="user.password" #password="ngModel" required
+               [class.is-invalid]="password.invalid && password.touched"
         >
-        <small class="text-danger" [class.d-none]="password.valid || password.untouched">Пароль - обязательное поле!</small>
+        <small class="text-danger" [class.d-none]="password.valid || password.untouched">Пароль - обязательное
+          поле!</small>
       </div>
 
       <div class="checkbox">
         <label><input type="checkbox" name="remember"> Запомнить меня</label>
       </div>
-
-      <button [disabled]="loginForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">Войти</button>
+      <a href="{{BACKEND}}/oauth2/authorization/google">
+        <div class="google-btn">
+          <img src="./assets/img/sign-in-with-google.svg"/>
+          <p>Войти через Google</p>
+        </div>
+      </a>
+      <button [disabled]="loginForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">
+        Войти
+      </button>
       <small id="toRegistry-button">
         Ещё не зарегистрированы?
         <a [routerLink]="['/register']" class="btn btn-link">Зарегистрироваться</a>

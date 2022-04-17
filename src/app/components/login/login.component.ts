@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RegistrationService} from '../../services/auth/registration.service'
 import {User} from '../../entity/User';
 import {Router} from '@angular/router';
+import {BACKEND_URL} from "../../app.module";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,10 @@ export class LoginComponent implements OnInit {
   user = new User();
   msg = '';
 
-  constructor(private _service: RegistrationService, private _router: Router) { }
+  public BACKEND = BACKEND_URL;
+
+  constructor(private _service: RegistrationService, private _router: Router) {
+  }
 
   ngOnInit(): void {
   }

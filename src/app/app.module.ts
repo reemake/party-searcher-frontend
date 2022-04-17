@@ -31,7 +31,7 @@ import * as cloudinary from 'cloudinary-core';
 import cloudinaryConfiguration from './cloudinary_cfg';
 import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {InViewportModule} from "ng-in-viewport";
-import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {OauthComponent} from './components/login/oauth/oauth.component';
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -49,7 +49,8 @@ const ROUTES: Routes = [
   {path: 'chat', component: ChatComponent},
   {path: 'friends', component: FriendsComponent}
   ,
-  {path: 'messages', component: MessagesComponent}
+  {path: 'messages', component: MessagesComponent},
+  {path: "login/oauth2", component: OauthComponent}
 
 ];
 
@@ -74,7 +75,8 @@ const ROUTES: Routes = [
     ListComponent,
     ChatComponent,
     FriendsComponent,
-    MessagesComponent
+    MessagesComponent,
+    OauthComponent
   ],
   imports: [
     BrowserModule,
@@ -85,8 +87,7 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     FileUploadModule,
     CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
-    InViewportModule,
-    InfiniteScrollModule
+    InViewportModule
 
   ],
   providers: [
