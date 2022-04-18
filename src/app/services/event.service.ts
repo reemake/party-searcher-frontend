@@ -66,6 +66,14 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/api/events/assignOnEvent", null, {params: param});
   }
 
+  public removeEvent(id: number): Observable<any> {
+    return this.httpClient.delete(BACKEND_URL + "/api/events", {params: {eventId: id}});
+  }
+
+  public editEvent(event: Event): Observable<any> {
+    return this.httpClient.patch(BACKEND_URL + "/api/events", event);
+  }
+
 
   public setAddressByLonLat(event: any, func: Function): void {
 

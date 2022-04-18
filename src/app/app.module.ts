@@ -32,6 +32,7 @@ import cloudinaryConfiguration from './cloudinary_cfg';
 import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
+import {EditComponent} from './components/events/edit/edit.component';
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -50,7 +51,8 @@ const ROUTES: Routes = [
   {path: 'friends', component: FriendsComponent}
   ,
   {path: 'messages', component: MessagesComponent},
-  {path: "login/oauth2", component: OauthComponent}
+  {path: "login/oauth2", component: OauthComponent},
+  {path: "events/edit", component: EditComponent}
 
 ];
 
@@ -76,7 +78,8 @@ const ROUTES: Routes = [
     ChatComponent,
     FriendsComponent,
     MessagesComponent,
-    OauthComponent
+    OauthComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
