@@ -74,6 +74,10 @@ export class EventService {
     return this.httpClient.patch(BACKEND_URL + "/api/events", event);
   }
 
+  public get(id: number): Observable<Event> {
+    return this.httpClient.get<Event>(BACKEND_URL + "/api/events/getEvent", {params: {eventId: id}});
+  }
+
 
   public setAddressByLonLat(event: any, func: Function): void {
 
