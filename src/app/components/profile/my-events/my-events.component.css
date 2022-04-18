@@ -1,0 +1,257 @@
+.container {
+    min-width: 960px;
+    max-width: 70%;
+    margin: 0 auto;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.menu {
+    width: 427px;
+    height: 385px;
+    margin-bottom: 247px;
+
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding-left: 20px;
+}
+
+.account-data {
+    width: 427px;
+    height: 150px;
+    box-sizing: border-box;
+    padding: 25px;
+
+    font-style: normal;
+    font-weight: 320;
+
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+}
+
+.content {
+    width: 1200px;
+    height: 785px;
+    margin-left: 550px;
+    margin-top: -783px;
+
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+}
+
+#title {
+    margin-top: 20px;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 44px;
+
+    color: #000000;
+}
+
+.createdEvents {
+    position: absolute;
+    width: 1120px;
+    height: 260px;
+    margin-top: 40px;
+    margin-left: 40px;
+
+    font-style: normal;
+    font-weight: 320;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: justify;
+    box-sizing: border-box;
+    padding: 10px;
+
+    background: #E3E3E3;
+    border-radius: 3px;
+}
+
+.attendedEvents {
+    position: relative;
+    width: 1120px;
+    height: 260px;
+    top: 355px;
+    left: 40px;
+
+    font-style: normal;
+    font-weight: 320;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: justify;
+    box-sizing: border-box;
+    padding: 10px;
+
+    background: #E3E3E3;
+    border-radius: 3px;
+}
+
+.excMark {
+    left: 1%;
+    top: 3%;
+    position: absolute;
+}
+
+#createdEvents-title {
+    left: 40px;
+    top: 30px;
+    position: relative;
+}
+
+#createdEvents-p {
+    left: 40px;
+    top: 26px;
+    position: relative;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+#attendedEvents-p {
+    left: 40px;
+    top: 335px;
+    position: relative;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.eventsList {
+    height: 240px; 
+    overflow: hidden; 
+    overflow-y: scroll;
+}
+
+.eventsLine {
+    width: 1050px;
+    margin-left: 10px;
+}
+
+.eventBtn1 {
+    width: 150px;
+    height: 50px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 15px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-left: 400px;
+}
+
+.excMark1 {
+    left: 1%;
+    top: 6%;
+    position: absolute;
+}
+
+.contentBtn {
+    width: 300px;
+    height: 43px;
+    margin-top: 25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+}
+
+.btn-danger:hover {
+    background: #FF0000;
+    transition: .7s;
+  }
+
+.menuBtn {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font: 20px/40px Roboto, sans-serif;
+    padding-left: 10px;
+    transition: all .2s ease
+}
+
+.menuBtn:hover {
+    color:  #D15D55;
+    text-shadow: 0 0 1px  #D15D55;
+  }
+
+  .menuImg {
+     margin-top: -5px;
+     margin-right: 20px;
+  }
+
+  .accBtn1 {
+    width: 150px;
+    height: 60px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 20px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+  }
+
+  .accBtn2 {
+    width: 80px;
+    height: 40px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+
+  .accLine {
+    width: 255px;
+  }
+
+  .leftPart{
+    font-size: 12px;
+  }
+
+  .rightPart {
+    float: right;
+    margin-top: -115px;
+
+    line-height: 10px;
+    font-size: 22px;
+  }
+
+  .accImg {
+    width: 80px;
+    height: 80px;
+    margin-top: 5px;
+    margin-left: 7px;
+    border-radius: 50px;
+  }
+
+  .accType1 {
+    text-indent: -10px;
+  }
+
+  .accType2 {
+    text-indent: 5px;
+  }

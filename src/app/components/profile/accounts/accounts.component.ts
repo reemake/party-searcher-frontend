@@ -63,6 +63,7 @@ export class AccountsComponent implements OnInit {
     this.userService.updateCommercialAcc(this.userEdited).subscribe(
       result => {
         console.log("commercial account successfully deleted");
+        window.location.reload();
         this.getUserInfo();
         if (this.user.commercialUser)
           this.switchToDefaultAcc();
@@ -98,6 +99,7 @@ export class AccountsComponent implements OnInit {
     this.userService.updateCommercialAcc(this.userEdited).subscribe(
       result => {
         console.log("successfully changed to default account");
+        window.location.reload();
         this.getUserInfo();
       },
       error => {
@@ -131,6 +133,7 @@ export class AccountsComponent implements OnInit {
     this.userService.updateCommercialAcc(this.userEdited).subscribe(
       result => {
         console.log("successfully changed to commercial account");
+        window.location.reload();
         this.getUserInfo();
       },
       error => {

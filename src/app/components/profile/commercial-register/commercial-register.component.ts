@@ -59,12 +59,13 @@ export class CommercialRegisterComponent implements OnInit {
       result => {
         console.log("commercial account successfully registered");
         this.getUserInfo();
+        this.router.navigate(["/profile/accounts"]);
       },
       error => {
         console.log(error);
       }
     )
-    this.router.navigate(["/profile/accounts"]);
+    
   }
 
 }
