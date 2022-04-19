@@ -48,15 +48,24 @@
   <div *ngIf="urlInput.errors && (urlInput.dirty || urlInput.touched)"
        class="alert alert-danger">Ссылка на мероприятие не заполнена
   </div>
-  <input class="btn btn-primary" type="submit" value="Создать">
+  <div *ngFor="let guest of guestInputs">
+    <label for="guest">Участник</label>
+    <input [formControl]="guest" class="form-control" id="guest" style="margin-bottom: 10px;" type="text"/>
+    <button (click)="removeGuest(guest)" class="btn btn-danger" style="margin-bottom: 10px;">удалить</button>
+  </div>
   <div *ngFor="let theme of tagsInputs">
     <label for="tags">Тег</label>
     <input [formControl]="theme" class="form-control" id="tags" style="margin-bottom: 10px;" type="text"/>
     <button (click)="remove(theme)" class="btn btn-danger" style="margin-bottom: 10px;" t>удалить</button>
   </div>
+  <button (click)="addTag()" class="btn btn-secondary">add tag</button>
+
+
+  <input class="btn btn-primary" type="submit" value="Создать">
+
   <p *ngIf="error!==''" class="alert-danger alert">{{error|json}}</p>
 </form>
-<button (click)="addTag()" class="btn btn-secondary">add tag</button>
+
 <h3 *ngIf="message!==''">{{message}}</h3>
 <div class="mycontainer">
   <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>

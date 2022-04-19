@@ -39,6 +39,7 @@ export class EditComponent implements OnInit {
   public locationChangeSubject: Subject<any> = new Subject<any>();
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
+  public guestInputs: Array<FormControl> = new Array<FormControl>();
   private currentDistance = 0;
   private maxSW: number[] = [];
   private maxNE: number[] = [];
@@ -63,6 +64,12 @@ export class EditComponent implements OnInit {
           var tagControl = new FormControl();
           tagControl.setValue(tag.name);
           this.tagsInputs.push(tagControl);
+        });
+
+        event.guests.forEach(guest => {
+          var control = new FormControl();
+          control.setValue(guest.id.userId);
+          this.guestInputs.push(control);
         });
       }, error1 => this.message = error1);
     })
@@ -218,6 +225,10 @@ export class EditComponent implements OnInit {
 
   remove(control: FormControl): void {
     this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
+  }
+
+  removeGuest(control: FormControl): void {
+    this.guestInputs = this.guestInputs.filter(guest => guest !== control);
   }
 
   private isSWandNEmore(SW: number[], NE: number[]): boolean {

@@ -78,6 +78,7 @@ export class EventCreateComponent implements OnInit {
       })
     this.locationChangeSubject.pipe(debounceTime(2000))
       .subscribe(location => {
+        this.currentLocation = location;
         var eventData: any = {
           location: {
             location: {
