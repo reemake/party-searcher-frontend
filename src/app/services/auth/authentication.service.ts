@@ -1,22 +1,31 @@
 import {HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import { Router } from '@angular/router';
-import {catchError, Observable, of, tap} from 'rxjs';
+import {map, Observable, Subject} from 'rxjs';
 import {BACKEND_URL} from 'src/app/app.module';
 import {Jwt} from 'src/app/entity/Jwt';
+import {Router} from "@angular/router";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
+  public updateJWT: Subject<string> = new Subject<string>();
   private hasAuth: boolean = false;
 
   constructor(private httpClient: HttpClient, private router: Router) {
     console.log("AUTH SERVICE CREATED")
   }
 
-  public refreshToken(): Observable<Jwt> {
+  
+  public checkAuth(): Observable<boolean> {
+    console.log("DO CHECK")
+    return this.httpClient.get(BACKEND_URL + "/api/users/checkUser").pipe(map((res: any) => !(res.status === 403 || res.status == 401)));
+  }
+
+  public refreshToken(): Observable<HttpResponse<Jwt>> {
+    console.log("TRY TO UPDATE")
     if (!this.hasAuth) {
       var refresh = localStorage.getItem("refreshToken");
       var token = localStorage.getItem("token");
@@ -28,32 +37,43 @@ export class AuthenticationService {
             jwt: token
           }
         }
-        return this.httpClient.post<Jwt>(BACKEND_URL + "/refreshToken", jwt).pipe(tap(resp => {
-          this.hasAuth = true;
-        }), catchError((err) => {
-          this.hasAuth = false;
-          return of(err);
-        }));
+
+
+        return this.httpClient.post<HttpResponse<Jwt>>(BACKEND_URL + "/refreshToken", jwt);
       }
     }
-    return new Observable<Jwt>();
+    console.log("NOT UPDATE")
+    return new Observable<HttpResponse<Jwt>>();
 
   }
 
-  public setAuth(httpEvent: HttpResponseBase): Observable<Jwt> {
+  public getToken(): string {
+    return localStorage.getItem("token") || "";
+  }
+
+
+  public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
+    var authErrorMarker: Subject<any> = new Subject();
+    authErrorMarker.error("false");
     if (httpEvent instanceof HttpErrorResponse) {
-      if (httpEvent.status == 403) {
-        console.log("SET BAD")
+      if (httpEvent.status == 403 || httpEvent.status == 401) {
         this.hasAuth = false;
-        return this.refreshToken();
+        if (localStorage.getItem("token")) {
+          return this.refreshToken();
+        } else return authErrorMarker;
       }
     } else if (httpEvent instanceof HttpResponse) {
       if (httpEvent.status == 403) {
         this.hasAuth = false;
-        return this.refreshToken();
+        if (localStorage.getItem("token")) {
+          return this.refreshToken();
+        } else {
+
+          return authErrorMarker;
+        }
       } else this.hasAuth = true;
     }
-    return new Observable<Jwt>();
+    return new Observable<HttpResponse<Jwt>>();
   }
 
   public isAuth(): boolean {

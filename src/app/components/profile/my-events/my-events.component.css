@@ -62,7 +62,7 @@
     margin-left: 40px;
 
     font-style: normal;
-    font-weight: 320;
+    font-weight: 400;
     font-size: 20px;
     line-height: 28px;
     text-align: justify;
@@ -81,7 +81,7 @@
     left: 40px;
 
     font-style: normal;
-    font-weight: 320;
+    font-weight: 400;
     font-size: 20px;
     line-height: 28px;
     text-align: justify;
@@ -146,7 +146,39 @@
     background: #D15D55;
     border-radius: 10px;
 
-    margin-left: 400px;
+    margin-left: 450px;
+}
+
+.eventBtn2 {
+    width: 150px;
+    height: 50px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 15px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-left: 30px;
+}
+
+.eventBtn3 {
+    width: 150px;
+    height: 50px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 15px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-left: 30px;
 }
 
 .excMark1 {
