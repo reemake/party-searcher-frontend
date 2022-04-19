@@ -38,6 +38,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   @Input() hasSearch: boolean = false;
+  @Input() isEdit: boolean = false;
 
 
   @Output() mapChanged: EventEmitter<Array<Coordinate>> = new EventEmitter<Array<Coordinate>>();
@@ -303,7 +304,8 @@ export class MapComponent implements AfterViewInit {
     navigator.geolocation.getCurrentPosition((position) => {
       this.center = [position.coords.longitude, position.coords.latitude];
       this.userLocation = [position.coords.longitude, position.coords.latitude];
-      this.changeLocation.emit(this.userLocation);
+      if (!this.isEdit)
+        this.changeLocation.emit(this.userLocation);
       if (this.map !== undefined)
         this.map.getView().setCenter(transform([this.center[0], this.center[1]], 'EPSG:4326', 'EPSG:3857'));
 

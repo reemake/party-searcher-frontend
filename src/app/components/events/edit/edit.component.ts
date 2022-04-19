@@ -5,6 +5,7 @@ import {debounceTime, Subject} from "rxjs";
 import {EventService} from "../../../services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Tag} from "../../../entity/Event/Tag";
+import {EventAttendance} from "../../../entity/Event/EventAttendance";
 
 @Component({
   selector: 'app-edit',
@@ -40,14 +41,14 @@ export class EditComponent implements OnInit {
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
   public guestInputs: Array<FormControl> = new Array<FormControl>();
-  private currentDistance = 0;
   private maxSW: number[] = [];
   private maxNE: number[] = [];
+  private currentEvent: Event;
 
   constructor(private eventService: EventService, private router: Router, private changeDetector: ChangeDetectorRef, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.queryParams.subscribe(params => {
       this.eventService.get(params['id']).subscribe(event => {
-        this.event = event;
+        this.currentEvent = event;
         this.descriptionInput.setValue(event.description);
         this.nameInput.setValue(event.name);
         this.isOnlineInput.setValue(event.isOnline);
@@ -55,7 +56,7 @@ export class EditComponent implements OnInit {
         this.startTimeInput.setValue(event.dateTimeStart);
         this.eventThemeInput.setValue(event.theme);
         this.hasChatWithOwnerInput.setValue(event.hasChatWithOwner);
-        this.eventTypeInput.setValue(event.eventType);
+        this.eventTypeInput.setValue(event.eventType.name);
         this.maxGuestsCountInput.setValue(event.maxNumberOfGuests);
         this.priceInput.setValue(event.price);
         this.locationInput.setValue(event.location?.name);
@@ -177,6 +178,7 @@ export class EditComponent implements OnInit {
     }
     this.error = "";
     let event: Event = {
+      id: this.currentEvent.id,
       description: this.descriptionInput.value,
       theme: this.eventThemeInput.value,
       name: this.nameInput.value,
@@ -196,7 +198,18 @@ export class EditComponent implements OnInit {
       let tag: Tag = {name: String(val.value).toUpperCase()};
       event.tags.push(tag);
     });
-    if (!event.isOnline) {
+    this.guestInputs.forEach(guest => {
+      if (this.currentEvent.id) {
+        var eventAttendnce: EventAttendance = {
+          id: {
+            userId: guest.value,
+            eventId: this.currentEvent.id
+          }
+        };
+        event.guests.push(eventAttendnce);
+      }
+    })
+    if (!event.isOnline && this.currentEvent.location !== undefined && this.event?.location && this.event.location.location !== this.currentEvent.location.location) {
       event.location = {
         name: "",
         location: {

@@ -70,6 +70,7 @@
 <div class="mycontainer">
   <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
   <app-map
+    [isEdit]="true"
     (changeLocation)="locationChangeSubject.next($event)"
     (selectEvents)="selectEvents($event)"
     [center]="[-483281,6904172]"
