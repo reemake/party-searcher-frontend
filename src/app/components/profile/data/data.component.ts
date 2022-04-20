@@ -23,7 +23,7 @@ export class DataComponent implements OnInit {
   hasBaseDropZoneOver: boolean = false;
   uploader: FileUploader;
   title: string;
-  isPhotoUploaded: boolean = false;
+  isPhotoUploading: boolean = false;
   photoUrl: string = '';
 
 
@@ -167,6 +167,14 @@ export class DataComponent implements OnInit {
             this.userEdited.phone = this.user.phone;
           if (this.userEdited.pictureUrl == null)
             this.userEdited.pictureUrl = this.user.pictureUrl;
+          if (this.userEdited.organizationName == null)
+            this.userEdited.organizationName = this.user.organizationName;
+          if (this.userEdited.description == null)
+            this.userEdited.description = this.user.description;
+          if (this.userEdited.commercialUser == null)
+            this.userEdited.commercialUser = this.user.commercialUser;
+          if (this.userEdited.commercialUserCreated == null)
+            this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
     
           console.log(this.userEdited);
           this.userService.updateUser(this.userEdited).subscribe(
@@ -244,9 +252,9 @@ export class DataComponent implements OnInit {
   }
 
   photoSubmitOn() {
-    console.log(this.isPhotoUploaded);
-    this.isPhotoUploaded = true;
-    console.log(this.isPhotoUploaded);
+    console.log(this.isPhotoUploading);
+    this.isPhotoUploading = true;
+    console.log(this.isPhotoUploading);
     console.log(this.photoUrl);
   }
 
@@ -257,10 +265,6 @@ export class DataComponent implements OnInit {
     this.userEdited.login = this.user.login;
     if (this.userEdited.email == null)
       this.userEdited.email = this.user.email;
-    if (this.userEdited.password == null) {
-      this.userEdited.password = this.currentPassword;
-      console.log(this.userEdited.password);
-    }
     if (this.userEdited.firstName == null)
       this.userEdited.firstName = this.user.firstName;
     if (this.userEdited.lastName == null)
@@ -269,12 +273,21 @@ export class DataComponent implements OnInit {
       this.userEdited.phone = this.user.phone;
     if (this.userEdited.pictureUrl == null)
       this.userEdited.pictureUrl = this.user.pictureUrl;
+    if (this.userEdited.organizationName == null)
+      this.userEdited.organizationName = this.user.organizationName;
+    if (this.userEdited.description == null)
+      this.userEdited.description = this.user.description;
+    if (this.userEdited.commercialUser == null)
+      this.userEdited.commercialUser = this.user.commercialUser;
+    if (this.userEdited.commercialUserCreated == null)
+      this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
 
     console.log(this.userEdited);
-    this.userService.updateUser(this.userEdited).subscribe(
+    this.userService.updateUserPhoto(this.userEdited).subscribe(
       result => {
-          console.log("user successfully updated");
+          console.log("user successfully updated with photo");
           dataChangeForm.reset();
+          window.location.reload();
           this.getUserInfo();
       },
       error => {
@@ -284,9 +297,9 @@ export class DataComponent implements OnInit {
   }
 
   photoSubmitOff(responseData: any, dataChangeForm: NgForm) {
-    console.log(this.isPhotoUploaded);
-    this.isPhotoUploaded = false;
-    console.log(this.isPhotoUploaded);
+    console.log(this.isPhotoUploading);
+    this.isPhotoUploading = false;
+    console.log(this.isPhotoUploading);
 
     console.log(responseData);
     var properties = this.getFileProperties(responseData);
@@ -296,7 +309,43 @@ export class DataComponent implements OnInit {
       this.photoUrl = properties[15].value;
       this.updateUserWithPhoto(dataChangeForm);
 
+    }
   }
+
+  deletePhoto(dataChangeForm: NgForm) {
+    this.userEdited.login = this.user.login;
+    if (this.userEdited.email == null)
+      this.userEdited.email = this.user.email;
+    if (this.userEdited.firstName == null)
+      this.userEdited.firstName = this.user.firstName;
+    if (this.userEdited.lastName == null)
+      this.userEdited.lastName = this.user.lastName;
+    if (this.userEdited.phone == null)
+      this.userEdited.phone = this.user.phone;
+    if (this.userEdited.pictureUrl == null)
+      this.userEdited.pictureUrl = this.user.pictureUrl;
+    if (this.userEdited.organizationName == null)
+      this.userEdited.organizationName = this.user.organizationName;
+    if (this.userEdited.description == null)
+      this.userEdited.description = this.user.description;
+    if (this.userEdited.commercialUser == null)
+      this.userEdited.commercialUser = this.user.commercialUser;
+    if (this.userEdited.commercialUserCreated == null)
+      this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
+    console.log(this.userEdited);
+    this.userService.deleteUserPhoto(this.userEdited).subscribe(
+      result => {
+          console.log("user photo successfully deleted");
+          dataChangeForm.reset();
+          this.photoUrl = '';
+          this.user.pictureUrl = '';
+          window.location.reload();
+          this.getUserInfo();
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
     
 }

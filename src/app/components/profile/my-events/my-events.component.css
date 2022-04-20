@@ -43,7 +43,7 @@
     border-radius: 5px;
 }
 
-#title1 {
+#title {
     margin-top: 20px;
 
     font-style: normal;
@@ -54,28 +54,42 @@
     color: #000000;
 }
 
-.data {
+.createdEvents {
     position: absolute;
     width: 1120px;
-    height: 300px;
+    height: 260px;
     margin-top: 40px;
     margin-left: 40px;
 
     font-style: normal;
-    font-weight: 320;
-    font-size: 24px;
+    font-weight: 400;
+    font-size: 20px;
     line-height: 28px;
     text-align: justify;
-    text-indent: 40px;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 10px;
 
     background: #E3E3E3;
     border-radius: 3px;
 }
 
-.dataColumns {
-  margin-top: 25px;
+.attendedEvents {
+    position: relative;
+    width: 1120px;
+    height: 260px;
+    top: 355px;
+    left: 40px;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: justify;
+    box-sizing: border-box;
+    padding: 10px;
+
+    background: #E3E3E3;
+    border-radius: 3px;
 }
 
 .excMark {
@@ -84,34 +98,87 @@
     position: absolute;
 }
 
-#title2 {
+#createdEvents-title {
     left: 40px;
     top: 30px;
     position: relative;
 }
 
-#title3 {
+#createdEvents-p {
     left: 40px;
-    top: 365px;
+    top: 26px;
     position: relative;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
 }
 
-.control {
-    position: relative;
-    width: 1120px;
-    height: 240px;
-    top: 365px;
+#attendedEvents-p {
     left: 40px;
-
+    top: 335px;
+    position: relative;
     font-style: normal;
-    font-weight: 320;
-    font-size: 22px;
-    line-height: 28px;
-    text-align: justify;
-    box-sizing: border-box;
-    padding-left: 30px;
+    font-weight: 400;
+    font-size: 18px;
+}
 
-    border-radius: 3px;
+.eventsList {
+    height: 240px; 
+    overflow: hidden; 
+    overflow-y: scroll;
+}
+
+.eventsLine {
+    width: 1050px;
+    margin-left: 10px;
+}
+
+.eventBtn1 {
+    width: 150px;
+    height: 50px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 15px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-left: 450px;
+}
+
+.eventBtn2 {
+    width: 150px;
+    height: 50px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 15px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-left: 30px;
+}
+
+.eventBtn3 {
+    width: 150px;
+    height: 50px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    line-height: 15px;
+    color: white;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-left: 30px;
 }
 
 .excMark1 {
@@ -123,7 +190,7 @@
 .contentBtn {
     width: 300px;
     height: 43px;
-    margin-top: 40px;
+    margin-top: 25px;
     margin-left: 25px;
     margin-right: 25px;
     font-style: normal;
@@ -171,7 +238,6 @@
 
     background: #D15D55;
     border-radius: 10px;
-
   }
 
   .accBtn2 {
@@ -188,23 +254,6 @@
 
     margin-top: 20px;
     margin-left: 20px;
-  }
-
-  .accBtn3 {
-    width: 140px;
-    height: 35px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 15px;
-    text-align: center;
-    color: white;
-    line-height: 5px;
-
-    background: #D15D55;
-    border-radius: 10px;
-
-    margin-top: 15px;
-    margin-left: 50px;
   }
 
   .accLine {
@@ -224,11 +273,11 @@
   }
 
   .accImg {
-      width: 80px;
-      height: 80px;
-      margin-top: 5px;
-      margin-left: 7px;
-      border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    margin-top: 5px;
+    margin-left: 7px;
+    border-radius: 50px;
   }
 
   .accType1 {
@@ -237,78 +286,4 @@
 
   .accType2 {
     text-indent: 5px;
-  }
-
-  .profileImage {
-    width: 180px;
-    height: 180px;
-    background: #FFFFFF;
-    border-radius: 50%;
-
-    margin-top: 20px;
-    margin-left: 30px;
-
-    display: grid;
-    place-items: center;
-  }
-
-  .uploadImg {
-     margin-left: -35px;
-  }
-
-  .profileData {
-    margin-left: 270px;
-    margin-top: -240px;
-  }
-
-  .form-control {
-    width: 350px;
-    margin-top: 30px;
-  }
-
-  .left-form {
-    margin-left: 100px;
-  }
-
-  .right-form {
-    margin-left: 600px;
-    margin-top: -205px;
-  }
-
-  #photoStatus {
-    width: 500px;
-    height: 200px;
-    text-align: center;
-    padding: 15px;
-    border: 3px solid #D15D55;
-    border-radius: 10px;
-    color: #D15D55;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    background: #fff;
-
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-
-  }
-
-  .modalBtn {
-    width: 100px;
-    height: 40px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    text-align: center;
-    color: white;
-
-    background: #D15D55;
-    border-radius: 10px;
-
-    margin-top: 20px;
-    margin-left: 20px;
   }

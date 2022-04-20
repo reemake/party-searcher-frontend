@@ -29,10 +29,12 @@ import {MessagesComponent} from './components/messages/messages.component';
 import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
 import cloudinaryConfiguration from './cloudinary_cfg';
-import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
 import {EditComponent} from './components/events/edit/edit.component';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
+import { CommercialRegisterComponent } from './components/profile/commercial-register/commercial-register.component';
+import { MyEventsComponent } from './components/profile/my-events/my-events.component';
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -48,12 +50,12 @@ const ROUTES: Routes = [
   {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
   {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]},
   {path: 'chat', component: ChatComponent},
-  {path: 'friends', component: FriendsComponent}
-  ,
+  {path: 'friends', component: FriendsComponent},
   {path: 'messages', component: MessagesComponent},
   {path: "login/oauth2", component: OauthComponent},
-  {path: "events/edit", component: EditComponent}
-
+  {path: "events/edit", component: EditComponent},
+  {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]}
 ];
 
 
@@ -79,7 +81,9 @@ const ROUTES: Routes = [
     FriendsComponent,
     MessagesComponent,
     OauthComponent,
-    EditComponent
+    EditComponent,
+    CommercialRegisterComponent,
+    MyEventsComponent
   ],
   imports: [
     BrowserModule,
