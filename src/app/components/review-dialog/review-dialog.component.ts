@@ -9,6 +9,7 @@ import {Review} from "../../entity/Event/Review";
   styleUrls: ['./review-dialog.component.css']
 })
 export class ReviewDialogComponent implements OnInit {
+  public deepReview: boolean = false;
   public numbers = [1, 2, 3, 4, 5];
   public review: Review | undefined;
 
@@ -34,9 +35,13 @@ export class ReviewDialogComponent implements OnInit {
     }
   }
 
-  goToDeepReview(): Review {
+
+  goReview(): Review {
     if (this.review) {
-      this.review.reviewWeight = 0.75;
+      if (this.deepReview) {
+        this.review.reviewWeight = 0.75;
+      } else
+        this.review.reviewWeight = 0.5;
       return this.review;
     } else throw new Error("review is undefined");
 

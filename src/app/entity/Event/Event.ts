@@ -24,5 +24,5 @@ export interface Event {
   tags: Array<Tag>
   guests: Array<EventAttendance>,
   hasChatWithOwner: boolean
-
+  avgMark?: number
 }

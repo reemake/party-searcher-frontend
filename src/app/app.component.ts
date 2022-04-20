@@ -6,6 +6,8 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ReviewDialogComponent} from "./components/review-dialog/review-dialog.component";
 import {Review} from "./entity/Event/Review";
 import {ReviewService} from "./services/review.service";
+import {Event} from "./entity/Event/Event";
+import {SuccessDialogComponent} from "./components/success-dialog/success-dialog.component";
 
 @Component({
   selector: 'app-root',
@@ -16,8 +18,10 @@ export class AppComponent {
   title = 'eventTeammatesSearchApp';
   private eventIndex = 0;
   private matDialogRef: MatDialogRef<ReviewDialogComponent> | undefined;
+  private events: Event[] = [];
 
-  constructor(private matDialog: MatDialog, private eventService: EventService, private authService: AuthenticationService, private cookieService: CookieService, private reviewService: ReviewService) {
+  constructor(private matDialog: MatDialog, private eventService: EventService, private authService: AuthenticationService,
+              private cookieService: CookieService, private reviewService: ReviewService) {
     if (true)//!cookieService.check("reviewsLoaded")) {
       this.eventService.getEndedEvents().subscribe(e => {
         var date = new Date();
@@ -30,17 +34,21 @@ export class AppComponent {
             data: e[this.eventIndex]
           });
           this.matDialogRef.afterClosed().subscribe((review: Review) => {
+            console.log(review)
             if (review.reviewWeight > 0) {
               if (review.reviewWeight > 0.5) {
 
               } else {
-                this.reviewService.add(review);
+                this.reviewService.add(review).subscribe((e) => {
+                  this.matDialog.open(SuccessDialogComponent);
+                }, error => alert("Произошла ошибка при добавлении отзыва"));
               }
               this.eventIndex++;
-              this.matDialogRef = this.matDialog.open(ReviewDialogComponent, {
-                width: '250px',
-                data: e[this.eventIndex]
-              });
+              if (this.events[this.eventIndex])
+                this.matDialogRef = this.matDialog.open(ReviewDialogComponent, {
+                  width: '250px',
+                  data: this.events[this.eventIndex]
+                });
             }
           })
         }

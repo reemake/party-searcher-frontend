@@ -6,14 +6,17 @@
       <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
     </button>
     <input id="eventReview" matInput>
+
   </mat-form-field>
+  <label for="deep">Оценить подробно</label>
+  <input [(ngModel)]="deepReview" id="deep" type="checkbox">
 </div>
 <div mat-dialog-actions>
   <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
-  <button *ngIf="review" [mat-dialog-close]="review" cdkFocusInitial
-          mat-button>Оценить
+  <button *ngIf="review" [mat-dialog-close]="goReview()" mat-button
+  >Оценить
   </button>
-  <button *ngIf="review" [mat-dialog-close]="goToDeepReview()" cdkFocusInitial
-          mat-button>Перейти к подробному отзыву
+  <button *ngIf="review" [mat-dialog-close]="goReview()" mat-button
+  >Перейти к подробному отзыву
   </button>
 </div>
