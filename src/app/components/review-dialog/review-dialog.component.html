@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Оцените мероприятие '{{data.name}}'</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
+      <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="./assets/img/empty-starr.png"/>
+      <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
+    </button>
+    <input id="eventReview" matInput>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
+  <button *ngIf="review" [mat-dialog-close]="review" cdkFocusInitial
+          mat-button>Оценить
+  </button>
+  <button *ngIf="review" [mat-dialog-close]="goToDeepReview()" cdkFocusInitial
+          mat-button>Перейти к подробному отзыву
+  </button>
+</div>

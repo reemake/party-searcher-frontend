@@ -33,6 +33,14 @@ import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
 import {EditComponent} from './components/events/edit/edit.component';
+import {AuthenticationService} from "./services/auth/authentication.service";
+import {EventService} from "./services/event.service";
+import {CookieService} from "ngx-cookie-service";
+import {MatInputModule} from "@angular/material/input";
+import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {ReviewDialogComponent} from './components/review-dialog/review-dialog.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatButtonModule} from "@angular/material/button";
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -79,7 +87,8 @@ const ROUTES: Routes = [
     FriendsComponent,
     MessagesComponent,
     OauthComponent,
-    EditComponent
+    EditComponent,
+    ReviewDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -90,16 +99,22 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     FileUploadModule,
     CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
-    InViewportModule
-
+    InViewportModule,
+    MatInputModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
-  ],
+    },
+    AuthenticationService, EventService, CookieService, {
+      provide: MatDialogRef,
+      useValue: {}
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
