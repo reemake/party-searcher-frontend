@@ -5,4 +5,6 @@ export class Message {
   chatId: number
   userId: string
   messagesImagesUrl: string[]
+  removed?: boolean
+  focus?: boolean
 }

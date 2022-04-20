@@ -30,9 +30,21 @@ import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
 import cloudinaryConfiguration from './cloudinary_cfg';
 import {CloudinaryModule} from '@cloudinary/angular-5.x';
+import {InViewportModule} from "ng-in-viewport";
+import {OauthComponent} from './components/login/oauth/oauth.component';
+import {EditComponent} from './components/events/edit/edit.component';
+import {AuthenticationService} from "./services/auth/authentication.service";
+import {EventService} from "./services/event.service";
+import {CookieService} from "ngx-cookie-service";
+import {MatInputModule} from "@angular/material/input";
+import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {ReviewDialogComponent} from './components/review-dialog/review-dialog.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatButtonModule} from "@angular/material/button";
+import {SuccessDialogComponent} from './components/success-dialog/success-dialog.component';
 
-export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
-//export const BACKEND_URL: string = "http://localhost:8080";
+//export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
+export const BACKEND_URL: string = "http://localhost:8080";
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
@@ -47,7 +59,9 @@ const ROUTES: Routes = [
   {path: 'chat', component: ChatComponent},
   {path: 'friends', component: FriendsComponent}
   ,
-  {path: 'messages', component: MessagesComponent}
+  {path: 'messages', component: MessagesComponent},
+  {path: "login/oauth2", component: OauthComponent},
+  {path: "events/edit", component: EditComponent}
 
 ];
 
@@ -72,26 +86,37 @@ const ROUTES: Routes = [
     ListComponent,
     ChatComponent,
     FriendsComponent,
-    MessagesComponent
+    MessagesComponent,
+    OauthComponent,
+    EditComponent,
+    ReviewDialogComponent,
+    SuccessDialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES) ,
+    RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
     FileUploadModule,
-    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
-
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
+    InViewportModule,
+    MatInputModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
+    MatButtonModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
-  ],
+    },
+    AuthenticationService, EventService, CookieService, {
+      provide: MatDialogRef,
+      useValue: {}
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

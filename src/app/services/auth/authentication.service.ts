@@ -1,6 +1,6 @@
 import {HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {map, Observable, Subject} from 'rxjs';
 import {BACKEND_URL} from 'src/app/app.module';
 import {Jwt} from 'src/app/entity/Jwt';
 import {Router} from "@angular/router";
@@ -10,10 +10,17 @@ import {Router} from "@angular/router";
 })
 export class AuthenticationService {
 
+  public updateJWT: Subject<string> = new Subject<string>();
   private hasAuth: boolean = false;
 
   constructor(private httpClient: HttpClient, private router: Router) {
     console.log("AUTH SERVICE CREATED")
+  }
+
+
+  public checkAuth(): Observable<boolean> {
+    console.log("DO CHECK")
+    return this.httpClient.get(BACKEND_URL + "/api/users/checkUser").pipe(map((res: any) => !(res.status === 403 || res.status == 401)));
   }
 
   public refreshToken(): Observable<HttpResponse<Jwt>> {
@@ -43,17 +50,26 @@ export class AuthenticationService {
     return localStorage.getItem("token") || "";
   }
 
+
   public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
+    var authErrorMarker: Subject<any> = new Subject();
+    authErrorMarker.error("false");
     if (httpEvent instanceof HttpErrorResponse) {
-      if (httpEvent.status == 403) {
-        console.log("SET BAD")
+      if (httpEvent.status == 403 || httpEvent.status == 401) {
         this.hasAuth = false;
-        return this.refreshToken();
+        if (localStorage.getItem("token")) {
+          return this.refreshToken();
+        } else return authErrorMarker;
       }
     } else if (httpEvent instanceof HttpResponse) {
       if (httpEvent.status == 403) {
         this.hasAuth = false;
-        return this.refreshToken();
+        if (localStorage.getItem("token")) {
+          return this.refreshToken();
+        } else {
+
+          return authErrorMarker;
+        }
       } else this.hasAuth = true;
     }
     return new Observable<HttpResponse<Jwt>>();

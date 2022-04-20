@@ -1,23 +1,23 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
-import {EventService} from "../../../services/event.service";
-import {Tag} from "../../../entity/Event/Tag";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {debounceTime, Subject} from "rxjs";
-import {Router} from "@angular/router";
+import {EventService} from "../../../services/event.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Tag} from "../../../entity/Event/Tag";
+import {EventAttendance} from "../../../entity/Event/EventAttendance";
 
 @Component({
-  selector: 'app-event-create',
-  templateUrl: './event-create.component.html',
-  styleUrls: ['./event-create.component.css']
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.css']
 })
-export class EventCreateComponent implements OnInit {
+export class EditComponent implements OnInit {
   public message: string = "";
   public location: string = "";
   public selectedEvents: Array<Event> = new Array<Event>();
   public events: Array<Event> = new Array<Event>();
   public event: Event | null = null;
-  private currentDistance = 0;
   public tagsCount: number = 0;
   public formGroup: FormGroup;
   public nameInput: FormControl = new FormControl(null, [Validators.required]);
@@ -37,17 +37,44 @@ export class EventCreateComponent implements OnInit {
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
   public changeBounds: Subject<any> = new Subject<any>();
-  private maxSW: number[] = [];
-  private maxNE: number[] = [];
-
   public locationChangeSubject: Subject<any> = new Subject<any>();
-
-
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
+  public guestInputs: Array<FormControl> = new Array<FormControl>();
+  private maxSW: number[] = [];
+  private maxNE: number[] = [];
+  private currentEvent: Event;
 
+  constructor(private eventService: EventService, private router: Router, private changeDetector: ChangeDetectorRef, private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.eventService.get(params['id']).subscribe(event => {
+        this.currentEvent = event;
+        this.descriptionInput.setValue(event.description);
+        this.nameInput.setValue(event.name);
+        this.isOnlineInput.setValue(event.isOnline);
+        this.endTimeInput.setValue(event.dateTimeEnd);
+        this.startTimeInput.setValue(event.dateTimeStart);
+        this.eventThemeInput.setValue(event.theme);
+        this.hasChatWithOwnerInput.setValue(event.hasChatWithOwner);
+        this.eventTypeInput.setValue(event.eventType.name);
+        this.maxGuestsCountInput.setValue(event.maxNumberOfGuests);
+        this.priceInput.setValue(event.price);
+        this.locationInput.setValue(event.location?.name);
+        this.urlInput.setValue(event.url);
+        event.tags.forEach(tag => {
+          var tagControl = new FormControl();
+          tagControl.setValue(tag.name);
+          this.tagsInputs.push(tagControl);
+        });
 
-  constructor(private eventService: EventService, private router: Router, private changeDetector: ChangeDetectorRef) {
+        event.guests.forEach(guest => {
+          var control = new FormControl();
+          control.setValue(guest.id.userId);
+          this.guestInputs.push(control);
+        });
+      }, error1 => this.message = error1);
+    })
+
     this.locationInput.disable();
     this.formGroup = new FormGroup({
       name: this.nameInput,
@@ -78,7 +105,6 @@ export class EventCreateComponent implements OnInit {
       })
     this.locationChangeSubject.pipe(debounceTime(2000))
       .subscribe(location => {
-        this.currentLocation = location;
         var eventData: any = {
           location: {
             location: {
@@ -124,25 +150,9 @@ export class EventCreateComponent implements OnInit {
   }
 
 
-
   closeEvent(): void {
     this.event = null;
     this.mapWidth = "100%";
-  }
-
-  private isSWandNEmore(SW: number[], NE: number[]): boolean {
-    if (this.maxNE.length == 0 || this.maxSW.length == 0) {
-      this.maxNE = NE;
-      this.maxSW = SW;
-      return true;
-    } else {
-      if (SW[0] < this.maxSW[0] || SW[1] < this.maxSW[0] || NE[0] > this.maxNE[0] || NE[1] > this.maxNE[1]) {
-        this.maxNE = NE;
-        this.maxSW = SW;
-        return true;
-
-      } else return false;
-    }
   }
 
   selectEvents(event: any): void {
@@ -153,8 +163,6 @@ export class EventCreateComponent implements OnInit {
       this.event = event[0];
     }
   }
-
-
 
   addTag(): void {
     let tag: FormControl = new FormControl();
@@ -170,6 +178,7 @@ export class EventCreateComponent implements OnInit {
     }
     this.error = "";
     let event: Event = {
+      id: this.currentEvent.id,
       description: this.descriptionInput.value,
       theme: this.eventThemeInput.value,
       name: this.nameInput.value,
@@ -189,7 +198,18 @@ export class EventCreateComponent implements OnInit {
       let tag: Tag = {name: String(val.value).toUpperCase()};
       event.tags.push(tag);
     });
-    if (!event.isOnline) {
+    this.guestInputs.forEach(guest => {
+      if (this.currentEvent.id) {
+        var eventAttendnce: EventAttendance = {
+          id: {
+            userId: guest.value,
+            eventId: this.currentEvent.id
+          }
+        };
+        event.guests.push(eventAttendnce);
+      }
+    })
+    if (!event.isOnline && this.currentEvent.location !== undefined && this.event?.location && this.event.location.location !== this.currentEvent.location.location) {
       event.location = {
         name: "",
         location: {
@@ -198,11 +218,11 @@ export class EventCreateComponent implements OnInit {
         }
       };
       this.eventService.setAddressByLonLat(event, () => {
-        this.eventService.add(event).subscribe(event => {
-          alert("Событие успешно создано");
+        this.eventService.editEvent(event).subscribe(event => {
+          alert("Событие успешно обновлено");
           this.router.navigateByUrl("/events/map")
         }, error => {
-          alert("При создании эвента произошла ошибка, повторите еще раз");
+          alert("При обновлении эвента произошла ошибка, повторите еще раз");
           this.error = error;
         });
       });
@@ -220,6 +240,24 @@ export class EventCreateComponent implements OnInit {
     this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
   }
 
+  removeGuest(control: FormControl): void {
+    this.guestInputs = this.guestInputs.filter(guest => guest !== control);
+  }
+
+  private isSWandNEmore(SW: number[], NE: number[]): boolean {
+    if (this.maxNE.length == 0 || this.maxSW.length == 0) {
+      this.maxNE = NE;
+      this.maxSW = SW;
+      return true;
+    } else {
+      if (SW[0] < this.maxSW[0] || SW[1] < this.maxSW[0] || NE[0] > this.maxNE[0] || NE[1] > this.maxNE[1]) {
+        this.maxNE = NE;
+        this.maxSW = SW;
+        return true;
+
+      } else return false;
+    }
+  }
 
 
 }

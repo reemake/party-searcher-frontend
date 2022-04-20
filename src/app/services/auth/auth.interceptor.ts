@@ -7,7 +7,7 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import {catchError, Observable, switchMap, take, tap, throwError} from 'rxjs';
+import {catchError, Observable, switchMap, tap} from 'rxjs';
 import {AuthenticationService} from './authentication.service';
 import {Jwt} from "../../entity/Jwt";
 
@@ -32,23 +32,27 @@ export class AuthInterceptor implements HttpInterceptor {
           this.authService.setAuth(val);
         }
       }), catchError(error => {
-        if (error instanceof HttpErrorResponse && error.status == 403) {
-          return this.authService.setAuth(error).pipe(
-            take(1),
-            switchMap(jwt => {
-                var body: Jwt = jwt as unknown as Jwt;
-                if (body !== null) {
-                  localStorage.setItem("token", body.id.jwt);
-                  localStorage.setItem("refreshToken", body.refreshToken);
-                  var authorization = request.headers.set("Authorization", body.id.jwt);
-                  request = request.clone({headers: authorization})
-                  this.authService.setAuth(jwt);
-                }
-                return next.handle(request);
+      if (error instanceof HttpErrorResponse && (error.status == 403 || error.status == 401)) {
+        return this.authService.setAuth(error).pipe(
+          switchMap(jwt => {
+              var body: Jwt = jwt as unknown as Jwt;
+              if (body !== null) {
+                localStorage.setItem("token", body.id.jwt);
+                localStorage.setItem("refreshToken", body.refreshToken);
+                var authorization = request.headers.set("Authorization", body.id.jwt);
+                this.authService.updateJWT.next(body.id.jwt);
+                request = request.clone({headers: authorization})
+                //  this.authService.setAuth(jwt);
               }
-            ))
-        } else
-          return throwError(error)
+              return next.handle(request);
+            }
+          ), catchError((error) => {
+            return new Observable<HttpResponse<any>>();
+          }))
+      } else {
+
+        return new Observable<HttpResponse<any>>();
+      }
       })
     );
 

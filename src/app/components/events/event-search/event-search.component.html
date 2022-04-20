@@ -15,6 +15,7 @@
   <div class="form-row">
     <label for="eventTypeInput">Тип события</label>
     <select [formControl]="eventTypeInput" id="eventTypeInput">
+      <option selected value=""></option>
       <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
     </select>
 

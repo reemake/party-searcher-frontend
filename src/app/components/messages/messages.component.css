@@ -15,3 +15,15 @@ ul {
 li a {
   font-weight: bold;
 }
+
+.miniImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+b {
+  border: 1px solid #C4C4C4;
+  border-radius: 25% 10%;
+  background-color: #C4C4C4;
+}

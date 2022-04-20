@@ -71,7 +71,7 @@
 
     <div class="form-group" id="cpassword-form">
       <label for="cpwd">Подтвердите пароль:</label>
-      <input #cpassword="ngModel" (ngModel)="user.password" class="form-control" id="cpwd" name="cpassword" ngModel
+      <input #cpassword="ngModel" [(ngModel)]="user.password" class="form-control" id="cpwd" name="cpassword" ngModel
              placeholder="Введите пароль ещё раз" required type="password"
              [class.is-invalid]="cpassword.invalid && cpassword.touched"
       >

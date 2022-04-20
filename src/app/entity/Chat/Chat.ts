@@ -8,4 +8,6 @@ export interface Chat {
   message?: Message
   isNewFriendChat?: boolean
   chatUsers: ChatUser[];
+  lastReadMessage?: number,
+  unReadCount?: number
 }

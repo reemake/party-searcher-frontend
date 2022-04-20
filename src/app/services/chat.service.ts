@@ -21,20 +21,29 @@ export class ChatService {
       brokerURL: this.url
     })
     this.url = BACKEND_URL;
-    this.url = this.url.replace("https://", "wss://") + "/chatService";
+    this.url = this.url.replace("http://", "ws://") + "/chatService";
     var stompHeaders: StompHeaders = new StompHeaders();
-    stompHeaders["jwt"] = this.authService.getToken();
+    stompHeaders["Authorization"] = this.authService.getToken();
     this.rxStomp.configure({
       brokerURL: this.url,
       debug: console.log,
       connectHeaders: stompHeaders
+    });
+    this.authService.updateJWT.subscribe(val => {
+      var stompHeaders: StompHeaders = new StompHeaders();
+      stompHeaders["Authorization"] = val;
+      this.rxStomp.configure({
+        brokerURL: this.url,
+        debug: console.log,
+        connectHeaders: stompHeaders
+      });
+
     });
     this.rxStomp.activate();
 
   }
 
   public createChat(event: Event): Observable<number> {
-    console.log(event);
     return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createEventChat", event);
   }
 
@@ -49,8 +58,7 @@ export class ChatService {
   public subscribe(chatId: number): Observable<IMessage> {
     var stompHeaders: StompHeaders = new StompHeaders();
     stompHeaders["chatId"] = chatId.toString();
-    var observer: Subject<any> = new Subject<any>();
-
+    new Subject<any>();
     return this.rxStomp.watch({destination: "/chat/messages/" + chatId, subHeaders: stompHeaders});
   }
 
@@ -67,5 +75,18 @@ export class ChatService {
 
   public getCurrentChatsAndMessages(): Observable<Chat[]> {
     return this.httpClient.get<Chat[]>(BACKEND_URL + "/api/chat/getCurrentChats");
+  }
+
+  public setMessageAsRead(chatId: number, messageId: number): Observable<any> {
+    return this.httpClient.patch(BACKEND_URL + "/api/chat/updateLastReadMessage", {}, {
+      params: {
+        messageId: messageId,
+        chatId: chatId
+      }
+    });
+  }
+
+  public getMessageBefore(chatId: number, id: number): Observable<Message> {
+    return this.httpClient.get<Message>(BACKEND_URL + '/api/chat/getMessageBefore', {params: {chatId: chatId, id: id}});
   }
 }

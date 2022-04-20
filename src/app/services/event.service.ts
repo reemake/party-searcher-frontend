@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, Subject, tap} from "rxjs";
 import {BACKEND_URL} from "../app.module";
 import {Event} from "../entity/Event/Event";
 import {EventType} from "../entity/Event/EventType";
@@ -12,6 +12,8 @@ import {EventPage} from "../entity/Event/EventPage";
   providedIn: 'root'
 })
 export class EventService {
+  private endedEvents: Array<Event> | undefined = undefined;
+
 
   constructor(private httpClient: HttpClient) {
   }
@@ -66,6 +68,31 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/api/events/assignOnEvent", null, {params: param});
   }
 
+  public removeEvent(id: number): Observable<any> {
+    return this.httpClient.delete(BACKEND_URL + "/api/events", {params: {eventId: id}});
+  }
+
+  public editEvent(event: Event): Observable<any> {
+    return this.httpClient.patch(BACKEND_URL + "/api/events", event);
+  }
+
+  public get(id: number): Observable<Event> {
+    return this.httpClient.get<Event>(BACKEND_URL + "/api/events/getEvent", {params: {eventId: id}});
+  }
+
+  public getEndedEvents(): Observable<Array<Event>> {
+    if (this.endedEvents === undefined) {
+      console.log("REQUEST FOR ENDED EVENTS")
+      return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEndedEvents").pipe(tap((events) => {
+        this.endedEvents = events;
+      }));
+    } else {
+      console.log("NO REQUEST")
+      var subject = new Subject();
+      subject.next(this.endedEvents);
+      return subject as Observable<Array<Event>>;
+    }
+  }
 
   public setAddressByLonLat(event: any, func: Function): void {
 
