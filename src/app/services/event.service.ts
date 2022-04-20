@@ -21,6 +21,14 @@ export class EventService {
     return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEvents");
   }
 
+  public getUsersCreatedEventsByLogin(userLogin: string): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(BACKEND_URL + "/api/events/getUsersCreatedEventsByLogin", {params: {userLogin}});
+  }
+
+  public getUsersAttendedEventsByLogin(userLogin: string): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(BACKEND_URL + "/api/events/getUsersAttendedEventsByLogin", {params: {userLogin}});
+  }
+
   public getEventsWithinRadius(point: number[], radius: number): Observable<Array<Event>> {
     var params: HttpParams = new HttpParams();
     params = params.set("lon", point[0]).set("lat", point[1]).set("radius", radius);
