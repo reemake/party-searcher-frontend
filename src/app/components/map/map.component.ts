@@ -1,4 +1,14 @@
-import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {Feature, Map as MyMap, View} from 'ol';
 import {Coordinate} from 'ol/coordinate';
 import {Control, defaults as DefaultControls, ScaleLine} from 'ol/control';
@@ -22,6 +32,7 @@ import {Subject} from "rxjs";
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements AfterViewInit {
+  @ViewChild('mapElementRef', {static: true}) mapElementRef: ElementRef
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
 
@@ -167,6 +178,7 @@ export class MapComponent implements AfterViewInit {
       this.map.addControl(switchControl);
     }
     this.map?.addLayer(this.previousEventsMarkersLayer);
+    this.map.setTarget(this.mapElementRef.nativeElement)
   }
 
   private setHandlers(): void {
