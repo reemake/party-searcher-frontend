@@ -42,6 +42,7 @@ import {ReviewDialogComponent} from './components/review-dialog/review-dialog.co
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatButtonModule} from "@angular/material/button";
 import {SuccessDialogComponent} from './components/success-dialog/success-dialog.component';
+import {OauthLoginDialogComponent} from './components/oauth-login-dialog/oauth-login-dialog.component';
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -90,7 +91,8 @@ const ROUTES: Routes = [
     OauthComponent,
     EditComponent,
     ReviewDialogComponent,
-    SuccessDialogComponent
+    SuccessDialogComponent,
+    OauthLoginDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,7 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import {catchError, Observable, switchMap, tap} from 'rxjs';
+import {catchError, Observable, switchMap, tap, throwError} from 'rxjs';
 import {AuthenticationService} from './authentication.service';
 import {Jwt} from "../../entity/Jwt";
 
@@ -47,11 +47,10 @@ export class AuthInterceptor implements HttpInterceptor {
               return next.handle(request);
             }
           ), catchError((error) => {
-            return new Observable<HttpResponse<any>>();
+            return throwError(error)
           }))
       } else {
-
-        return new Observable<HttpResponse<any>>();
+        return next.handle(request);
       }
       })
     );
