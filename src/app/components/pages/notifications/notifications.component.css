@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.notifications{
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 1500px;
+    background: #D15D55;
+    left: calc(50% - 750px);
+    top: 55px;
+}
+
+.notifications_header {
+    display: block;
+    margin: 30px 0 0 50px;
+    line-height: 50px;
+    font-size: 24px;
+}
+
+.notifications_selector {
+    display: block;
+    margin: 30px 0 0 50px;
+}
+
+.notifications_selector_element {
+    width: 1400px;
+    margin: 0 0 10px 0;
+}
+
+.inviteText {
+    font-size: 24px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 28px;
+}
+
+.inviteButtonArea {
+    display: block;
+    margin: 10px 0 0 0;
+}
+
+.inviteDescription {
+    display:flex;
+    position:absolute;
+    height: 500px;
+    width: 500px;
+    border: 2px solid #000000;
+    background-color: #FFFFFF;
+    left: calc(50% - 250px);
+    top: calc(50% - 250px);
+    border-radius: 5px;
+}
+
+.inviteDescriptionClose {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 555;
+}
+
+.inviteTexst {
+    display: block;
+    position:unset;
+    font-size: 24px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 40px;
+    text-align: center;
+    width: 100%;
+    margin: 10px 0 0 0;
+}

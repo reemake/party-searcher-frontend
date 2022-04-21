@@ -33,8 +33,9 @@
       <img alt="Запланированные мероприятия" src="./assets/img/header/calendar.png"/>
     </a>
 
-    <a href="./notifications">
-      <img alt="Оповещения" src="./assets/img/header/notifications.png"/>
+    <a href="./notifications" >
+      <img alt="Оповещения" src="./assets/img/header/notifications.png" *ngIf="!invitesCheck"/>
+      <img alt="Оповещения" src="./assets/img/header/notifications alert.png" *ngIf="invitesCheck"/>
     </a>
 
     <a href="./settings">

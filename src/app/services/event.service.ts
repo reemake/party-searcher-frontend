@@ -118,4 +118,10 @@ export class EventService {
 
   }
 
+  public rejectInvite(id: number): Observable<any> {
+    var param: HttpParams = new HttpParams();
+    param = param.set("eventId", id);
+    return this.httpClient.post(BACKEND_URL + "/api/events/rejectInvite", null, {params: param});
+  }
+
 }
