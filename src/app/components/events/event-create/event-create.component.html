@@ -53,6 +53,9 @@
   <div *ngFor="let theme of tagsInputs">
     <label for="tags">Тег</label>
     <input [formControl]="theme" class="form-control" id="tags" style="margin-bottom: 10px;" type="text"/>
+    <div *ngIf="theme.errors?.['required'] && (theme.dirty || theme.touched)"
+         class="alert alert-danger">Введите тег
+    </div>
     <button (click)="remove(theme)" class="btn btn-danger" style="margin-bottom: 10px;">удалить</button>
   </div>
   <button (click)="addTag()" class="btn btn-secondary">add tag</button>

@@ -17,7 +17,6 @@ export class EventCreateComponent implements OnInit {
   public selectedEvents: Array<Event> = new Array<Event>();
   public events: Array<Event> = new Array<Event>();
   public event: Event | null = null;
-  private currentDistance = 0;
   public tagsCount: number = 0;
   public formGroup: FormGroup;
   public nameInput: FormControl = new FormControl(null, [Validators.required]);
@@ -157,67 +156,71 @@ export class EventCreateComponent implements OnInit {
 
 
   addTag(): void {
-    let tag: FormControl = new FormControl();
+    console.log("ADD TAG")
+    let tag: FormControl = new FormControl("", [Validators.required]);
     this.tagsInputs.push(tag);
-    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag);
+    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag, {emitEvent: false});
   }
 
   submit(): void {
+    console.log("SUBMIT")
     if (!this.formGroup.valid) {
       this.formGroup.markAllAsTouched();
       this.error = "Заполните все обязательные поля!";
       return
-    }
-    this.error = "";
-    let event: Event = {
-      description: this.descriptionInput.value,
-      theme: this.eventThemeInput.value,
-      name: this.nameInput.value,
-      eventType: {name: this.eventTypeInput.value},
-      isOnline: this.isOnlineInput.value,
-      isPrivate: this.isPrivateInput.value,
-      url: this.isOnlineInput.value ? this.urlInput.value : null,
-      dateTimeStart: this.startTimeInput.value,
-      dateTimeEnd: this.endTimeInput.value,
-      maxNumberOfGuests: this.maxGuestsCountInput.value,
-      price: this.priceInput.value,
-      tags: [],
-      guests: [],
-      hasChatWithOwner: !this.hasChatWithOwnerInput.value
-    };
-    this.tagsInputs.forEach(val => {
-      let tag: Tag = {name: String(val.value).toUpperCase()};
-      event.tags.push(tag);
-    });
-    if (!event.isOnline) {
-      event.location = {
-        name: "",
-        location: {
-          type: "Point",
-          coordinates: this.currentLocation
-        }
+    } else {
+      this.error = "";
+      let event: Event = {
+        description: this.descriptionInput.value,
+        theme: this.eventThemeInput.value,
+        name: this.nameInput.value,
+        eventType: {name: this.eventTypeInput.value},
+        isOnline: this.isOnlineInput.value,
+        isPrivate: this.isPrivateInput.value,
+        url: this.isOnlineInput.value ? this.urlInput.value : null,
+        dateTimeStart: this.startTimeInput.value,
+        dateTimeEnd: this.endTimeInput.value,
+        maxNumberOfGuests: this.maxGuestsCountInput.value,
+        price: this.priceInput.value,
+        tags: [],
+        guests: [],
+        hasChatWithOwner: !this.hasChatWithOwnerInput.value
       };
-      this.eventService.setAddressByLonLat(event, () => {
+      this.tagsInputs.forEach(val => {
+        let tag: Tag = {name: String(val.value).toUpperCase()};
+        event.tags.push(tag);
+      });
+      if (!event.isOnline) {
+        event.location = {
+          name: "",
+          location: {
+            type: "Point",
+            coordinates: this.currentLocation
+          }
+        };
+        this.eventService.setAddressByLonLat(event, () => {
+          this.eventService.add(event).subscribe(event => {
+            alert("Событие успешно создано");
+            this.router.navigateByUrl("/events/map")
+          }, error => {
+            alert("При создании эвента произошла ошибка, повторите еще раз");
+            this.error = error;
+          });
+        });
+      } else
+
         this.eventService.add(event).subscribe(event => {
           alert("Событие успешно создано");
           this.router.navigateByUrl("/events/map")
         }, error => {
-          alert("При создании эвента произошла ошибка, повторите еще раз");
           this.error = error;
         });
-      });
-    } else
-
-      this.eventService.add(event).subscribe(event => {
-        alert("Событие успешно создано");
-        this.router.navigateByUrl("/events/map")
-      }, error => {
-        this.error = error;
-      });
+    }
   }
 
   remove(control: FormControl): void {
     this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
+    this.formGroup.removeControl(control.value);
   }
 
 
