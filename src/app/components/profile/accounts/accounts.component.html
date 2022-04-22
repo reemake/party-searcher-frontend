@@ -2,19 +2,32 @@
     <h1 id="title">Личный кабинет</h1>
 
     <div class="menu">
-            <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
-            <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myReviews" src="./assets/img/profile/Pencil.png"/>Мои отзывы</a></p>
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
+        <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
+        <p><a href="/profile/events" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
+        <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+        <p><a href="/" class="btn btn-link menuBtn">...</a></p>
+        <p><a href="/" class="btn btn-link menuBtn">...</a></p>
     </div>
 
     <div class="account-data">
-        <div class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
-                <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
-                <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
         </div>
-        <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+        <div *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="!this.user.commercialUser" class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+            <hr class="accLine">
+            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
+        </div>
+        <div *ngIf="this.user.commercialUser" class="rightPart"><b>"{{user.organizationName}}"</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
             <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
@@ -43,12 +56,12 @@
             <p *ngIf="this.user.commercialUser" style="text-indent:40px">В данный момент, Вы находитесь на <b>коммерческом</b> аккаунте.</p>
             <p *ngIf="!this.user.commercialUser" style="text-indent:40px">В данный момент, Вы находитесь на <b>личном</b> аккаунте.</p>
             <p>
-                <button [disabled]="this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn">Создать коммерческий аккаунт</button>
-                <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn">Перейти на коммерческий аккаунт</button>
-                <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn">Удалить коммерческий аккаунт</button>
+                <button [disabled]="this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" [routerLink]="['/profile/commercialRegister']">Создать коммерческий аккаунт</button>
+                <button [disabled]="this.user.commercialUser || !this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToCommercialAcc()">Перейти на коммерческий аккаунт</button>
+                <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" (click)="deleteCommercialUser()">Удалить коммерческий аккаунт</button>
             </p>
             <p style="text-indent:32%">
-                <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn">Перейти на личный аккаунт</button>
+                <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToDefaultAcc()">Перейти на личный аккаунт</button>
             </p>
         </div>
     </div>

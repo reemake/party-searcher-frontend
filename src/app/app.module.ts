@@ -28,11 +28,12 @@ import {FriendsComponent} from "./components/pages/friends/friends.component";
 import {MessagesComponent} from './components/messages/messages.component';
 import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
-import cloudinaryConfiguration from './cloudinary_cfg';
-import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
 import {EditComponent} from './components/events/edit/edit.component';
+import { CommercialRegisterComponent } from './components/profile/commercial-register/commercial-register.component';
+import { MyEventsComponent } from './components/profile/my-events/my-events.component';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
 import {AuthenticationService} from "./services/auth/authentication.service";
 import {EventService} from "./services/event.service";
 import {CookieService} from "ngx-cookie-service";
@@ -46,7 +47,6 @@ import {OauthLoginDialogComponent} from './components/oauth-login-dialog/oauth-l
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
-
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
 const ROUTES: Routes = [
@@ -65,7 +65,9 @@ const ROUTES: Routes = [
   ,
   {path: 'messages', component: MessagesComponent},
   {path: "login/oauth2", component: OauthComponent},
-  {path: "events/edit", component: EditComponent}
+  {path: "events/edit", component: EditComponent},
+  {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]}
 
 ];
 
@@ -93,6 +95,8 @@ const ROUTES: Routes = [
     MessagesComponent,
     OauthComponent,
     EditComponent,
+    CommercialRegisterComponent,
+    MyEventsComponent,
     ReviewDialogComponent,
     SuccessDialogComponent,
     OauthLoginDialogComponent
@@ -106,7 +110,8 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     FileUploadModule,
     CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
-    InViewportModule,
+    InViewportModule
+    ,
     MatInputModule,
     MatDialogModule,
     BrowserAnimationsModule,
@@ -124,7 +129,8 @@ const ROUTES: Routes = [
     AuthenticationService, EventService, CookieService, {
       provide: MatDialogRef,
       useValue: {}
-    }],
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

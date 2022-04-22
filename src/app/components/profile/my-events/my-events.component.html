@@ -1,0 +1,74 @@
+<div class="container">
+    <h1 id="title">Личный кабинет</h1>
+
+    <div class="menu">
+        <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
+        <p><a href="/profile/events" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
+        <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+        <p><a href="/" class="btn btn-link menuBtn">...</a></p>
+        <p><a href="/" class="btn btn-link menuBtn">...</a></p>
+    </div>
+
+    <div class="account-data">
+        <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="!this.user.commercialUser" class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+            <hr class="accLine">
+            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
+        </div>
+        <div *ngIf="this.user.commercialUser" class="rightPart"><b>"{{user.organizationName}}"</b>
+            <hr class="accLine">
+            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2 id="createdEvents-title">Мои мероприятия</h2>
+        <p id="createdEvents-p"><u>Организованные мной мероприятия:</u></p>
+        <div class="createdEvents">
+            <div *ngIf="this.createdEvents.length != 0" class="eventsList">
+                <div *ngFor="let event of createdEvents" style="text-indent: 15px;">
+                    {{ event.name }}
+                    <div class="createdEventsButtons">
+                        <button type="button" class="btn btn-lg btn-danger eventBtn1">Подробнее о мероприятии</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn2">Изменить мероприятие</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn3">Удалить мероприятие</button>
+                    </div>
+                    <hr class="eventsLine">
+                </div>
+            </div>
+            <div *ngIf="this.createdEvents.length == 0" class="eventsList">
+                <h1 style="position: relative; top: 43%; left: 25%;">Вы еще не организовали ни одно мероприятие :(</h1>
+            </div>
+        </div>
+
+        <p id="attendedEvents-p"><u>Мероприятия к посещению:</u></p>
+        <div class="attendedEvents">
+            <div *ngIf="this.attendedEvents.length != 0" class="eventsList">
+                <div *ngFor="let event of attendedEvents" style="text-indent: 15px;">
+                    {{ event.name }}
+                    <div class="attendedEventsButtons">
+                        <button type="button" class="btn btn-lg btn-danger eventBtn1" style="margin-left: 680px;">Подробнее о мероприятии</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn2">Отказаться от посещения</button>
+                    </div>
+                    <hr class="eventsLine">
+                </div>
+            </div>
+            <div *ngIf="this.attendedEvents.length == 0" class="eventsList">
+                <h1 style="position: relative; top: 43%; left: 23%;">Вы еще не записались ни на одно мероприятие :(</h1>
+            </div>
+        </div>
+    </div>
+</div>

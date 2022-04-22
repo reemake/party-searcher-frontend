@@ -1,5 +1,5 @@
 .page {
-  height: 75vh;
+  height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,8 +7,8 @@
 
 .container {
   width: 500px;
-  min-height: 460px;
-  max-height: 500px;
+  min-height: 560px;
+  max-height: 700px;
   margin: 0 auto;
   background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
   border-radius: 5px;
@@ -32,12 +32,14 @@
 .checkbox {
   padding-left: 30px;
   padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 #submit-button {
   width: 200px;
   height: 43px;
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-bottom: 30px;
   margin-left: 145px;
   background: #D15D55;
   border-radius: 10px;
