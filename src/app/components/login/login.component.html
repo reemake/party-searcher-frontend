@@ -29,6 +29,9 @@
       <div class="checkbox">
         <label><input type="checkbox" name="remember"> Запомнить меня</label>
       </div>
+      <button [disabled]="loginForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">
+        Войти
+      </button>
       <a href="{{BACKEND}}/oauth2/authorization/google">
         <div class="google-btn">
           <img src="./assets/img/sign-in-with-google.svg"/>
@@ -41,9 +44,6 @@
           <p>Войти через VK</p>
         </div>
       </a>
-      <button [disabled]="loginForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">
-        Войти
-      </button>
       <small id="toRegistry-button">
         Ещё не зарегистрированы?
         <a [routerLink]="['/register']" class="btn btn-link">Зарегистрироваться</a>
