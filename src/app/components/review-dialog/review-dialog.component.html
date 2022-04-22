@@ -1,41 +1,47 @@
 <h1 mat-dialog-title>Оцените мероприятие '{{data.name}}'</h1>
 <div mat-dialog-content>
-  <mat-form-field>
-    <div class="star-btns">
-      <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
-        <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="./assets/img/empty-starr.png"/>
-        <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
-      </button>
-    </div>
-  </mat-form-field>
+  <div class="star-btns" mat-card-content>
+    <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
+      <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="./assets/img/empty-starr.png"/>
+      <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
+    </button>
+  </div>
   <label *ngIf="review" class="mat-checkbox-label" for="deep">Оценить подробно</label>
   <input *ngIf="review" [(ngModel)]="deepReview" class="mat-checkbox" id="deep" type="checkbox">
-  <div *ngIf="deepReview">
-    <mat-form-field>
+
+  <mat-card-content *ngIf="deepReview">
+    <mat-form-field *ngIf="review">
       <label class="mat-step-label" for="eventOrganization">Оценка организации события</label>
-      <input *ngIf="review" [(ngModel)]="review.eventOrganizationMark" class="mat-input-server" id="eventOrganization"
-             max="5" required type="number"/>
+      <input #eventOrganization="ngModel" [(ngModel)]="review.eventOrganizationMark" class="mat-input-server"
+             id="eventOrganization" matInput
+             max="5" name="eventOrganization" required type="number">
+      <mat-hint *ngIf="eventOrganization.errors?.['required']">Заполните поле</mat-hint>
+
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="review">
       <label class="mat-step-label" for="recommendToOther">Будете рекомендовать события этого пользователя к посещению
         другим людям</label>
-      <input *ngIf="review" [(ngModel)]="review.recommendToOthersMark" class="mat-input-server" id="recommendToOther"
-             max="5" required type="number"/>
+      <input #recommendToOther="ngModel" [(ngModel)]="review.recommendToOthersMark" class="mat-input-server"
+             id="recommendToOther"
+             matInput max="5" required type="number"/>
+      <mat-hint *ngIf="recommendToOther.errors?.['required']">Заполните поле</mat-hint>
     </mat-form-field>
-    <mat-form-field>
-      <label class="mat-step-label" for="length">Оцените длительность мероприятия</label>
-      <select [(ngModel)]="lenMarkModel" class="mat-select-panel" id="length">
-        <option *ngFor="let val of lengthsMarks.keys()" value="{{val}}">{{val}}</option>
-      </select>
+    <label class="mat-step-label" for="length">Оцените длительность мероприятия</label>
+    <mat-select #eventLength="ngModel" [(ngModel)]="lenMarkModel" class="mat-select-panel" id="length" required>
+      <mat-option *ngFor="let val of lengthsKeys" value="{{val}}">{{val}}</mat-option>
+    </mat-select>
+    <mat-hint *ngIf="eventLength.errors?.['required']">Заполните поле</mat-hint>
+    <mat-form-field *ngIf="review">
+      <label for="reviewText">Текст отзыва</label>
+      <textarea #text="ngModel" [(ngModel)]="review.text" id="reviewText" matInput required></textarea>
+      <mat-hint *ngIf="text.errors?.['required']">Заполните поле</mat-hint>
     </mat-form-field>
+  </mat-card-content>
+  <div mat-dialog-actions>
+    <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
+    <button *ngIf="review && (deepReview?review.eventLengthMark&&review.text:true)" [mat-dialog-close]="goReview()"
+            mat-button>
+      Оценить
+    </button>
   </div>
-</div>
-<div mat-dialog-actions>
-  <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
-  <button *ngIf="review" [mat-dialog-close]="goReview()" mat-button
-  >Оценить
-  </button>
-  <button *ngIf="review" [mat-dialog-close]="goReview()" mat-button
-  >Перейти к подробному отзыву
-  </button>
-</div>
+

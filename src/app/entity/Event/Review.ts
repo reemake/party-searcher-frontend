@@ -9,6 +9,7 @@ export interface Review {
   recommendToOthersMark: number,
   reviewWeight: number
   eventLengthMark?: string;
+  notReady?: boolean
 }
 
 export enum EventLengthMark {

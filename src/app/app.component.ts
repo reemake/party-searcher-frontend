@@ -34,22 +34,17 @@ export class AppComponent {
             data: e[this.eventIndex]
           });
           this.matDialogRef.afterClosed().subscribe((review: Review) => {
-            console.log(review)
-            if (review.reviewWeight > 0) {
-              if (review.reviewWeight > 0.5) {
-
-              } else {
                 this.reviewService.add(review).subscribe((e) => {
-                  this.matDialog.open(SuccessDialogComponent);
+                  if (!review.notReady)
+                    this.matDialog.open(SuccessDialogComponent);
                 }, error => alert("Произошла ошибка при добавлении отзыва"));
-              }
+
               this.eventIndex++;
-              if (this.events[this.eventIndex])
-                this.matDialogRef = this.matDialog.open(ReviewDialogComponent, {
-                  width: '250px',
-                  data: this.events[this.eventIndex]
-                });
-            }
+            if (this.events[this.eventIndex] && !review.notReady)
+              this.matDialogRef = this.matDialog.open(ReviewDialogComponent, {
+                width: '250px',
+                data: this.events[this.eventIndex]
+              });
           })
         }
       })
