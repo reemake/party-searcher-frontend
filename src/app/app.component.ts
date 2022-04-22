@@ -22,8 +22,9 @@ export class AppComponent {
 
   constructor(private matDialog: MatDialog, private eventService: EventService, private authService: AuthenticationService,
               private cookieService: CookieService, private reviewService: ReviewService) {
-    if (true)//!cookieService.check("reviewsLoaded")) {
+    if (!cookieService.check("reviewsLoaded")) {
       this.eventService.getEndedEvents().subscribe(e => {
+        this.events = e;
         var date = new Date();
         date.setDate(Date.now());
         date.setMilliseconds(date.getMilliseconds() + 8.64e7);
@@ -48,8 +49,10 @@ export class AppComponent {
           })
         }
       })
-  }
+    }
 
+
+  }
 
 }
 
