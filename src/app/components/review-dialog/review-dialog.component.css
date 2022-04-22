@@ -1,5 +1,12 @@
 .rating-btn {
   border: none;
+  background: none;
+
+}
+
+.star-btns {
+  display: flex;
+  flex-direction: row;
 }
 
 button {

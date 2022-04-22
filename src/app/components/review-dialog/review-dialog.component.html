@@ -1,15 +1,34 @@
 <h1 mat-dialog-title>Оцените мероприятие '{{data.name}}'</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
-      <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="./assets/img/empty-starr.png"/>
-      <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
-    </button>
-    <input id="eventReview" matInput>
-
+    <div class="star-btns">
+      <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
+        <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="./assets/img/empty-starr.png"/>
+        <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
+      </button>
+    </div>
   </mat-form-field>
-  <label for="deep">Оценить подробно</label>
-  <input [(ngModel)]="deepReview" id="deep" type="checkbox">
+  <label *ngIf="review" class="mat-checkbox-label" for="deep">Оценить подробно</label>
+  <input *ngIf="review" [(ngModel)]="deepReview" class="mat-checkbox" id="deep" type="checkbox">
+  <div *ngIf="deepReview">
+    <mat-form-field>
+      <label class="mat-step-label" for="eventOrganization">Оценка организации события</label>
+      <input *ngIf="review" [(ngModel)]="review.eventOrganizationMark" class="mat-input-server" id="eventOrganization"
+             max="5" required type="number"/>
+    </mat-form-field>
+    <mat-form-field>
+      <label class="mat-step-label" for="recommendToOther">Будете рекомендовать события этого пользователя к посещению
+        другим людям</label>
+      <input *ngIf="review" [(ngModel)]="review.recommendToOthersMark" class="mat-input-server" id="recommendToOther"
+             max="5" required type="number"/>
+    </mat-form-field>
+    <mat-form-field>
+      <label class="mat-step-label" for="length">Оцените длительность мероприятия</label>
+      <select [(ngModel)]="lenMarkModel" class="mat-select-panel" id="length">
+        <option *ngFor="let val of lengthsMarks.keys()" value="{{val}}">{{val}}</option>
+      </select>
+    </mat-form-field>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
