@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import { User } from 'src/app/entity/User';
-import { UserService } from 'src/app/services/user.service';
+import {User} from 'src/app/entity/User';
+import {UserService} from 'src/app/services/user.service';
+import {MatDialog} from "@angular/material/dialog";
+import {SuccessDialogComponent} from "../../success-dialog/success-dialog.component";
 
 @Component({
   selector: 'app-commercial-register',
@@ -15,7 +17,8 @@ export class CommercialRegisterComponent implements OnInit {
   userEdited = new User();
   msg: string = '';
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private matDialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.getUserInfo();
@@ -55,17 +58,18 @@ export class CommercialRegisterComponent implements OnInit {
 
     this.userEdited.commercialUserCreated = true;
 
-    this.userService.updateCommercialAcc(this.userEdited).subscribe(
+    this.userService.registerCommercialAcc(this.userEdited).subscribe(
       result => {
-        console.log("commercial account successfully registered");
-        this.getUserInfo();
+        console.log("квитанция на оплату создана");
+        this.matDialog.open(SuccessDialogComponent, {data: "Сейчас вы перейдете на форму оплаты, после оплаты коммерческий аккаунт будет активирован автоматически"})
+        //   this.getUserInfo();
         this.router.navigate(["/profile/accounts"]);
       },
       error => {
-        console.log(error);
+        this.msg = error.error.message;
       }
     )
-    
+
   }
 
 }

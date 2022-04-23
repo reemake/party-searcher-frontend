@@ -1,15 +1,16 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BACKEND_URL } from '../app.module';
-import { User } from '../entity/User';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {BACKEND_URL} from '../app.module';
+import {User} from '../entity/User';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   public getUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(BACKEND_URL + "/api/users/getUsers");
@@ -39,4 +40,7 @@ export class UserService {
     return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateCommercialAcc", user);
   }
 
+  public registerCommercialAcc(user: User): Observable<string> {
+    return this.httpClient.post<string>(BACKEND_URL + "/api/paid/getReceiptAndRegisterCommAccount", user);
+  }
 }

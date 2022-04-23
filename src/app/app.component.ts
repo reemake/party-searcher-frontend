@@ -37,7 +37,7 @@ export class AppComponent {
           this.matDialogRef.afterClosed().subscribe((review: Review) => {
                 this.reviewService.add(review).subscribe((e) => {
                   if (!review.notReady)
-                    this.matDialog.open(SuccessDialogComponent);
+                    this.matDialog.open(SuccessDialogComponent, {data: "Благодарим за оставленный отзыв"});
                 }, error => alert("Произошла ошибка при добавлении отзыва"));
 
               this.eventIndex++;
