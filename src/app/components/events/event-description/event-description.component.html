@@ -1,4 +1,4 @@
-<div *ngIf="event!=null" id="description" style="width: 100%;">
+<div class="container" *ngIf="event!=null" id="description">
   <div class="description-row header">
     <h2 class="title">{{event.name}}</h2>
     <button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
@@ -9,15 +9,14 @@
 
   <div class="description-row">
     <div class="locationImage">
-      <img *ngIf="event.isOnline" src="./assets/img/mapImages/online location.png"/>
-      <img *ngIf="!event.isOnline" src="./assets/img/mapImages/event location.png"/>
+      <a *ngIf="event.url" href="{{event.url}}"><img *ngIf="event.isOnline" src="./assets/img/mapImages/online location.png"/>{{event.url}}</a>
+      <p *ngIf="event?.location?.name"><img *ngIf="!event.isOnline" src="./assets/img/mapImages/event location.png"/>{{event?.location?.name}}</p>
     </div>
-    <a *ngIf="event.url" href="{{event.url}}">{{event.url}}</a>
-    <p *ngIf="event?.location?.name">{{event?.location?.name}}</p>
+    
 
   </div>
   <div class="description-row owner">
-    <p>Организатор</p>
+    <p>Организатор:</p>
     <div class="owner-container">
       <p>{{event.owner?.login}}</p>
       <img src="./assets/img/rating-star-icon.png"/>
@@ -25,23 +24,23 @@
     </div>
   </div>
   <div class="description-row owner">
-    <p>Время начала</p>
+    <p>Время начала:</p>
     <p>{{event.dateTimeStart | date:'dd.MM.YY HH:mm'}}</p>
   </div>
   <div *ngIf="event.dateTimeEnd!==null" class="description-row owner">
-    <p>Время окончания мероприятия</p>
+    <p>Время окончания мероприятия:</p>
     <p>{{event.dateTimeEnd | date:'dd.MM.YY HH:mm'}}</p>
   </div>
   <div *ngIf="event.maxNumberOfGuests!==0" class="description-row owner">
-    <p>Макс кол-во участников</p>
+    <p>Максимальное кол-во участников:</p>
     <p>{{event.maxNumberOfGuests}}</p>
   </div>
   <div class="description-row">
-    <p>Участники</p>
+    <p>Участников:</p>
     <p>{{event.guests?.length}}</p>
   </div>
   <div class="description-row description">
-    <p>Доп информация</p>
+    <p>Дополнительная информация:</p>
     <pre>
       {{event.description}}
     </pre>
@@ -52,33 +51,28 @@
   <div class="description-row description-buttons">
     <div class="description-button">
       <button (click)="removeFromEvent()" *ngIf="event.currentUserEntered"><img
-        src="./assets/img/mapImages/buttons/remove-from-event.png"/></button>
-      <p *ngIf="event.currentUserEntered">отменить запись</p>
+        src="./assets/img/mapImages/buttons/remove-from-event.png"/>&nbsp;&nbsp;&nbsp;Отменить запись</button>
 
       <button (click)="assignOnEvent()" *ngIf="!event.currentUserEntered"><img
-        src="./assets/img/mapImages/buttons/assign-event-btn.png"/></button>
-      <p *ngIf="!event.currentUserEntered">записаться на мероприятие</p>
+        src="./assets/img/mapImages/buttons/assign-event-btn.png"/>&nbsp;&nbsp;&nbsp;Записаться на мероприятие</button>
     </div>
     <div *ngIf="event.currentUserEntered" class="description-button">
       <button (click)="createAndGoToChat()" *ngIf="event.chatId===undefined"><img
-        src="./assets/img/mapImages/buttons/group-chat.png"/></button>
+        src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>
       <button (click)="goToChat(event.chatId)" *ngIf="event.chatId!==undefined"><img
-        src="./assets/img/mapImages/buttons/group-chat.png"/></button>
-      <p>групповой чат</p>
+        src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>
     </div>
     <div *ngIf="event.hasChatWithOwner" class="description-button">
-      <button (click)="callEventOwner()"><img src="./assets/img/mapImages/buttons/chat_with_admin.png"/></button>
-      <p>связь с организатором</p>
+      <button (click)="callEventOwner()"><img src="./assets/img/mapImages/buttons/chat_with_admin.png"/>&nbsp;&nbsp;&nbsp;Связь с организатором</button>
     </div>
     <div class="description-button">
-      <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/></button>
-      <p>пожаловаться на мероприятие</p>
+      <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/>&nbsp;&nbsp;&nbsp;Пожаловаться на мероприятие</button>
     </div>
   </div>
   <p *ngIf="error!==''">{{error}}</p>
 
   <div class="description-row tags">
-    <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}}</h3>
+    <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag.name}} </h3>
   </div>
   <div class="price">
     <img *ngIf="event.price==0" alt="free event" src="./assets/img/FREE%20PRICE.png"/>

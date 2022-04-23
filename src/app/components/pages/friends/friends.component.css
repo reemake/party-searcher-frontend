@@ -80,7 +80,7 @@
     color: white;
   }
 
-.btn-danger:hover {
+#search-button:hover {
     background: #FF0000;
     transition: .7s;
 }
@@ -97,12 +97,10 @@
 }
 
 .dropBtn {
-    background-color: #f4f4f4;
     border-radius: 30px;
-    border: none;
     height: 30px;
-    width: 30px;
-    margin-top: -10px;
+    width: 45px;
+    line-height: 20px;
 }
 
 .dropDown:hover .dropContent {
