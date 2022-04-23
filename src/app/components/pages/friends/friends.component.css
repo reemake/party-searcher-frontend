@@ -80,6 +80,11 @@
     color: white;
   }
 
+.btn-danger:hover {
+    background: #FF0000;
+    transition: .7s;
+}
+
 .listSelectorField {
     height: 50px;
     vertical-align: top;
@@ -135,7 +140,6 @@
 }
 
 #title1 {
-    
     margin-top: -800px;
     font-style: normal;
     font-weight: 600;

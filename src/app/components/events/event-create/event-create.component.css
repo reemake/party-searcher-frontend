@@ -1,9 +1,72 @@
+.page {
+  max-width: 50%;
+  margin: 0 auto;
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
 form {
   display: flex;
   flex-direction: column;
 }
 
+.container {
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+  border-radius: 5px;
+  padding: 30px 40px 30px 40px;
+}
+
 .mycontainer {
   display: flex;
   flex-direction: row;
+}
+
+.btn {
+  margin: 15px;
+}
+
+.deleteTagBtn {
+  margin-top: -60px;
+  margin-left: 30px;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  text-align: center;
+  color: white;
+  float: right;
+}
+
+.createBtn {
+  height: 40px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  text-align: center;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #FF0000;
+  transition: .7s;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+#title {
+  position: relative;
+  margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
 }
