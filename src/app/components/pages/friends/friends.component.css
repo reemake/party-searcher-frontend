@@ -1,13 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.page {
+    height: 94vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 .friends {
     display: block;
-    position: absolute;
-    height: 100%;
-    width: 1500px;
-    background: #D15D55;
+    margin-left: -105px;
+    height: 740px;
+    width: 800px;
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
     left: calc(50% - 750px);
     top: 55px;
+    border-radius: 5px;
+    overflow: hidden; 
+    overflow-y: scroll;
 }
 
 .findFriendsButton {
@@ -28,17 +38,16 @@
 
 .listSelector {
     display: block;
-    margin: 50px 0 0 100px;
+    margin: 250px 0 0 540px;
     line-height: 50px;
     font-size: 24px;
 }
 
 .search {
-    margin: 30px 0 0 50px;
-    width: calc(100% - 100px);
+    margin: 50px 0 0 50px;
+    width: 700px;
     height: 50px;
     background: #FFFFFF;
-    border: 2px solid #000000;
     box-sizing: border-box;
     font-family: Roboto;
     font-style: normal;
@@ -48,14 +57,47 @@
     padding-left: 15px;
 }
 
+.searchOption {
+    margin-top: 30px;
+    margin-left: 50px;
+    font-size: 24px;
+    width: 450px;
+    height: 50px;
+}
+
+#search-button {
+    width: 150px;
+    height: 50px;
+    margin-top: -78px;
+    margin-left: 600px;
+    background: #D15D55;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    color: white;
+  }
+
 .listSelectorField {
     height: 50px;
     vertical-align: top;
 }
 
+.tableRow {
+    margin-top: 30px;
+    margin-left: 50px;
+    font-size: 18px;
+}
+
 .dropBtn {
-    background-color: #D15D55;
+    background-color: #f4f4f4;
+    border-radius: 30px;
     border: none;
+    height: 30px;
+    width: 30px;
+    margin-top: -10px;
 }
 
 .dropDown:hover .dropContent {
@@ -80,20 +122,48 @@
     background-color: #DDD;
 }
 
-.searchOption {
-    display: block;
-    margin: 30px 0 0 50px;
-    line-height: 50px;
-    font-size: 24px;
-}
-
 .listSelectorImage {
-    height: 53px;
-    width: 53px;
+    height: 40px;
+    width: 40px;
     border-radius: 26px;
+    margin-top: -5px;
 }
 
 #autorisationAlert {
     width: calc(100% - 200px);
     text-align: center;
+}
+
+#title1 {
+    
+    margin-top: -800px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+
+    color: #000000;
+}
+
+#sent {
+    margin-top: 20px;
+    margin-left: 50px;
+    font-size: 24px;
+}
+
+#find {
+    margin-top: 20px;
+    margin-left: 50px;
+    font-size: 24px;
+}
+
+#sub {
+    margin-top: 20px;
+    margin-left: 50px;
+    font-size: 24px;
+}
+
+#friend {
+    margin-top: 20px;
+    margin-left: 50px;
+    font-size: 24px;
 }
