@@ -33,6 +33,9 @@ import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
 import {EditComponent} from './components/events/edit/edit.component';
+import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
+import { CommercialRegisterComponent } from './components/profile/commercial-register/commercial-register.component';
+import { MyEventsComponent } from './components/profile/my-events/my-events.component';
 import {AuthenticationService} from "./services/auth/authentication.service";
 import {EventService} from "./services/event.service";
 import {CookieService} from "ngx-cookie-service";
@@ -65,7 +68,9 @@ const ROUTES: Routes = [
   ,
   {path: 'messages', component: MessagesComponent},
   {path: "login/oauth2", component: OauthComponent},
-  {path: "events/edit", component: EditComponent}
+  {path: "events/edit", component: EditComponent},
+  {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
+  {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]}
 
 ];
 
@@ -93,6 +98,8 @@ const ROUTES: Routes = [
     MessagesComponent,
     OauthComponent,
     EditComponent,
+    CommercialRegisterComponent,
+    MyEventsComponent,
     ReviewDialogComponent,
     SuccessDialogComponent,
     OauthLoginDialogComponent
@@ -114,6 +121,7 @@ const ROUTES: Routes = [
     MatSelectModule,
     MatButtonToggleModule,
     MatCardModule
+
   ],
   providers: [
     {
@@ -124,7 +132,8 @@ const ROUTES: Routes = [
     AuthenticationService, EventService, CookieService, {
       provide: MatDialogRef,
       useValue: {}
-    }],
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

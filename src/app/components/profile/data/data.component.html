@@ -2,23 +2,32 @@
     <h1 id="title1">Личный кабинет</h1>
 
     <div class="menu">
-            <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
-            <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myReviews" src="./assets/img/profile/Pencil.png"/>Мои отзывы</a></p>
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
-            <p><a href="/" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
+        <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
+        <p><a href="/profile/events" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
+        <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+        <p><a href="/" class="btn btn-link menuBtn">...</a></p>
+        <p><a href="/" class="btn btn-link menuBtn">...</a></p>
     </div>
 
     <div class="account-data">
-        <div *ngIf="!this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+        <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
                 <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
                 <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+        </div>
+        <div *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
+            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
         </div>
         <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
             <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
             <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
-    </div>
-        <div class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+        </div>
+        <div *ngIf="!this.user.commercialUser" class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+            <hr class="accLine">
+            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
+            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
+        </div>
+        <div *ngIf="this.user.commercialUser" class="rightPart"><b>"{{user.organizationName}}"</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
             <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
@@ -32,13 +41,13 @@
             <!-- Image uploading field -->
             <div *ngIf="!this.user.pictureUrl" class="profileImage">
                 <label class="btn btn-default uploadImg">
-                    <input type="file" ng2FileSelect [style.display]="'none'" [uploader]="uploader" #fileInput (change)="fileInput.value=''" (change)="photoSubmitOn()" hidden><img alt="uploadImg" src="./assets/img/profile/add.png"/>
+                    <input type="file" accept=".jpg,.jpeg,.png" ng2FileSelect [style.display]="'none'" [uploader]="uploader" #fileInput (change)="fileInput.value=''" (change)="photoSubmitOn()" hidden><img alt="uploadImg" src="./assets/img/profile/add.png"/>
                 </label>
             </div>
 
 
             <img *ngIf="this.user.pictureUrl" class="profileImage" alt="accImg" src={{this.user.pictureUrl}}/>
-        
+            <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3" (click)="deletePhoto(dataChangeForm)">Удалить фото</button>
         
             <div class="profileData">
                 <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
@@ -104,7 +113,7 @@
     </div>
 
     
-        <div *ngIf="this.isPhotoUploaded">
+        <div *ngIf="this.isPhotoUploading">
             <div id="photoStatus" class="file" *ngFor="let response of responses; let i = index">
                     <h3>{{response.file.name}}</h3>
                     <div class="status">

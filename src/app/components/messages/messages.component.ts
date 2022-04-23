@@ -145,7 +145,9 @@ export class MessagesComponent implements OnInit, OnDestroy {
                   lastName: friend.id.owner.lastName,
                   email: '',
                   password: '',
-                  phone: ''
+                  phone: '',
+                  organizationName: '',
+                  description: ''
                 },
                 chatUserType: ''
               }]
