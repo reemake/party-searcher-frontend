@@ -60,10 +60,8 @@ export class CommercialRegisterComponent implements OnInit {
 
     this.userService.registerCommercialAcc(this.userEdited).subscribe(
       result => {
-        console.log("квитанция на оплату создана");
-        this.matDialog.open(SuccessDialogComponent, {data: "Сейчас вы перейдете на форму оплаты, после оплаты коммерческий аккаунт будет активирован автоматически"})
-        //   this.getUserInfo();
-        this.router.navigate(["/profile/accounts"]);
+        this.matDialog.open(SuccessDialogComponent, {data: "Сейчас вы перейдете на форму оплаты, после оплаты коммерческий аккаунт будет активирован автоматически в течении 5 минут после оплаты"})
+        setTimeout(() => location.href = result.url, 6000);
       },
       error => {
         this.msg = error.error.message;

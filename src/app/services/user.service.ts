@@ -40,7 +40,7 @@ export class UserService {
     return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateCommercialAcc", user);
   }
 
-  public registerCommercialAcc(user: User): Observable<string> {
-    return this.httpClient.post<string>(BACKEND_URL + "/api/paid/getReceiptAndRegisterCommAccount", user);
+  public registerCommercialAcc(user: User): Observable<any> {
+    return this.httpClient.post<any>(BACKEND_URL + "/api/paid/getReceiptAndRegisterCommAccount", user);
   }
 }
