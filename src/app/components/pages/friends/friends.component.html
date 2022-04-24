@@ -1,8 +1,9 @@
 <div class="page">
-<div class="friends" *ngIf="!autorisationCheck">
-    <div class="listSelector" id="autorisationAlert">Для просмотра данной страницы вам необходимо автиризироваться!</div>
-</div>
 <h1 id="title1">Друзья</h1>
+<div class="friends" *ngIf="!autorisationCheck">
+    <h2 id="autorizationAlert">Для просмотра данной страницы вам необходимо авторизироваться!</h2>
+</div>
+
 <div class="friends" *ngIf="autorisationCheck">
     <input type="search" class="search form-control" placeholder="Найти пользователя" (change)="requestChange()" id="searchField" />
     <select class="searchOption form-select" id="searchOption">

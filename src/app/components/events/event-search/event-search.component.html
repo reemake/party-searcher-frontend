@@ -12,7 +12,7 @@
     <input class="form-control" [formControl]="wordsInput" id="wordInput"/>
   </div>
   <ol>
-    <li (click)="setWords(word)" *ngFor="let word of words">{{word}}</li>
+    <li (click)="setWords(word)" *ngFor="let word of words">&nbsp;&nbsp;{{word}}</li>
   </ol>
 
   <div class="form-row">

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/entity/User';
 import { Event } from 'src/app/entity/Event/Event';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { EventService } from 'src/app/services/event.service';
 import { UserService } from 'src/app/services/user.service';
+import { FilterData } from 'src/app/entity/filterData';
 
 @Component({
   selector: 'app-my-events',
@@ -20,6 +21,9 @@ export class MyEventsComponent implements OnInit {
   createdEvents: Array<Event>;
   attendedEvents: Array<Event>;
 
+  descriptionOpened: boolean = false;
+  viewingEvent: Event;
+
   constructor(private userService: UserService, 
               public authService: AuthenticationService, 
               private router: Router,
@@ -27,7 +31,7 @@ export class MyEventsComponent implements OnInit {
     
    }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.getUserInfo();
     this.getUsersCreatedEvents();
     this.getUsersAttendedEvents();
@@ -71,6 +75,15 @@ export class MyEventsComponent implements OnInit {
 
   logOut() {
     this.authService.logOut();
+  }
+
+  showDescription(event: Event) {
+    this.viewingEvent = event;
+    this.descriptionOpened = true;
+  }
+
+  closeDescription() {
+    this.descriptionOpened = false;
   }
 
 }

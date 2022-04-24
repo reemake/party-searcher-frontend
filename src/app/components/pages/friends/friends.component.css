@@ -132,9 +132,9 @@
     margin-top: -5px;
 }
 
-#autorisationAlert {
-    width: calc(100% - 200px);
+#autorizationAlert {
     text-align: center;
+    margin-top: 350px;
 }
 
 #title1 {
