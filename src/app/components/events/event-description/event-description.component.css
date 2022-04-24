@@ -3,6 +3,18 @@
   padding: 20px;
 }
 
+#title {
+  text-align: center;
+  position: relative;
+  margin-left: 15px;
+  margin-bottom: 30px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
+}
+
 .description-row {
   display: flex;
   flex-direction: row;

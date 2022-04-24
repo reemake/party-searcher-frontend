@@ -1,9 +1,9 @@
 <div class="container" *ngIf="event!=null" id="description">
+  <h1 id="title">Информация о мероприятии&nbsp;<button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
+    src="./assets/img/mapImages/buttons/close-btn.png"/>
+</button></h1>
   <div class="description-row header">
-    <h2 class="title">{{event.name}}</h2>
-    <button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
-                                                                  src="./assets/img/mapImages/buttons/close-btn.png"/>
-    </button>
+    <h2 class="eventName">{{event.name}}</h2>
   </div>
 
 
@@ -16,7 +16,7 @@
 
   </div>
   <div class="description-row owner">
-    <p>Организатор:</p>
+    <p><u>Организатор:</u></p>
     <div class="owner-container">
       <p>{{event.owner?.login}}</p>
       <img src="./assets/img/rating-star-icon.png"/>
@@ -24,23 +24,23 @@
     </div>
   </div>
   <div class="description-row owner">
-    <p>Время начала:</p>
+    <p><u>Время начала:</u></p>
     <p>{{event.dateTimeStart | date:'dd.MM.YY HH:mm'}}</p>
   </div>
   <div *ngIf="event.dateTimeEnd!==null" class="description-row owner">
-    <p>Время окончания мероприятия:</p>
+    <p><u>Время окончания мероприятия:</u></p>
     <p>{{event.dateTimeEnd | date:'dd.MM.YY HH:mm'}}</p>
   </div>
   <div *ngIf="event.maxNumberOfGuests!==0" class="description-row owner">
-    <p>Максимальное кол-во участников:</p>
+    <p><u>Максимальное кол-во участников:</u></p>
     <p>{{event.maxNumberOfGuests}}</p>
   </div>
   <div class="description-row">
-    <p>Участников:</p>
+    <p><u>Участников:</u></p>
     <p>{{event.guests?.length}}</p>
   </div>
   <div class="description-row description">
-    <p>Дополнительная информация:</p>
+    <p><u>Дополнительная информация:</u></p>
     <pre>
       {{event.description}}
     </pre>
@@ -48,6 +48,7 @@
   <div class="description-row">
     <p>{{event.isOnline ? "Этот сайт" : "Эту локацию"}} за все время посетило 0 человек.</p>
   </div>
+  <hr>
   <div class="description-row description-buttons">
     <div class="description-button">
       <button (click)="removeFromEvent()" *ngIf="event.currentUserEntered"><img
