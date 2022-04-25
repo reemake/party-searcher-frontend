@@ -21,8 +21,9 @@ export interface Event {
   chatId?: number
   currentUserEntered?: boolean,
   theme: string,
-  tags: Array<Tag>
+  tags: Array<Tag>,
   guests: Array<EventAttendance>,
-  hasChatWithOwner: boolean
+  invitedGuests: Array<User> ,
+  hasChatWithOwner: boolean,
   avgMark?: number
 }
