@@ -28,7 +28,8 @@ import {FriendsComponent} from "./components/pages/friends/friends.component";
 import {MessagesComponent} from './components/messages/messages.component';
 import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
-import cloudinaryConfiguration from './cloudinary_cfg';
+import cloudinaryConfiguration from './cloudinary_cfg';import { NotificationsComponent } from './components/pages/notifications/notifications.component';
+
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
 import {EditComponent} from './components/events/edit/edit.component';
@@ -51,12 +52,14 @@ import {MatCardModule} from "@angular/material/card";
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
+
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent}, {
+  {path: 'register', component: RegistrationComponent},
+  {
     path: 'pages/survey.test',
     component: SurveyTest, canActivate: [AuthGuardService]
   },
@@ -70,9 +73,9 @@ const ROUTES: Routes = [
   {path: "events/edit", component: EditComponent},
   {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
   {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]}
+  ,{path: 'notifications', component: NotificationsComponent }
 
 ];
-
 
 @NgModule({
   declarations: [
@@ -101,7 +104,8 @@ const ROUTES: Routes = [
     MyEventsComponent,
     ReviewDialogComponent,
     SuccessDialogComponent,
-    OauthLoginDialogComponent
+    OauthLoginDialogComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -111,26 +115,20 @@ const ROUTES: Routes = [
     RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
     FileUploadModule,
-    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
-    InViewportModule,
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
+    ,InViewportModule,
     MatInputModule,
     MatDialogModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatCardModule
-
-  ],
+    MatCardModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },
-    AuthenticationService, EventService, CookieService, {
-      provide: MatDialogRef,
-      useValue: {}
     }
   ],
   bootstrap: [AppComponent]
