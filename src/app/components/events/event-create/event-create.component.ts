@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, Form, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
-import { Relationship } from '../../pages/friends/Relationship';
+import {Relationship} from '../../pages/friends/Relationship';
 import {UserService} from '../../pages/friends/user.service';
-import { User } from 'src/app/entity/User';
-import {EventAttendance} from "../../../entity/Event/EventAttendance";
+import {User} from 'src/app/entity/User';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-create',
@@ -45,27 +45,26 @@ export class EventCreateComponent implements OnInit {
   public hasChatWithOwnerInput: FormControl = new FormControl(false);
 
   public locationChangeSubject: Subject<any> = new Subject<any>();
-
-
   public friends: Relationship[];
   public friendsCheck: boolean = false;
   public invitedFriendsCheck: boolean = false;
   public invitedFriendsLogins: string[] = new Array;
 
+
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
-  constructor(private eventService: EventService, private userService: UserService) {
+  constructor(private eventService: EventService, private userService: UserService, private router: Router) {
     this.userService.getFriends().subscribe((data: Relationship[]) => {
-      console.log("waiting friends");
-      this.friends = data;
-      for (let i = 0; i < this.friends.length; i++) {
-        if (this.friends[i].id.friend.pictureUrl == null) {
-          this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
-        }
-        if (this.friends[i].id.owner.pictureUrl == null) {
-          this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
-        }
+        console.log("waiting friends");
+        this.friends = data;
+        for (let i = 0; i < this.friends.length; i++) {
+          if (this.friends[i].id.friend.pictureUrl == null) {
+            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.friends[i].id.owner.pictureUrl == null) {
+            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
       }
       if (this.friends.length > 0) this.friendsCheck = true;
     }
@@ -127,9 +126,6 @@ export class EventCreateComponent implements OnInit {
     );
   }
 
-  ngAfterContentChecked(): void {
-    this.changeDetector.detectChanges();
-  }
 
   urlValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
