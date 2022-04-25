@@ -172,14 +172,16 @@ export class EventCreateComponent implements OnInit {
 
 
   addTag(): void {
-    let tag: FormControl = new FormControl();
+    let tag: FormControl = new FormControl("", Validators.required);
     this.tagsInputs.push(tag);
-    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag);
+    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag, {emitEvent: false});
   }
 
 
   remove(control: FormControl): void {
+    this.formGroup.removeControl("tag" + this.tagsInputs.length, {emitEvent: false});
     this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
+
   }
 
   submit(): void {

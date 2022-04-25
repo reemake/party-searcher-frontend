@@ -73,6 +73,7 @@ export class EditComponent implements OnInit {
         this.currentEvent = event;
         this.location = event.location?.name || '';
         this.invitedFriendsLogins = event.invitedGuests.map(e => e.login);
+        this.invitedFriendsCheck = true;
         this.descriptionInput.setValue(event.description);
         this.nameInput.setValue(event.name);
         this.isOnlineInput.setValue(event.isOnline);
@@ -235,9 +236,9 @@ export class EditComponent implements OnInit {
   }
 
   addTag(): void {
-    let tag: FormControl = new FormControl();
+    let tag: FormControl = new FormControl("", Validators.required);
     this.tagsInputs.push(tag);
-    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag);
+    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag, {emitEvent: false});
   }
 
   submit(): void {
@@ -296,6 +297,7 @@ export class EditComponent implements OnInit {
   }
 
   remove(control: FormControl): void {
+    this.formGroup.removeControl("tag" + this.tagsInputs.length, {emitEvent: false});
     this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
   }
 
