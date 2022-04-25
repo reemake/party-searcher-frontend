@@ -71,6 +71,7 @@ export class EditComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.eventService.get(params['id']).subscribe(event => {
         this.currentEvent = event;
+        this.location = event.location?.name || '';
         this.invitedFriendsLogins = event.invitedGuests.map(e => e.login);
         this.descriptionInput.setValue(event.description);
         this.nameInput.setValue(event.name);
@@ -129,18 +130,18 @@ export class EditComponent implements OnInit {
             }
           }
         };
+        if (this.eventLocation) {
+          this.eventLocation.location.coordinates = eventData.location.location.coordinates;
+          this.eventLocation.name = '';
+        } else {
+          this.eventLocation = {
+            location: {type: "Point", coordinates: eventData.location.location.coordinates},
+            name: this.location
+          }
+        }
         this.eventService.setAddressByLonLat(eventData, () => {
           this.location = eventData.location.name;
-
-          if (this.eventLocation) {
-            this.eventLocation.location.coordinates = eventData.location.location.coordinates;
-            this.eventLocation.name = this.location;
-          } else {
-            this.eventLocation = {
-              location: eventData.location.location.coordinates,
-              name: this.location
-            }
-          }
+          this.eventLocation.name = eventData.location.name;
         })
 
       })
@@ -276,29 +277,22 @@ export class EditComponent implements OnInit {
       let tag: Tag = {name: String(val.value).toUpperCase()};
       event.tags.push(tag);
     });
-    if (!event.isOnline && this.currentEvent.location !== undefined && this.event?.location && this.event.location.location !== this.currentEvent.location.location) {
-      if (this.eventLocation) {
-        this.eventService.setAddressByLonLat(event, () => {
-          event.location = this.eventLocation;
-          this.eventService.editEvent(event).subscribe(event => {
-            alert("Событие успешно обновлено");
-            this.router.navigateByUrl("/events/map")
-          }, error => {
-            alert("При обновлении эвента произошла ошибка, повторите еще раз");
-            this.error = error;
-          });
-        });
-      } else {
-        event.location = this.currentEvent.location
-      }
-    } else
+    if (!event.isOnline) {
+      event.url = undefined;
+      if (this.eventLocation && event.location?.location.coordinates !== this.eventLocation.location.coordinates) {
+        event.location = this.eventLocation;
+      } else event.location = this.currentEvent.location;
+    }
+    this.update(event);
+  }
 
-      this.eventService.add(event).subscribe(event => {
-        alert("Событие успешно обновлено");
-        this.router.navigateByUrl("/events/map")
-      }, error => {
-        this.error = error;
-      });
+  private update(event: Event) {
+    this.eventService.editEvent(event).subscribe(event => {
+      alert("Событие успешно обновлено");
+      this.router.navigateByUrl("/events/map")
+    }, error => {
+      this.error = error;
+    });
   }
 
   remove(control: FormControl): void {
