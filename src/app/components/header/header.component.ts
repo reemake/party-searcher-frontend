@@ -13,12 +13,16 @@ export class HeaderComponent implements OnInit {
   public invitesCheck: boolean = false;
 
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService) {
+    if (localStorage.getItem("token")) {
+      if (inviteService.isInvated()) this.invitesCheck = true;
+      else this.invitesCheck = false;
+    }
     setInterval(() => {
       if (localStorage.getItem("token")) {
         if (inviteService.isInvated()) this.invitesCheck = true;
         else this.invitesCheck = false;
       }
-    }, 100000);
+    }, 60000);
 
   }
 
