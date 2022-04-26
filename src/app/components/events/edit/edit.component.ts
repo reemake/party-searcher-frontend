@@ -288,6 +288,8 @@ export class EditComponent implements OnInit {
   }
 
   private update(event: Event) {
+    console.log(event);
+
     this.eventService.editEvent(event).subscribe(event => {
       alert("Событие успешно обновлено");
       this.router.navigateByUrl("/events/map")
