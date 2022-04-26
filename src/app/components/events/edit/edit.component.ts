@@ -5,7 +5,10 @@ import {debounceTime, Subject} from "rxjs";
 import {EventService} from "../../../services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Tag} from "../../../entity/Event/Tag";
-import {EventAttendance} from "../../../entity/Event/EventAttendance";
+import {Relationship} from "../../pages/friends/Relationship";
+import {UserService} from "../../pages/friends/user.service";
+import {User} from "../../../entity/User";
+import {Location} from "../../../entity/Location";
 
 @Component({
   selector: 'app-edit',
@@ -40,15 +43,37 @@ export class EditComponent implements OnInit {
   public locationChangeSubject: Subject<any> = new Subject<any>();
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
-  public guestInputs: Array<FormControl> = new Array<FormControl>();
   private maxSW: number[] = [];
   private maxNE: number[] = [];
   private currentEvent: Event;
+  public invateUser: FormControl = new FormControl();
+  public friends: Relationship[];
+  public friendsCheck: boolean = false;
+  public invitedFriendsCheck: boolean = false;
+  public invitedFriendsLogins: string[] = new Array;
+  private eventLocation: Location;
 
-  constructor(private eventService: EventService, private router: Router, private changeDetector: ChangeDetectorRef, private activatedRoute: ActivatedRoute) {
+  constructor(private eventService: EventService, private router: Router, private userService: UserService, private changeDetector: ChangeDetectorRef, private activatedRoute: ActivatedRoute) {
+    this.userService.getFriends().subscribe((data: Relationship[]) => {
+        console.log("waiting friends");
+        this.friends = data;
+        for (let i = 0; i < this.friends.length; i++) {
+          if (this.friends[i].id.friend.pictureUrl == null) {
+            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.friends[i].id.owner.pictureUrl == null) {
+            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+        }
+        if (this.friends.length > 0) this.friendsCheck = true;
+      }
+    );
     this.activatedRoute.queryParams.subscribe(params => {
       this.eventService.get(params['id']).subscribe(event => {
         this.currentEvent = event;
+        this.location = event.location?.name || '';
+        this.invitedFriendsLogins = event.invitedGuests.map(e => e.login);
+        this.invitedFriendsCheck = true;
         this.descriptionInput.setValue(event.description);
         this.nameInput.setValue(event.name);
         this.isOnlineInput.setValue(event.isOnline);
@@ -65,12 +90,6 @@ export class EditComponent implements OnInit {
           var tagControl = new FormControl();
           tagControl.setValue(tag.name);
           this.tagsInputs.push(tagControl);
-        });
-
-        event.guests.forEach(guest => {
-          var control = new FormControl();
-          control.setValue(guest.id.userId);
-          this.guestInputs.push(control);
         });
       }, error1 => this.message = error1);
     })
@@ -112,9 +131,20 @@ export class EditComponent implements OnInit {
             }
           }
         };
+        if (this.eventLocation) {
+          this.eventLocation.location.coordinates = eventData.location.location.coordinates;
+          this.eventLocation.name = '';
+        } else {
+          this.eventLocation = {
+            location: {type: "Point", coordinates: eventData.location.location.coordinates},
+            name: this.location
+          }
+        }
         this.eventService.setAddressByLonLat(eventData, () => {
           this.location = eventData.location.name;
+          this.eventLocation.name = eventData.location.name;
         })
+
       })
 
     this.isOnlineInput.valueChanges.subscribe((val) => {
@@ -155,6 +185,47 @@ export class EditComponent implements OnInit {
     this.mapWidth = "100%";
   }
 
+  public friendInvate(): void {
+    try {
+      for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+        if (this.invitedFriendsLogins[i] == this.invateUser.value) {
+          alert("Данный пользователь уже приглашен!");
+          return;
+        }
+      }
+      if (this.invateUser.value != "Пригласить пользователя") {
+        this.invitedFriendsCheck = false;
+        var tempLogin: string = this.invateUser.value;
+        this.invitedFriendsLogins.push(tempLogin);
+        this.invitedFriendsCheck = true;
+      }
+    } catch (e) {
+      console.log("error: " + e);
+    }
+  }
+
+  public removeInvate(event: any): void {
+    for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+      if (this.invitedFriendsLogins[i] == event.path[0].id) {
+        if (this.invitedFriendsLogins.length > 1) {
+          this.invitedFriendsCheck = false;
+          var tempArray: string[] = new Array();
+          for (var j = 0; j < i; j++) tempArray.push(this.invitedFriendsLogins[j]);
+          if (i + 1 < this.invitedFriendsLogins.length) {
+            for (j = i + 1; j < this.invitedFriendsLogins.length; j++) tempArray.push(this.invitedFriendsLogins[j]);
+          }
+          this.invitedFriendsLogins = tempArray;
+          this.invitedFriendsCheck = true;
+          return;
+        } else {
+          this.invitedFriendsCheck = false;
+          this.invitedFriendsLogins = [];
+          return;
+        }
+      }
+    }
+  }
+
   selectEvents(event: any): void {
     if (event.length > 1) {
       this.selectedEvents = event;
@@ -165,9 +236,9 @@ export class EditComponent implements OnInit {
   }
 
   addTag(): void {
-    let tag: FormControl = new FormControl();
+    let tag: FormControl = new FormControl("", Validators.required);
     this.tagsInputs.push(tag);
-    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag);
+    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag, {emitEvent: false});
   }
 
   submit(): void {
@@ -177,6 +248,14 @@ export class EditComponent implements OnInit {
       return
     }
     this.error = "";
+    for (let i = 0; i < this.invitedFriendsLogins.length; i++) this.invitedFriendsLogins[i] = this.invitedFriendsLogins[i].split(" (")[0];
+    var tempUser: User;
+    var tempArray: User[] = new Array();
+    for (let i = 0; i < this.invitedFriendsLogins.length; i++) {
+      tempUser = new User;
+      tempUser.login = this.invitedFriendsLogins[i];
+      tempArray.push(tempUser);
+    }
     let event: Event = {
       id: this.currentEvent.id,
       description: this.descriptionInput.value,
@@ -188,6 +267,7 @@ export class EditComponent implements OnInit {
       url: this.isOnlineInput.value ? this.urlInput.value : null,
       dateTimeStart: this.startTimeInput.value,
       dateTimeEnd: this.endTimeInput.value,
+      invitedGuests: tempArray,
       maxNumberOfGuests: this.maxGuestsCountInput.value,
       price: this.priceInput.value,
       tags: [],
@@ -198,50 +278,29 @@ export class EditComponent implements OnInit {
       let tag: Tag = {name: String(val.value).toUpperCase()};
       event.tags.push(tag);
     });
-    this.guestInputs.forEach(guest => {
-      if (this.currentEvent.id) {
-        var eventAttendnce: EventAttendance = {
-          id: {
-            userId: guest.value,
-            eventId: this.currentEvent.id
-          }
-        };
-        event.guests.push(eventAttendnce);
-      }
-    })
-    if (!event.isOnline && this.currentEvent.location !== undefined && this.event?.location && this.event.location.location !== this.currentEvent.location.location) {
-      event.location = {
-        name: "",
-        location: {
-          type: "Point",
-          coordinates: this.currentLocation
-        }
-      };
-      this.eventService.setAddressByLonLat(event, () => {
-        this.eventService.editEvent(event).subscribe(event => {
-          alert("Событие успешно обновлено");
-          this.router.navigateByUrl("/events/map")
-        }, error => {
-          alert("При обновлении эвента произошла ошибка, повторите еще раз");
-          this.error = error;
-        });
-      });
-    } else
+    if (!event.isOnline) {
+      event.url = undefined;
+      if (this.eventLocation && event.location?.location.coordinates !== this.eventLocation.location.coordinates) {
+        event.location = this.eventLocation;
+      } else event.location = this.currentEvent.location;
+    }
+    this.update(event);
+  }
 
-      this.eventService.add(event).subscribe(event => {
-        alert("Событие успешно создано");
-        this.router.navigateByUrl("/events/map")
-      }, error => {
-        this.error = error;
-      });
+  private update(event: Event) {
+    console.log(event);
+
+    this.eventService.editEvent(event).subscribe(event => {
+      alert("Событие успешно обновлено");
+      this.router.navigateByUrl("/events/map")
+    }, error => {
+      this.error = error;
+    });
   }
 
   remove(control: FormControl): void {
+    this.formGroup.removeControl("tag" + this.tagsInputs.length, {emitEvent: false});
     this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
-  }
-
-  removeGuest(control: FormControl): void {
-    this.guestInputs = this.guestInputs.filter(guest => guest !== control);
   }
 
   private isSWandNEmore(SW: number[], NE: number[]): boolean {

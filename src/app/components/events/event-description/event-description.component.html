@@ -20,8 +20,9 @@
     <p>Организатор</p>
     <div class="owner-container">
       <p>{{event.owner?.login}}</p>
-      <img src="./assets/img/rating-star-icon.png"/>
-      <p>{{event.avgMark || 0}}</p>
+
+      <img *ngFor="let item of [].constructor(event.avgMark||0); let i = index"
+           src="./assets/img/rating-star-icon.png"/>
     </div>
   </div>
   <div class="description-row owner">

@@ -6,7 +6,7 @@ import {MapComponent} from './components/map/map.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {LocationBtnComponent} from './components/map/location-btn/location-btn.component';
-import {EventsIndexComponent} from './components/pages/events/events-index/events-index.component';
+import {EventsIndexComponent} from './components/events/events-index/events-index.component';
 import {EventSearchComponent} from './components/events/event-search/event-search.component';
 import {EventDescriptionComponent} from './components/events/event-description/event-description.component';
 import {RouterModule, Routes} from "@angular/router";
@@ -28,17 +28,17 @@ import {FriendsComponent} from "./components/pages/friends/friends.component";
 import {MessagesComponent} from './components/messages/messages.component';
 import {FileUploadModule} from "ng2-file-upload";
 import * as cloudinary from 'cloudinary-core';
+import cloudinaryConfiguration from './cloudinary_cfg';
+import {NotificationsComponent} from './components/pages/notifications/notifications.component';
+
 import {InViewportModule} from "ng-in-viewport";
 import {OauthComponent} from './components/login/oauth/oauth.component';
 import {EditComponent} from './components/events/edit/edit.component';
-import { CommercialRegisterComponent } from './components/profile/commercial-register/commercial-register.component';
-import { MyEventsComponent } from './components/profile/my-events/my-events.component';
-import {CloudinaryModule, CloudinaryConfiguration, provideCloudinary} from '@cloudinary/angular-5.x';
-import {AuthenticationService} from "./services/auth/authentication.service";
-import {EventService} from "./services/event.service";
-import {CookieService} from "ngx-cookie-service";
+import {CloudinaryModule} from '@cloudinary/angular-5.x';
+import {CommercialRegisterComponent} from './components/profile/commercial-register/commercial-register.component';
+import {MyEventsComponent} from './components/profile/my-events/my-events.component';
 import {MatInputModule} from "@angular/material/input";
-import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {MatDialogModule} from "@angular/material/dialog";
 import {ReviewDialogComponent} from './components/review-dialog/review-dialog.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatButtonModule} from "@angular/material/button";
@@ -47,14 +47,17 @@ import {OauthLoginDialogComponent} from './components/oauth-login-dialog/oauth-l
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
+
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
+
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
   {path: "events/add", component: EventCreateComponent, canActivate: [AuthGuardService]},
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent}, {
+  {path: 'register', component: RegistrationComponent},
+  {
     path: 'pages/survey.test',
     component: SurveyTest, canActivate: [AuthGuardService]
   },
@@ -68,9 +71,9 @@ const ROUTES: Routes = [
   {path: "events/edit", component: EditComponent},
   {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
   {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]}
+  ,{path: 'notifications', component: NotificationsComponent }
 
 ];
-
 
 @NgModule({
   declarations: [
@@ -99,7 +102,8 @@ const ROUTES: Routes = [
     MyEventsComponent,
     ReviewDialogComponent,
     SuccessDialogComponent,
-    OauthLoginDialogComponent
+    OauthLoginDialogComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -109,26 +113,20 @@ const ROUTES: Routes = [
     RouterModule.forRoot(ROUTES),
     ReactiveFormsModule,
     FileUploadModule,
-    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration),
-    InViewportModule
-    ,
+    CloudinaryModule.forRoot(cloudinary, cloudinaryConfiguration)
+    ,InViewportModule,
     MatInputModule,
     MatDialogModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatCardModule
-  ],
+    MatCardModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },
-    AuthenticationService, EventService, CookieService, {
-      provide: MatDialogRef,
-      useValue: {}
     }
   ],
   bootstrap: [AppComponent]

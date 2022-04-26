@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
-import { AppModule } from 'src/app/app.module';
-import { AuthenticationService } from 'src/app/services/auth/authentication.service';
+import {Router} from '@angular/router';
+import {AuthenticationService} from 'src/app/services/auth/authentication.service';
+import {InviteService} from './invite.service';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +10,19 @@ import { AuthenticationService } from 'src/app/services/auth/authentication.serv
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private _router: Router, public _authService: AuthenticationService) {
+  public invitesCheck: boolean = false;
+
+  constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService) {
+    if (localStorage.getItem("token")) {
+      if (inviteService.isInvated()) this.invitesCheck = true;
+      else this.invitesCheck = false;
+    }
+    setInterval(() => {
+      if (localStorage.getItem("token")) {
+        if (inviteService.isInvated()) this.invitesCheck = true;
+        else this.invitesCheck = false;
+      }
+    }, 60000);
 
   }
 

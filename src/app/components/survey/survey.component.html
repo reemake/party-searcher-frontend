@@ -1,5 +1,8 @@
-<div class="survey-container" id="survey" *ngIf="false">
-    <h1 class="survey-container-text">Добро пожаловать в Teammates search!<br>Для определения мероприятий, подходящих конкретно вам,<br>рекомендуется пройти опрос.<br>Желаете пройти его?</h1>
-    <button class="survey-button" id="survey-button-no" (click)="surveyButtonPress()">Нет</button>
-    <button routerLink="../pages/survey.test" class="survey-button" id="survey-button-yes" (click)="surveyButtonPress()">Да</button>
+<div *ngIf="surveyButton" class="survey-container" id="survey">
+  <h1 class="survey-container-text">Добро пожаловать в Teammates search!<br>Для определения мероприятий, подходящих
+    конкретно вам,<br>рекомендуется пройти опрос.<br>Желаете пройти его?</h1>
+  <button class="survey-button" id="survey-button-no" (click)="surveyButtonPress()">Нет</button>
+  <button routerLink="../pages/survey.test" class="survey-button" id="survey-button-yes" (click)="surveyButtonPress()">
+    Да
+  </button>
 </div>

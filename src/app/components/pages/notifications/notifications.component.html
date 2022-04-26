@@ -1,0 +1,28 @@
+<div class="notifications">
+    <div *ngIf="inviteCheck">
+        <div class="notifications_header">Приглашения</div>
+        <tbody class="notifications_selector">
+            <tr *ngFor="let invite of invites">
+                <div class="notifications_selector_element">
+                    <td class="inviteText">Пользователь {{ invite.owner.login }} приглашает вас на мероприятие "{{ invite.name }}", которое состоится {{ invite.dateTimeStart | date:'dd.MM.YY в HH:mm'}}</td>
+                    <td class="inviteButtonArea">
+                        <button class="inviteButton" (click)="acceptClick($event)" id={{invite.id}}>Принять</button>
+                        <button class="inviteButton" (click)="rejectClick($event)" id={{invite.id}}>Отклонить</button>
+                        <button class="inviteButton" (click)="detailsClick(invite)">Подробности</button>
+                    </td>
+                </div>
+            </tr>
+        </tbody>
+        <div class="inviteDescription" *ngIf="inviteDescription">
+            <img src="./../../../../assets/img/mapImages/buttons/remove-from-event.png" (click)="closeDescription()" class="inviteDescriptionClose">
+            <div class="inviteTexst">
+                "{{inviteEl.name}}"<br>Тема: {{inviteEl.theme}}<br>Описание: {{inviteEl.description}}<br>
+                <div *ngIf="inviteEl.isOnline">Онлайн</div><div *ngIf="!inviteEl.isOnline">Офлайн</div><br>
+                Время начала: {{ inviteEl.dateTimeStart | date:'dd.MM.YY в HH:mm'}}<br>
+                Время окончания: {{ inviteEl.dateTimeEnd | date:'dd.MM.YY в HH:mm'}}<br>
+                Цена: {{inviteEl.price}}<br>
+            </div>
+            <div class="inviteHeader"></div>
+        </div>
+    </div>
+</div>
