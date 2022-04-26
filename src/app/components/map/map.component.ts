@@ -135,7 +135,7 @@ export class MapComponent implements AfterViewInit {
 
     let buttonElement: any = document.createElement('button');
     buttonElement.className = "mapBtn";
-    buttonElement.innerHTML = ' <img style="margin-left: 40px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> <small style="margin-left: 40px; font-weight: 700;">Мое местоположение</small>';
+    buttonElement.innerHTML = ' <img style="margin-left: 40px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> <small style="margin-left: 40px; font-weight: 700;">Моё местоположение</small>';
     buttonElement.addEventListener('click', () => {
       this.setUserLocation();
     })

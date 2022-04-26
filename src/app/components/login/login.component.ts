@@ -34,10 +34,8 @@ export class LoginComponent implements OnInit {
         console.log("response recieved");
         this._router.navigate(['/'])
       },
-      _error => {
+      error => {
         console.log("exception occured");
-        console.log(_error);
-        alert("Неправильный логин или пароль");
         this.msg = "Неправильный логин или пароль";
       }
     )
