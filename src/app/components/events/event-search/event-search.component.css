@@ -6,7 +6,7 @@
 #title {
   position: relative;
   margin-top: -67px;
-  margin-left: 220px;
+  margin-left: 230px;
   margin-bottom: 20px;
   font-style: normal;
   font-weight: 600;
@@ -77,7 +77,7 @@ ol li:hover {
 .searchBtn {
   height: 40px;
   width: 250px;
-  margin-left: 230px;
+  margin-left: 260px;
   background: #D15D55;
   border-radius: 10px;
   font-style: normal;

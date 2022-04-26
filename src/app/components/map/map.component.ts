@@ -135,7 +135,7 @@ export class MapComponent implements AfterViewInit {
 
     let buttonElement: any = document.createElement('button');
     buttonElement.className = "mapBtn";
-    buttonElement.innerHTML = ' <img  alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/>';
+    buttonElement.innerHTML = ' <img style="margin-left: 40px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> <small style="margin-left: 40px; font-weight: 700;">Мое местоположение</small>';
     buttonElement.addEventListener('click', () => {
       this.setUserLocation();
     })
@@ -144,7 +144,7 @@ export class MapComponent implements AfterViewInit {
     if (this.hasSearch) {
       let buttonSearchElement: any = document.createElement('button')
       buttonSearchElement.className = "mapBtn searchBtn"
-      buttonSearchElement.innerHTML = ' <img alt="поиск"  src="./assets/img/mapImages/search-btn.png"/>';
+      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 117px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/> <br> <small style="margin-left: 117px; font-weight: 700;">Поиск мероприятий</small>';
       buttonSearchElement.addEventListener('click', () => {
         this.callSearch.emit(true);
       })
@@ -156,7 +156,7 @@ export class MapComponent implements AfterViewInit {
 
 
       switchMap.className = "mapBtn switchBtn"
-      switchMap.innerHTML = ' <img alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" />';
+      switchMap.innerHTML = ' <img style="width: 57px; height: 50px; margin-top: 5px; margin-left: -350px" alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" /> <br> <small style="margin-left: -350px; font-weight: 700;">Список доступных мероприятий</small>';
       switchMap.addEventListener('click', () => {
         this.callListItem.emit(true);
       })
