@@ -1,11 +1,29 @@
+.page {
+  max-width: 50%;
+  margin: 0 auto;
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
 form {
   display: flex;
   flex-direction: column;
 }
 
+.container {
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+  border-radius: 5px;
+  padding: 30px 40px 30px 40px;
+}
+
 .mycontainer {
   display: flex;
   flex-direction: row;
+}
+
+.btn {
+  margin: 15px;
 }
 
 .invateUser {
@@ -16,26 +34,54 @@ form {
   display: inline-block;
   margin-left: 20px;
   border: 1px solid #000;
-  padding: 5px;
+  border-radius: 10px;
+  padding: 8px;
+  background-color: white;
 }
 
-.deleteButton {
-  display: inline-block;
-  height: 25px;
-  width: 25px;
-  border: 1px solid #000;
+.deleteTagBtn {
+  margin-top: -60px;
+  margin-left: 30px;
+  width: 0px;
+  height: 0px;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
   text-align: center;
-  font-size: 15px;
-  transition: .5s;
-  cursor: pointer;
+  color: white;
+  float: right;
 }
 
-.deleteButton:hover {
-  background-color: red;
-  transition: .5s;
+.deleteFriendBtn {
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  color: white;
 }
 
+.updateBtn {
+  height: 40px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  text-align: center;
+  color: white;
+}
 
-button {
+.form-control {
+  margin-bottom: 15px;
+}
+
+#title {
+  position: relative;
   margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
 }

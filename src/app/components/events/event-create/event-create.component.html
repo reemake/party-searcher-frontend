@@ -13,7 +13,7 @@
        class="alert alert-danger">Тема мероприятия не заполнена
   </div>
   <label for="type">Тип мероприятия:</label>
-  <select [formControl]="eventTypeInput" class="form-control" id="type">
+  <select [formControl]="eventTypeInput" class="form-select" id="type">
     <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
   </select>
   <div *ngIf="eventTypeInput.errors?.['required'] && (eventTypeInput.dirty || eventTypeInput.touched)"
@@ -38,25 +38,27 @@
   <label for="private"><input [formControl]="isPrivateInput" class="form-check-input" id="private" type="checkbox"/>&nbsp;&nbsp;&nbsp;Приватное мероприятие</label>
   <label for="online"><input [formControl]="isOnlineInput" class="form-check-input" id="online" type="checkbox"/>&nbsp;&nbsp;&nbsp;Онлайн</label>
 
-  <div *ngIf="invitedFriendsCheck">
-    Приглашенные пользователи:
-    <td *ngFor="let friend of invitedFriendsLogins" class="invitedUsers">
-      {{friend}}
-      <div class="deleteButton" id={{friend}} (click)="removeInvate($event)">x</div>
-    </td>
-  </div>
-
-
-  <select [formControl]="invateUser" class="invateUser" (change)="friendInvate()" *ngIf="friendsCheck">
-    <option class="">Пригласить пользователя</option>
-    <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}} ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})</option>
-  </select>
 
   <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
   <input [formControl]="urlInput" [hidden]="isOnlineInput.value!==true" class="form-control" id="urlInput" type="text"/>
   <div *ngIf="urlInput.errors && (urlInput.dirty || urlInput.touched)"
        class="alert alert-danger">Ссылка на мероприятие не заполнена
   </div>
+
+  <div style="margin-top: 20px;" *ngIf="invitedFriendsCheck">
+    Приглашенные пользователи:
+    <td *ngFor="let friend of invitedFriendsLogins" class="invitedUsers">
+      {{friend}}
+      <button class="deleteFriendBtn" id={{friend}} (click)="removeInvate($event)"><img alt="close"
+        src="./assets/img/mapImages/buttons/close-btn.png"/></button>
+    </td>
+  </div>
+
+
+  <select style="margin-top: 20px;" [formControl]="invateUser" class="form-select invateUser" (change)="friendInvate()" *ngIf="friendsCheck">
+    <option class="">Пригласить пользователя</option>
+    <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}} ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})</option>
+  </select>
 
   <label style="margin-top: 15px;">Теги:</label>
   <div *ngFor="let theme of tagsInputs">
