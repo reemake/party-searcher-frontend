@@ -1,3 +1,20 @@
+.container {
+  width: 100%;
+  padding: 30px;
+}
+
+#title {
+  position: relative;
+  margin-top: -67px;
+  margin-left: 230px;
+  margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
+}
+
 h3 {
   margin: 0 auto;
   font-weight: normal;
@@ -19,20 +36,13 @@ form * {
   margin-bottom: 15px;
 }
 
-input[type="submit"] {
-  display: block;
-  margin: 0 auto;
-  font-weight: bold;
-  border-radius: 25px;
-  background-color: aqua;
-  width: 30%;
-}
-
 input[type="submit"]:hover {
   background-color: red;
 }
 
 .header {
+  margin-left: -5px;
+  margin-bottom: -10px;
   align-items: end;
   justify-content: end;
 }
@@ -42,18 +52,17 @@ input[type="submit"]:hover {
   background: none;
 }
 
-.header button:hover {
-  background: red;
-}
-
 ol {
   list-style: none;
 }
 
 ol li {
-  background: gray;
-  margin: 0 0;
-  padding: 10px 10px;
+  background: #d3d3d3;
+  width: 550px;
+  padding: 3px 3px 3px 3px;
+  margin-top: -10px;
+  margin-left: 165px;
+  border-radius: 3px;
 }
 
 ol li:hover {
@@ -63,4 +72,47 @@ ol li:hover {
 .free-btn {
   margin: 0 auto;
 
+}
+
+.searchBtn {
+  height: 40px;
+  width: 250px;
+  margin-left: 260px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+  color: white;
+}
+
+.form-control, .form-select {
+  height: 35px;
+}
+
+#wordInput {
+  width: 550px;
+  margin-bottom: 0px;
+}
+
+#eventTypeInput {
+  width: 550px;
+}
+
+#themeInput {
+  width: 550px;
+}
+
+#maxDistanceInput {
+  width: 465px;
+}
+
+#maxDistanceInputMeasure {
+  width: 100px;
+}
+
+#ownerRatingInput {
+  width: 550px;
 }

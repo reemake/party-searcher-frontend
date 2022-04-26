@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TypesService } from '../../types.service';
+import { TypesService } from '../../../services/types.service';
 import { TypeComponent } from '../../type/type.component';
 import { FormControl } from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
