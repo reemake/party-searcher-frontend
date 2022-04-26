@@ -22,6 +22,11 @@ export class ReviewDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Event) {
   }
 
+  isValidDEEPrEVIEW() {
+    console.log(this.review)
+    return !this.deepReview || (this.review && this.review.eventOrganizationMark > 0 && this.review.eventOrganizationMark <= 5 && this.review.recommendToOthersMark > 0 && this.review.recommendToOthersMark <= 5 && this.review.eventMark > 0 && this.review.eventMark <= 5 && this.lenMarkModel && this.lenMarkModel !== ';' && this.review.text && this.review.text !== '');
+  }
+
   ngOnInit(): void {
 
     this.lengthsMarks = this.lengthsMarks.set("Очень короткое", this.lenMarks[0]);

@@ -13,8 +13,10 @@
     <mat-form-field *ngIf="review">
       <label class="mat-step-label" for="eventOrganization">Оценка организации события</label>
       <input #eventOrganization="ngModel" [(ngModel)]="review.eventOrganizationMark" class="mat-input-server"
-             id="eventOrganization" matInput
+             id="eventOrganization" matInput min="1"
              max="5" name="eventOrganization" required type="number">
+      <mat-hint *ngIf="eventOrganization.errors?.['min']">Минимальное значение = 1</mat-hint>
+      <mat-hint *ngIf="eventOrganization.errors?.['max']">Максимальное значение = 5</mat-hint>
       <mat-hint *ngIf="eventOrganization.errors?.['required']">Заполните поле</mat-hint>
 
     </mat-form-field>
@@ -22,8 +24,10 @@
       <label class="mat-step-label" for="recommendToOther">Будете рекомендовать события этого пользователя к посещению
         другим людям</label>
       <input #recommendToOther="ngModel" [(ngModel)]="review.recommendToOthersMark" class="mat-input-server"
-             id="recommendToOther"
+             id="recommendToOther" min="1"
              matInput max="5" required type="number"/>
+      <mat-hint *ngIf="recommendToOther.errors?.['min']">Минимальное значение = 1</mat-hint>
+      <mat-hint *ngIf="recommendToOther.errors?.['max']">Максимальное значение = 5</mat-hint>
       <mat-hint *ngIf="recommendToOther.errors?.['required']">Заполните поле</mat-hint>
     </mat-form-field>
     <label class="mat-step-label" for="length">Оцените длительность мероприятия</label>
@@ -39,7 +43,7 @@
   </mat-card-content>
   <div mat-dialog-actions>
     <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
-    <button *ngIf="review && (deepReview?review.eventLengthMark&&review.text:true)" [mat-dialog-close]="goReview()"
+    <button *ngIf="review && isValidDEEPrEVIEW()" [mat-dialog-close]="goReview()"
             mat-button>
       Оценить
     </button>
