@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {BACKEND_URL} from "../../../app.module";
 import {Jwt} from "../../../entity/Jwt";
+import {MatDialog} from "@angular/material/dialog";
+import {OauthLoginDialogComponent} from "../../oauth-login-dialog/oauth-login-dialog.component";
 
 @Component({
   selector: 'app-oauth',
@@ -11,7 +13,7 @@ import {Jwt} from "../../../entity/Jwt";
 })
 export class OauthComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private httpService: HttpClient, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute, private httpService: HttpClient, private router: Router, private matDialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -26,21 +28,29 @@ export class OauthComponent implements OnInit {
         },
         refreshToken: ''
       }
-      this.httpService.post<Jwt>(BACKEND_URL + "/api/generateRefreshToken", {}, {params: {Authorization: token}}).subscribe(refreshToken => {
-        console.log(refreshToken)
-        localStorage.setItem("refreshToken", refreshToken.refreshToken);
-        localStorage.setItem("username", refreshToken.id.username || '');
-        this.router.navigateByUrl("/");
-      })
-      /*        if (this.activatedRoute.url)
-                this.httpService.get(`${BACKEND_URL}/login/oauth2/code/google`,{params:{
-                  code:e['code'],
-                    state:e['state'],
-                    registrationId:authService
-                  }}).subscribe(token=>{
-                  console.log(token);
-                },error => console.log(error))*/
+      if (e["notRegistered"]) {
+        var matDialogRef = this.matDialog.open(OauthLoginDialogComponent, {data: jwt});
+        matDialogRef.afterClosed().subscribe(e => {
+          this.router.navigateByUrl("/");
+        })
+      } else {
+        this.httpService.post<Jwt>(BACKEND_URL + "/api/generateRefreshToken", {}, {params: {Authorization: token}}).subscribe(refreshToken => {
+          console.log(refreshToken)
+          localStorage.setItem("refreshToken", refreshToken.refreshToken);
+          localStorage.setItem("username", refreshToken.id.username || '');
+          this.router.navigateByUrl("/");
+        })
+        /*        if (this.activatedRoute.url)
+                  this.httpService.get(`${BACKEND_URL}/login/oauth2/code/google`,{params:{
+                    code:e['code'],
+                      state:e['state'],
+                      registrationId:authService
+                    }}).subscribe(token=>{
+                    console.log(token);
+                  },error => console.log(error))*/
+      }
     })
+
 
   }
 

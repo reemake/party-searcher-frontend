@@ -1,35 +1,39 @@
+<div class="container">
+  <h2 id="title">Сообщения</h2>
 <div class="messages-div">
   <div class="messages-header">
-    <input [formControl]="inputCntrl" class="form-control border-3 border-info" type="text"/>
-    <button class="btn btn-secondary">Создать беседу</button>
+    <input [formControl]="inputCntrl" class="form-control" type="text"/>
+    <button class="btn btn-danger createDialogBtn">Создать беседу</button>
   </div>
 
   <div>
-    <ul *ngIf="!isChatsSearched">
-      <li *ngFor="let chat of chats">
+    <div *ngIf="!isChatsSearched" style="max-height: 650px; overflow: hidden; overflow-y: scroll;">
+      <div *ngFor="let chat of chats">
         <img *ngIf="!chat.private " class="miniImage" src="assets/img/group-chat.png"/>
-        <img *ngIf="chat.private" class="miniImage" src="{{imagesMaps.get(chat.id)||'assets/img/profile/user.png'}}"/>
+        <img *ngIf="chat.private" class="miniImage" src="{{imagesMaps.get(chat.id)||'assets/img/profile/accImgExample.png'}}"/>
         <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
-        <p>{{chat.message?.text}}</p>
-        <b *ngIf="chat.unReadCount && chat.unReadCount>0">{{chat.unReadCount || ''}}</b>
+        <p style="margin-left: 60px; margin-top: -5px;">{{chat.message?.text}}</p>
+        <div class="unreadMsg" *ngIf="chat.unReadCount && chat.unReadCount>0">{{chat.unReadCount || ''}}</div>
         <hr/>
-      </li>
+      </div>
 
-    </ul>
-  <ul *ngIf="isChatsSearched">
-    <li *ngFor="let chat of searchedChats">
+    </div>
+  <div *ngIf="isChatsSearched" style="max-height: 650px; overflow: hidden; overflow-y: scroll;">
+    <div *ngFor="let chat of searchedChats">
       <img *ngIf="!chat.private " class="miniImage" src="assets/img/group-chat.png"/>
-      <img *ngIf="chat.private" class="miniImage" src="{{imagesMaps.get(chat.id)||'assets/img/profile/user.png'}}"/>
+      <img *ngIf="chat.private" class="miniImage" src="{{imagesMaps.get(chat.id)||'assets/img/profile/accImgExample.png'}}"/>
       <a *ngIf="!chat.isNewFriendChat" href="/chat;id={{chat.id}}">{{chat.name}}</a>
       <p *ngIf="chat.isNewFriendChat">{{chat.name}}</p>
       <button (click)="createChatWithFriend(chat.chatUsers[0]?.user?.login||'')" *ngIf="chat.isNewFriendChat"
               class="beginDialog">
         начать диалог
       </button>
-      <p *ngIf="!chat.isNewFriendChat">{{chat.message?.text}}</p>
-      <b *ngIf="chat.unReadCount && chat.unReadCount>0">{{chat.unReadCount || ''}}</b>
+      <p style="margin-left: 60px; margin-top: -5px;" *ngIf="!chat.isNewFriendChat">{{chat.message?.text}}</p>
+      <div class="unreadMsg" *ngIf="chat.unReadCount && chat.unReadCount>0">{{chat.unReadCount || ''}}</div>
       <hr/>
-    </li>
-  </ul>
+    </div>
   </div>
+  </div>
+</div>
+
 </div>

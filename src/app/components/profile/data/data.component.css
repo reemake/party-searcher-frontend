@@ -1,6 +1,4 @@
 .container {
-    min-width: 960px;
-    max-width: 70%;
     margin: 0 auto;
     padding: 0;
     justify-content: center;
@@ -18,6 +16,8 @@
     box-sizing: border-box;
     padding-top: 30px;
     padding-left: 20px;
+
+    margin-left: -200px;
 }
 
 .account-data {
@@ -31,16 +31,19 @@
 
     background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
     border-radius: 5px;
+
+    margin-left: -200px;
 }
 
 .content {
     width: 1200px;
     height: 785px;
-    margin-left: 550px;
     margin-top: -783px;
 
     background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
     border-radius: 5px;
+
+    margin-left: 330px;
 }
 
 #title1 {
@@ -52,6 +55,8 @@
     line-height: 44px;
 
     color: #000000;
+
+    margin-left: -200px;
 }
 
 .data {
@@ -190,6 +195,23 @@
     margin-left: 20px;
   }
 
+  .accBtn3 {
+    width: 140px;
+    height: 35px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    line-height: 5px;
+
+    background: #D15D55;
+    border-radius: 10px;
+
+    margin-top: 15px;
+    margin-left: 50px;
+  }
+
   .accLine {
     width: 255px;
   }
@@ -228,7 +250,7 @@
     background: #FFFFFF;
     border-radius: 50%;
 
-    margin-top: 35px;
+    margin-top: 20px;
     margin-left: 30px;
 
     display: grid;
@@ -241,7 +263,7 @@
 
   .profileData {
     margin-left: 270px;
-    margin-top: -210px;
+    margin-top: -240px;
   }
 
   .form-control {

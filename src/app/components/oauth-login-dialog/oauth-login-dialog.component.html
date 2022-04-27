@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Введите свое имя пользователя</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input [(ngModel)]="userLogin" class="mat-input-element" id="login" matInput type="text">
+    <p *ngIf="error!==''" class="mat-error">{{error}}</p>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button (click)="completeRegister()" [disabled]="userLogin===''" class="mat-button">Завершить регистрацию</button>
+</div>

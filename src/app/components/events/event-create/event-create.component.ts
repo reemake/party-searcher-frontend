@@ -1,9 +1,12 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
+import {Relationship} from '../../pages/friends/Relationship';
+import {UserService} from '../../pages/friends/user.service';
+import {User} from 'src/app/entity/User';
 import {Router} from "@angular/router";
 
 @Component({
@@ -29,25 +32,43 @@ export class EventCreateComponent implements OnInit {
   public isPrivateInput: FormControl = new FormControl();
   public isOnlineInput: FormControl = new FormControl(false);
   public locationInput: FormControl = new FormControl();
-  public urlInput: FormControl;
+  public invateUser: FormControl = new FormControl();
+  public urlInput: FormControl = new FormControl(null, [this.urlValidator()]);
   public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
   public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
-  public hasChatWithOwnerInput: FormControl = new FormControl(false);
   public error: string = "";
   public currentLocation: number[] = [];
   public eventTypes: string[] = [];
   public changeBounds: Subject<any> = new Subject<any>();
   private maxSW: number[] = [];
   private maxNE: number[] = [];
+  public hasChatWithOwnerInput: FormControl = new FormControl(false);
 
   public locationChangeSubject: Subject<any> = new Subject<any>();
+  public friends: Relationship[];
+  public friendsCheck: boolean = false;
+  public invitedFriendsCheck: boolean = false;
+  public invitedFriendsLogins: string[] = new Array;
 
 
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
-
-  constructor(private eventService: EventService, private router: Router, private changeDetector: ChangeDetectorRef) {
+  constructor(private eventService: EventService, private userService: UserService, private router: Router) {
+    this.userService.getFriends().subscribe((data: Relationship[]) => {
+        console.log("waiting friends");
+        this.friends = data;
+        for (let i = 0; i < this.friends.length; i++) {
+          if (this.friends[i].id.friend.pictureUrl == null) {
+            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+          if (this.friends[i].id.owner.pictureUrl == null) {
+            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          }
+      }
+      if (this.friends.length > 0) this.friendsCheck = true;
+    }
+    );
     this.locationInput.disable();
     this.formGroup = new FormGroup({
       name: this.nameInput,
@@ -71,11 +92,12 @@ export class EventCreateComponent implements OnInit {
         if (this.isSWandNEmore(event[2], event[3])) {
           this.eventService.getEventsWithinRadius(event[0], event[1])
             .subscribe((events: Event[]) => {
+              console.log("down")
               this.events = events;
               this.currentLocation = event[0];
             });
         }
-      })
+      });
     this.locationChangeSubject.pipe(debounceTime(2000))
       .subscribe(location => {
         this.currentLocation = location;
@@ -95,8 +117,6 @@ export class EventCreateComponent implements OnInit {
       this.urlInput.updateValueAndValidity();
     })
   }
-
-
   ngOnInit(): void {
     this.eventService.getTypes().subscribe(types => {
         this.eventTypes = types.map(event => event.name);
@@ -106,9 +126,6 @@ export class EventCreateComponent implements OnInit {
     );
   }
 
-  ngAfterContentChecked(): void {
-    this.changeDetector.detectChanges();
-  }
 
   urlValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -122,8 +139,6 @@ export class EventCreateComponent implements OnInit {
       return null;
     }
   }
-
-
 
   closeEvent(): void {
     this.event = null;
@@ -157,69 +172,119 @@ export class EventCreateComponent implements OnInit {
 
 
   addTag(): void {
-    let tag: FormControl = new FormControl();
+    let tag: FormControl = new FormControl("", Validators.required);
     this.tagsInputs.push(tag);
-    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag);
+    this.formGroup.addControl(String("tag" + this.tagsInputs.length), tag, {emitEvent: false});
+  }
+
+
+  remove(control: FormControl): void {
+    this.formGroup.removeControl("tag" + this.tagsInputs.length, {emitEvent: false});
+    this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
+
   }
 
   submit(): void {
+    console.log("SUBMIT")
     if (!this.formGroup.valid) {
       this.formGroup.markAllAsTouched();
       this.error = "Заполните все обязательные поля!";
       return
-    }
-    this.error = "";
-    let event: Event = {
-      description: this.descriptionInput.value,
-      theme: this.eventThemeInput.value,
-      name: this.nameInput.value,
-      eventType: {name: this.eventTypeInput.value},
-      isOnline: this.isOnlineInput.value,
-      isPrivate: this.isPrivateInput.value,
-      url: this.isOnlineInput.value ? this.urlInput.value : null,
-      dateTimeStart: this.startTimeInput.value,
-      dateTimeEnd: this.endTimeInput.value,
-      maxNumberOfGuests: this.maxGuestsCountInput.value,
-      price: this.priceInput.value,
-      tags: [],
-      guests: [],
-      hasChatWithOwner: !this.hasChatWithOwnerInput.value
-    };
-    this.tagsInputs.forEach(val => {
-      let tag: Tag = {name: String(val.value).toUpperCase()};
-      event.tags.push(tag);
-    });
-    if (!event.isOnline) {
-      event.location = {
-        name: "",
-        location: {
-          type: "Point",
-          coordinates: this.currentLocation
-        }
+    } else {
+      for (let i = 0; i < this.invitedFriendsLogins.length; i++) this.invitedFriendsLogins[i] = this.invitedFriendsLogins[i].split(" (")[0];
+      var tempUser: User;
+      var tempArray: User[] = new Array();
+      for (let i = 0; i < this.invitedFriendsLogins.length; i++) {
+        tempUser = new User;
+        tempUser.login = this.invitedFriendsLogins[i];
+        tempArray.push(tempUser);
+      }
+      this.error = "";
+      let event: Event = {
+        description: this.descriptionInput.value,
+        theme: this.eventThemeInput.value,
+        name: this.nameInput.value,
+        eventType: {name: this.eventTypeInput.value},
+        isOnline: this.isOnlineInput.value,
+        isPrivate: this.isPrivateInput.value,
+        invitedGuests: tempArray,
+        url: this.isOnlineInput.value ? this.urlInput.value : null,
+        dateTimeStart: this.startTimeInput.value,
+        dateTimeEnd: this.endTimeInput.value,
+        maxNumberOfGuests: this.maxGuestsCountInput.value,
+        price: this.priceInput.value,
+        tags: [],
+        guests: [],
+        hasChatWithOwner: !this.hasChatWithOwnerInput.value
       };
-      this.eventService.setAddressByLonLat(event, () => {
+      this.tagsInputs.forEach(val => {
+        let tag: Tag = {name: String(val.value).toUpperCase()};
+        event.tags.push(tag);
+      });
+      if (!event.isOnline) {
+        event.location = {
+          name: "",
+          location: {
+            type: "Point",
+            coordinates: this.currentLocation
+          }
+        };
+        this.eventService.setAddressByLonLat(event, () => {
+          this.eventService.add(event).subscribe(event => {
+            alert("Событие успешно создано");
+            this.router.navigateByUrl("/events/map")
+          }, error => {
+            alert("При создании эвента произошла ошибка, повторите еще раз");
+            this.error = error;
+          });
+        });
+      } else
+
         this.eventService.add(event).subscribe(event => {
           alert("Событие успешно создано");
           this.router.navigateByUrl("/events/map")
         }, error => {
-          alert("При создании эвента произошла ошибка, повторите еще раз");
           this.error = error;
         });
-      });
-    } else
-
-      this.eventService.add(event).subscribe(event => {
-        alert("Событие успешно создано");
-        this.router.navigateByUrl("/events/map")
-      }, error => {
-        this.error = error;
-      });
+    }
+  }
+  public friendInvate(): void {
+    try {
+      for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+        if (this.invitedFriendsLogins[i] == this.invateUser.value) {
+          alert("Данный пользователь уже приглашен!");
+          return;
+        }
+      }
+      if (this.invateUser.value != "Пригласить пользователя") {
+        this.invitedFriendsCheck = false;
+        var tempLogin: string = this.invateUser.value;
+        this.invitedFriendsLogins.push(tempLogin);
+        this.invitedFriendsCheck = true;
+      }
+    } catch(e) { console.log("error: " + e); }
   }
 
-  remove(control: FormControl): void {
-    this.tagsInputs = this.tagsInputs.filter(tag => tag !== control);
+  public removeInvate(event: any): void {
+    for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+      if (this.invitedFriendsLogins[i] == event.path[0].id) {
+        if (this.invitedFriendsLogins.length > 1) {
+          this.invitedFriendsCheck = false;
+          var tempArray: string[] = new Array();
+          for (var j = 0; j < i; j++) tempArray.push(this.invitedFriendsLogins[j]);
+          if (i + 1 < this.invitedFriendsLogins.length) {
+            for (j = i + 1; j < this.invitedFriendsLogins.length; j++) tempArray.push(this.invitedFriendsLogins[j]);
+          }
+          this.invitedFriendsLogins = tempArray;
+          this.invitedFriendsCheck = true;
+          return;
+        } else {
+          this.invitedFriendsCheck = false;
+          this.invitedFriendsLogins = [];
+          return;
+        }
+      }
+    }
   }
-
-
 
 }

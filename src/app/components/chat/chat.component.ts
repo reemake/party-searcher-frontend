@@ -113,7 +113,8 @@ export class ChatComponent implements OnDestroy, DoCheck {
 
   public sendMessage(): void {
     this.message.sendTime = new Date();
-    this.chatService.sendMessage(this.message)
+    this.chatService.sendMessage(this.message);
+    (document.getElementById("messageArea") as HTMLInputElement).value = '';
   }
 
 

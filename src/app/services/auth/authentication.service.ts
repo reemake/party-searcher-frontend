@@ -17,7 +17,6 @@ export class AuthenticationService {
     console.log("AUTH SERVICE CREATED")
   }
 
-
   public checkAuth(): Observable<boolean> {
     console.log("DO CHECK")
     return this.httpClient.get(BACKEND_URL + "/api/users/checkUser").pipe(map((res: any) => !(res.status === 403 || res.status == 401)));
@@ -49,7 +48,6 @@ export class AuthenticationService {
   public getToken(): string {
     return localStorage.getItem("token") || "";
   }
-
 
   public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
     var authErrorMarker: Subject<any> = new Subject();

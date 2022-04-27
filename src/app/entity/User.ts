@@ -8,5 +8,7 @@ export class User {
   commercialUser:boolean;
   commercialUserCreated:boolean;
   pictureUrl:string;
+  organizationName:string;
+  description:string;
   constructor(){}
 }

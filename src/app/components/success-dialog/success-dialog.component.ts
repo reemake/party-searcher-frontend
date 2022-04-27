@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-success-dialog',
@@ -8,11 +8,12 @@ import {MatDialogRef} from "@angular/material/dialog";
 })
 export class SuccessDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<SuccessDialogComponent>) {
+  constructor(public dialogRef: MatDialogRef<SuccessDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: string) {
     dialogRef.afterOpened().subscribe(e => {
       setInterval(() => {
         this.dialogRef.close();
-      }, 4000)
+      }, 6000)
     })
   }
 

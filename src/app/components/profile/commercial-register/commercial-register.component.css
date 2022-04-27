@@ -1,0 +1,59 @@
+.page {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container {
+    max-width: 550px;
+    min-height: 510px;
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+  }
+  
+  #title {
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  .form-group {
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .payment {
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  #description {
+      height: 120px;
+  }
+
+  #description::placeholder {
+      transform: translateY(-40px);
+  }
+
+  #submit-button {
+    width: 200px;
+    height: 43px;
+    margin-top: 30px;
+    margin-left: 160px;
+    background: #D15D55;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    color: white;
+  }
+  
+  #submit-button:hover {
+    background: #FF0000;
+    transition: .7s;
+  }

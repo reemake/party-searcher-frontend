@@ -1,7 +1,7 @@
 .list-container {
-
+  padding: 30px;
   width: 67vw;
-
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
 }
 
 .list-container div {
@@ -72,4 +72,16 @@ hr {
 
 .currentPageBtn {
   background-color: dodgerblue !important;
+}
+
+#title {
+  position: relative;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 30px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
 }

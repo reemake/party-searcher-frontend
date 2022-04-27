@@ -23,6 +23,14 @@ export class EventService {
     return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEvents");
   }
 
+  public getUsersCreatedEventsByLogin(userLogin: string): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(BACKEND_URL + "/api/events/getUsersCreatedEventsByLogin", {params: {userLogin}});
+  }
+
+  public getUsersAttendedEventsByLogin(userLogin: string): Observable<Event[]> {
+    return this.httpClient.get<Event[]>(BACKEND_URL + "/api/events/getUsersAttendedEventsByLogin", {params: {userLogin}});
+  }
+
   public getEventsWithinRadius(point: number[], radius: number): Observable<Array<Event>> {
     var params: HttpParams = new HttpParams();
     params = params.set("lon", point[0]).set("lat", point[1]).set("radius", radius);
@@ -112,7 +120,7 @@ export class EventService {
           var state = document.evaluate("reversegeocode/addressparts/state", document, null, XPathResult.STRING_TYPE).stringValue;
           var neigbourhood = document.evaluate("reversegeocode/addressparts/neighbourhood", document, null, XPathResult.STRING_TYPE).stringValue;
           if (city !== "") {
-            fullAddress.push(city);
+            fullAddress.push(`г.${city}`);
           } else {
             if (state !== "")
               fullAddress.push(state);
@@ -144,6 +152,12 @@ export class EventService {
     });
 
 
+  }
+
+  public rejectInvite(id: number): Observable<any> {
+    var param: HttpParams = new HttpParams();
+    param = param.set("eventId", id);
+    return this.httpClient.post(BACKEND_URL + "/api/events/rejectInvite", null, {params: param});
   }
 
 }

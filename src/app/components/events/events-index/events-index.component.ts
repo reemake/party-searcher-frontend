@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Event} from "../../../../entity/Event/Event";
-import {EventService} from "../../../../services/event.service";
-import {FilterData} from "../../../../entity/filterData";
-import {MapComponent} from "../../../map/map.component";
+import {Event} from "../../../entity/Event/Event";
+import {EventService} from "../../../services/event.service";
+import {FilterData} from "../../../entity/filterData";
+import {MapComponent} from "../../map/map.component";
 import * as olSphere from "ol/sphere";
 import {debounceTime, Observable, Subject as Subj} from "rxjs";
+import { MyEventsComponent } from 'src/app/components/profile/my-events/my-events.component';
 
 type Subject = Observable<any>;
 
@@ -47,7 +48,6 @@ export class EventsIndexComponent implements OnInit {
 
     })
   }
-
 
   public userEventSelectHandler(eventsArray: Array<Event>) {
     if (eventsArray.length > 1) {

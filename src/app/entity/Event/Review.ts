@@ -4,11 +4,12 @@ export interface Review {
     userId: string
   },
   text?: string,
-  eventMark?: number,
-  eventOrganizationMark?: number
-  recommendToOthersMark?: number,
+  eventMark: number,
+  eventOrganizationMark: number
+  recommendToOthersMark: number,
   reviewWeight: number
-  eventLengthMark?: EventLengthMark;
+  eventLengthMark?: string;
+  notReady?: boolean
 }
 
 export enum EventLengthMark {
