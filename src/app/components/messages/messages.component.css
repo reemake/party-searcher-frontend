@@ -1,5 +1,17 @@
+.container {
+  max-width: 55%;
+  max-height: 100%;
+  margin: 0 auto;
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
 .messages-div {
-  background-color: #E5E5E5;
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+  border-radius: 5px;
+  padding: 30px 40px 30px 40px;
+  max-height: 100%;
 }
 
 ul {
@@ -12,6 +24,10 @@ ul {
 
 }
 
+img {
+  margin-right: 20px;
+}
+
 li a {
   font-weight: bold;
 }
@@ -22,8 +38,50 @@ li a {
   border-radius: 50%;
 }
 
-b {
-  border: 1px solid #C4C4C4;
-  border-radius: 25% 10%;
-  background-color: #C4C4C4;
+.unreadMsg {
+  border-radius: 50%;
+  background-color: #D15D55;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  float: right;
+  margin-top: -55px;
+  margin-right: 10px;
+  color: white;
+}
+
+#title {
+  position: relative;
+  margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
+}
+
+.form-control {
+  width: 85%;
+  margin-bottom: 20px;
+}
+
+.createDialogBtn {
+  height: 45px;
+  width: 140px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 15px;
+  text-align: center;
+  color: white;
+
+  margin-left: 20px;
+  margin-top: -3px;
+}
+
+.btn-danger:hover {
+  background: #FF0000;
+  transition: .7s;
 }

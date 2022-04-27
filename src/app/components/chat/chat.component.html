@@ -1,39 +1,41 @@
 <div class="chat">
 
   <div class="chat-div" id="chat-div">
-    <h2>{{chat.name}}</h2>
-    <hr/>
+    <h2 id="title">{{chat.name}}</h2>
+    <hr style="margin-bottom: 20px;"/>
+    <div style="max-height: 650px; overflow: hidden; overflow-y: scroll;">
     <ul appScrollDirective id="messages-list">
       <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
           (mouseleave)="message.focus=false" *ngFor="let message of messages" id="message{{message.id}}"
           inViewport>
-        <button (click)="removeMessage(message)" *ngIf="message.focus &&(message.userId===username || isAdmin)"
-                class="remove-btn"><img alt="remove" src="assets/img/remove-icon.png"/></button>
         <img alt="user-image" class="user-img"
-             src="{{usersImages.get(message.userId)||'assets/img/profile/user.png'}}"/>
+             src="{{usersImages.get(message.userId)||'assets/img/profile/accImgExample.png'}}"/>
         <div class="message">
-          <h3>{{message.userId}}</h3>
+          <p class="userId"><u>{{message.userId}}</u></p>
           <pre>{{message.text}}</pre>
         </div>
+        <button (click)="removeMessage(message)" *ngIf="message.focus &&(message.userId===username || isAdmin)"
+                class="remove-btn"><img alt="remove" src="assets/img/mapImages/buttons/close-btn.png"/></button>
       </li>
       <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
           (mouseleave)="message.focus=false" *ngFor="let message of onlineMessages"
           id="message{{message.id}}" inViewport>
-        <button (click)="removeMessage(message)" *ngIf="message.focus&&(message.userId===username || isAdmin)"
-                class="remove-btn"><img alt="remove" src="assets/img/remove-icon.png"/></button>
         <img alt="user-image" class="user-img"
-             src="{{usersImages.get(message.userId)||'assets/img/profile/user.png'}}"/>
+             src="{{usersImages.get(message.userId)||'assets/img/profile/accImgExample.png'}}"/>
         <div class="message">
-          <h3>{{message.userId}}</h3>
+          <p class="userId"><u>{{message.userId}}</u></p>
           <pre>{{message.text}}</pre>
         </div>
+        <button (click)="removeMessage(message)" *ngIf="message.focus&&(message.userId===username || isAdmin)"
+                class="remove-btn"><img alt="remove" src="assets/img/mapImages/buttons/close-btn.png"/></button>
       </li>
     </ul>
+    </div>
     <div>
       <form>
-        <textarea #text="ngModel" [(ngModel)]="message.text" class="form-control" name="text"
-                  style="  width: 100%; max-height: 300px;background-color:#F4F4F4 ; "></textarea>
-        <button (click)="sendMessage()" style="border-radius: 3px; background-color:#C4C4C4 ; color: black">отправить
+        <textarea rows="1" #text="ngModel" [(ngModel)]="message.text" class="form-control" name="text" placeholder="Напишите сообщение..."
+                  id="messageArea" style="resize: vertical; width: 88%; max-height: 100px;background-color:white;"></textarea>
+        <button class="btn btn-danger sendBtn" (click)="sendMessage()">Отправить
         </button>
       </form>
     </div>

@@ -38,7 +38,8 @@
 #submit-button {
   width: 200px;
   height: 43px;
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-bottom: 30px;
   margin-left: 145px;
   background: #D15D55;
   border-radius: 10px;

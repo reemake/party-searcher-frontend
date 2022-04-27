@@ -57,21 +57,17 @@ const ROUTES: Routes = [
   {path: '', component: EventsIndexComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
-  {
-    path: 'pages/survey.test',
-    component: SurveyTest, canActivate: [AuthGuardService]
-  },
+  {path: 'pages/survey.test', component: SurveyTest, canActivate: [AuthGuardService]},
   {path: 'profile/accounts', component: AccountsComponent, canActivate: [AuthGuardService]},
   {path: 'profile/me', component: DataComponent, canActivate: [AuthGuardService]},
-  {path: 'chat', component: ChatComponent},
-  {path: 'friends', component: FriendsComponent}
-  ,
-  {path: 'messages', component: MessagesComponent},
+  {path: 'chat', component: ChatComponent, canActivate: [AuthGuardService]},
+  {path: 'friends', component: FriendsComponent, canActivate: [AuthGuardService]},
+  {path: 'messages', component: MessagesComponent, canActivate: [AuthGuardService]},
   {path: "login/oauth2", component: OauthComponent},
-  {path: "events/edit", component: EditComponent},
+  {path: "events/edit", component: EditComponent, canActivate: [AuthGuardService]},
   {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
-  {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]}
-  ,{path: 'notifications', component: NotificationsComponent }
+  {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]},
+  {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuardService]}
 
 ];
 

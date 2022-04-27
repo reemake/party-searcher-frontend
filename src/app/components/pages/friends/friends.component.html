@@ -1,73 +1,85 @@
+<div class="page">
+<h1 id="title1">Друзья</h1>
 <div class="friends" *ngIf="!autorisationCheck">
-    <div class="listSelector" id="autorisationAlert">Для просмотра данной страницы вам необходимо автиризироваться!</div>
+    <h2 id="autorizationAlert">Для просмотра данной страницы вам необходимо авторизироваться!</h2>
 </div>
+
 <div class="friends" *ngIf="autorisationCheck">
-    <input type="search" class="search" placeholder="Найти пользователя" (change)="requestChange()" id="searchField" />
-    <select class="searchOption" id="searchOption">
+    <input type="search" class="search form-control" placeholder="Найти пользователя" (change)="requestChange()" id="searchField" />
+    <select class="searchOption form-select" id="searchOption">
         <option class="dropContentFields">Поиск по логину</option>
         <option class="dropContentFields">Поиск по имени и фамилии</option>
     </select>
-    <div class="listSelector" id="friend" *ngIf="friendsCheck">Друзья</div>
-    <tbody class="listSelector" *ngIf="friendsCheck">
-        <tr *ngFor=" let friend of friends">
-            <td class="listSelectorField"><img src={{friend.id.owner.pictureUrl}} class="listSelectorImage" /></td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> {{ friend.id.owner.login}}</td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> ({{ friend.id.owner.firstName}}</td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> {{ friend.id.owner.lastName}})</td>
-            <td class="listSelectorField">   </td>
-            <td class="dropDown">
-                <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
-                <div class="dropContent">
-                    <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Отправить сообщение</button>
-                    <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Удалить из друзей</button>
-                </div>
-            </td>
-        </tr>
+    <button class="btn btn-outline-danger" id="search-button" (click)="requestChange()">Поиск</button>
+    <hr style="width: 700px; margin-left: 50px; margin-top: 10px;">
+    <div id="friend" *ngIf="friendsCheck"><u>Друзья:</u></div>
+    <tbody *ngIf="friendsCheck">
+        <div class="tableRow">
+            <tr *ngFor=" let friend of friends">
+                <td class="listSelectorField"><img src={{friend.id.owner.pictureUrl}} class="listSelectorImage" /></td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> {{ friend.id.owner.login}}</td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> ({{ friend.id.owner.firstName}}</td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> {{ friend.id.owner.lastName}})</td>
+                <td class="listSelectorField">   </td>
+                <td class="dropDown">
+                    <button class="dropBtn"><img src="./../../../../assets/img/friends/Menu.png" /></button>
+                    <div class="dropContent">
+                        <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Отправить сообщение</button>
+                        <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Удалить из друзей</button>
+                    </div>
+                </td>
+            </tr>
+        </div>
     </tbody>
-    <div class="listSelector" id="sub" *ngIf="requestsCheck">Подписчики</div>
-    <tbody class="listSelector" *ngIf="requestsCheck">
-        <tr *ngFor=" let request of requests">
-            <td class="listSelectorField"><img src={{request.id.owner.pictureUrl}} class="listSelectorImage" /></td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> {{ request.id.owner.login}}</td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> ({{ request.id.owner.firstName}}</td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> {{ request.id.owner.lastName}})</td>
-            <td class="listSelectorField">   </td>
-            <td class="dropDown">
-                <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
-                <div class="dropContent">
-                    <button class="dropContentFields" id={{request.id.owner.login}} (click)="clickRequestButton($event)">Принять заявку</button>
-                    <button class="dropContentFields" id={{request.id.owner.login}} (click)="clickRequestButton($event)">Отклонить заявку</button>
-                </div>
-            </td>
-        </tr>
+    <div id="sub" *ngIf="requestsCheck"><u>Подписчики:</u></div>
+    <tbody *ngIf="requestsCheck">
+        <div class="tableRow">
+            <tr *ngFor=" let request of requests">
+                <td class="listSelectorField"><img src={{request.id.owner.pictureUrl}} class="listSelectorImage" /></td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> {{ request.id.owner.login}}</td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> ({{ request.id.owner.firstName}}</td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> {{ request.id.owner.lastName}})</td>
+                <td class="listSelectorField">   </td>
+                <td class="dropDown">
+                    <button class="dropBtn"><img src="./../../../../assets/img/friends/Menu.png" /></button>
+                    <div class="dropContent">
+                        <button class="dropContentFields" id={{request.id.owner.login}} (click)="clickRequestButton($event)">Принять заявку</button>
+                        <button class="dropContentFields" id={{request.id.owner.login}} (click)="clickRequestButton($event)">Отклонить заявку</button>
+                    </div>
+                </td>
+            </tr>
+        </div>
     </tbody>
-    <div class="listSelector" id="sent" *ngIf="sendedRequestsCheck">Исходящие заявки</div>
-    <tbody class="listSelector" *ngIf="sendedRequestsCheck">
-        <tr *ngFor=" let request of sendedRequests">
-            <td class="listSelectorField"><img src={{request.id.friend.pictureUrl}} class="listSelectorImage" /></td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> {{ request.id.friend.login}}</td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> ({{ request.id.friend.firstName}}</td>
-            <td class="listSelectorField">   </td>
-            <td class="listSelectorField"> {{ request.id.friend.lastName}})</td>
-            <td class="listSelectorField">   </td>
-            <td class="dropDown">
-                <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
-                <div class="dropContent">
-                    <button class="dropContentFields" id={{request.id.friend.login}} (click)="clickSendedRequestButton($event)">Отклонить заявку</button>
-                </div>
-            </td>
-        </tr>
+    <div id="sent" *ngIf="sendedRequestsCheck"><u>Исходящие заявки:</u></div>
+    <tbody *ngIf="sendedRequestsCheck">
+        <div class="tableRow">
+            <tr *ngFor=" let request of sendedRequests">
+                <td class="listSelectorField"><img src={{request.id.friend.pictureUrl}} class="listSelectorImage" /></td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> {{ request.id.friend.login}}</td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> ({{ request.id.friend.firstName}}</td>
+                <td class="listSelectorField">   </td>
+                <td class="listSelectorField"> {{ request.id.friend.lastName}})</td>
+                <td class="listSelectorField">   </td>
+                <td class="dropDown">
+                    <button class="dropBtn"><img src="./../../../../assets/img/friends/Menu.png" /></button>
+                    <div class="dropContent">
+                        <button class="dropContentFields" id={{request.id.friend.login}} (click)="clickSendedRequestButton($event)">Отклонить заявку</button>
+                    </div>
+                </td>
+            </tr>
+        </div>
     </tbody>
-    <div class="listSelector" id="find" *ngIf="findCheck">Найти друзей</div>
-    <tbody *ngIf="findCheck" class="listSelector">
+    <div id="find" *ngIf="findCheck"><u>Результаты поиска:</u></div>
+    <tbody *ngIf="findCheck">
+        <div class="tableRow">
         <tr *ngFor = "let user of users">
             <td class="listSelectorField"><img src={{user.pictureUrl}} class="listSelectorImage" /></td>
             <td class="listSelectorField">   </td>
@@ -78,7 +90,7 @@
             <td class="listSelectorField"> {{ user.lastName}})</td>
             <td class="listSelectorField">   </td>
             <td class="dropDown">
-                <button class="dropBtn"><img src="./../../../../assets/img/friends/image 3.png" /></button>
+                <button class="dropBtn"><img src="./../../../../assets/img/friends/Menu.png" /></button>
                 <div class="dropContent">
                     <button (click)="clickFriendButton($event)" class="dropContentFields" id={{user.login}}>
                       Отправить заявку
@@ -86,6 +98,8 @@
                 </div>
             </td>
         </tr>
+        </div>
     </tbody>
-    <div class="listSelector" id="find" *ngIf="!friendsCheck && !sendedRequestsCheck && !requestsCheck && !findCheck">Похоже что ваш список друзей пуст!</div>
+    <div class="listSelector" id="find" *ngIf="!friendsCheck && !sendedRequestsCheck && !requestsCheck && !findCheck">Похоже, что Ваш список друзей пуст!</div>
+</div>
 </div>

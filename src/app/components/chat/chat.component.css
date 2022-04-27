@@ -1,7 +1,24 @@
+.chat {
+  max-width: 55%;
+  max-height: 100%;
+  margin: 0 auto;
+  padding-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-div {
+  background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+  border-radius: 5px;
+  padding: 30px 40px 30px 40px;
+  max-height: 100%;
+}
+
 .user-img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  margin-top: 15px;
 }
 
 ul {
@@ -26,13 +43,6 @@ hr {
   margin: 2px;
 }
 
-
-.chat {
-  border: 1px solid #636363;
-  margin: 0 auto;
-
-}
-
 pre {
   white-space: pre-wrap; /* Отменяем перенос текста */
   overflow: hidden; /* Обрезаем содержимое */
@@ -43,16 +53,46 @@ form {
   flex-direction: row;
 }
 
-form button {
-  vertical-align: center;
-  height: 30px;
-  font-weight: bold;
-}
-
 .remove-btn {
-  height: 48px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   background: none;
   border: none;
-  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: -1px;
+}
+
+#title {
+  position: relative;
+  margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+
+  color: #000000;
+}
+
+.sendBtn {
+  height: 30px;
+  width: 110px;
+  background: #D15D55;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 15px;
+  text-align: center;
+  color: white;
+
+  margin-left: 20px;
+  margin-top: 4px;
+}
+
+.btn-danger:hover {
+  background: #FF0000;
+  transition: .7s;
+}
+
+.message {
+  margin-top: 7px;
 }

@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this._service.loginUserFromRemote(this.user).subscribe(
       (resp: any) => {
-        console.log(resp)
+        console.log(resp);
         var headers = resp.headers;
         if (headers.get("token") !== null && headers.get("refreshToken") !== null) {
           localStorage.setItem("token", <string>headers.get("token"));
