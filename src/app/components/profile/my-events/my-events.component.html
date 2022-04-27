@@ -43,8 +43,8 @@
                     {{ event.name }}
                     <div class="createdEventsButtons">
                         <button type="button" class="btn btn-lg btn-danger eventBtn1" (click)="showDescription(event)">Подробнее о мероприятии</button>
-                        <button type="button" class="btn btn-lg btn-danger eventBtn2">Изменить мероприятие</button>
-                        <button type="button" class="btn btn-lg btn-danger eventBtn3">Удалить мероприятие</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn2" (click)="editEvent(event)">Изменить мероприятие</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn3" (click)="deleteEvent(event.id!)">Удалить мероприятие</button>
                     </div>
                     <hr class="eventsLine">
                 </div>
@@ -61,7 +61,7 @@
                     {{ event.name }}
                     <div class="attendedEventsButtons">
                         <button type="button" class="btn btn-lg btn-danger eventBtn1" style="margin-left: 680px;" (click)="showDescription(event)">Подробнее о мероприятии</button>
-                        <button type="button" class="btn btn-lg btn-danger eventBtn2">Отказаться от посещения</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn2" (click)="removeFromEvent(event)">Отказаться от посещения</button>
                     </div>
                     <hr class="eventsLine">
                 </div>
@@ -123,13 +123,6 @@
         </div>
         <hr>
         <div class="description-row description-buttons">
-          <div class="description-button">
-            <button (click)="removeFromEvent()" *ngIf="viewingEvent.currentUserEntered"><img
-              src="./assets/img/mapImages/buttons/remove-from-event.png"/>&nbsp;&nbsp;&nbsp;Отменить запись</button>
-      
-            <button (click)="assignOnEvent()" *ngIf="!viewingEvent.currentUserEntered"><img
-              src="./assets/img/mapImages/buttons/assign-event-btn.png"/>&nbsp;&nbsp;&nbsp;Записаться на мероприятие</button>
-          </div>
           <div *ngIf="viewingEvent.currentUserEntered" class="description-button">
             <button (click)="createAndGoToChat()" *ngIf="viewingEvent.chatId===undefined"><img
               src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>

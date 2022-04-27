@@ -79,6 +79,7 @@ export class MyEventsComponent implements OnInit {
     this.authService.logOut();
   }
 
+
   showDescription(event: Event) {
     this.viewingEvent = event;
     this.descriptionOpened = true;
@@ -104,24 +105,6 @@ export class MyEventsComponent implements OnInit {
       )
   }
 
-
-  removeFromEvent(): void {
-    if (this.viewingEvent?.id !== undefined)
-      this.eventsService.removeCurrentUserFromEvent(this.viewingEvent.id)
-        .subscribe(success => {
-          if (this.viewingEvent) {
-            console.log(this.viewingEvent)
-            console.log(success)
-            this.viewingEvent.currentUserEntered = false;
-            console.log(this.viewingEvent.guests)
-            this.viewingEvent.guests = this.viewingEvent.guests.filter(guest => guest.id.userId !== localStorage.getItem("username") || '');
-            console.log(this.viewingEvent.guests)
-          }
-        }, error1 => {
-          alert("Произошла ошибка")
-        })
-  }
-
   callEventOwner(): void {
     if (this.viewingEvent?.owner)
       this.chatService.createChatWithUser(this.viewingEvent?.owner.login).subscribe(id => this.router.navigate(['/chat', {id: id}]));
@@ -143,6 +126,36 @@ export class MyEventsComponent implements OnInit {
 
   goToChat(id: number): void {
     this.router.navigate(['/chat', {id: id}]);
+  }
+
+  editEvent(event: Event) {
+    this.router.navigate(['/events/edit'], { queryParams: {id: event.id}})
+  }
+
+  deleteEvent(eventId: number) {
+    this.eventsService.removeEvent(eventId).subscribe(
+      result => {
+        console.log('event successfully deleted');
+        alert("Мероприятие успешно удалено");
+        window.location.reload();
+      },
+      error => {
+        console.log('error while deleting event');
+        console.log(error);
+        alert("При удалении мероприятия произошла ошибка");
+      }
+    )
+  }
+
+  removeFromEvent(event: Event): void {
+      this.eventsService.removeCurrentUserFromEvent(event.id!)
+        .subscribe(success => {
+          console.log("user successfully removed from event");
+          alert("Вы успешно отменили свое участие в данном мероприятии");
+          window.location.reload();
+        }, error => {
+          alert("Произошла ошибка");
+        })
   }
 
 }
