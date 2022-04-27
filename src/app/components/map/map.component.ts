@@ -155,7 +155,7 @@ export class MapComponent implements AfterViewInit {
     if (this.hasSearch) {
       let buttonSearchElement: any = document.createElement('button')
       buttonSearchElement.className = "mapBtn searchBtn"
-      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 117px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/> <br> <small style="margin-left: 117px; font-weight: 700;">Поиск мероприятий</small>';
+      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 30px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/> <br> <small style="margin-left: 30px; font-weight: 700;">Поиск мероприятий</small>';
       buttonSearchElement.addEventListener('click', () => {
         this.callSearch.emit(true);
       })
