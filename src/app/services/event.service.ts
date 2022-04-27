@@ -120,7 +120,7 @@ export class EventService {
           var state = document.evaluate("reversegeocode/addressparts/state", document, null, XPathResult.STRING_TYPE).stringValue;
           var neigbourhood = document.evaluate("reversegeocode/addressparts/neighbourhood", document, null, XPathResult.STRING_TYPE).stringValue;
           if (city !== "") {
-            fullAddress.push(city);
+            fullAddress.push(`г.${city}`);
           } else {
             if (state !== "")
               fullAddress.push(state);

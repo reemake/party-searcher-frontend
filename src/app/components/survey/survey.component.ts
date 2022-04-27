@@ -12,12 +12,12 @@ export class SurveyComponent {
   surveyButton: boolean = false;
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {
-    if (authService.isAuth()) {
+    this.authService.checkAuth().subscribe(e => {
       this.http.get<boolean>(BACKEND_URL + "/api/surveyCheck")
         .subscribe((checkResult: boolean) => {
           this.surveyButton = !checkResult;
         });
-    }
+    }, error => console.log("not auth"));
   }
 
   public surveyButtonPress(): void {
