@@ -4,6 +4,7 @@ import {User} from 'src/app/entity/User';
 import {UserService} from 'src/app/services/user.service';
 import {MatDialog} from "@angular/material/dialog";
 import {SuccessDialogComponent} from "../../success-dialog/success-dialog.component";
+import {CommercialServiceService} from "../../../services/commercial-service.service";
 
 @Component({
   selector: 'app-commercial-register',
@@ -11,17 +12,25 @@ import {SuccessDialogComponent} from "../../success-dialog/success-dialog.compon
   styleUrls: ['./commercial-register.component.css']
 })
 export class CommercialRegisterComponent implements OnInit {
+  public hasExistingRegistration = false;
 
   userLogin: string = localStorage.getItem("username") || '';
   user = new User();
   userEdited = new User();
   msg: string = '';
 
-  constructor(private userService: UserService, private router: Router, private matDialog: MatDialog) {
+  constructor(private userService: UserService, private router: Router, private matDialog: MatDialog, private commercialService: CommercialServiceService) {
   }
 
   ngOnInit(): void {
     this.getUserInfo();
+    this.commercialService.getInfoAboutCommercialUser().subscribe(e => {
+      if (e) {
+        this.hasExistingRegistration = true;
+        this.user.description = e.description;
+        this.user.organizationName = e.organizationName;
+      }
+    });
   }
 
   getUserInfo() {
@@ -35,6 +44,16 @@ export class CommercialRegisterComponent implements OnInit {
         this.msg = "error";
       }
     )
+  }
+
+  public payForExistRegistration() {
+    this.commercialService.getUrlForPaying().subscribe(url => {
+      if (url) {
+        location.href = url;
+      } else {
+
+      }
+    }, error => console.log("Произошла ошибка"))
   }
 
   registerCommercialUser() {
