@@ -54,12 +54,21 @@
 
 
   <select [formControl]="invateUser" class="invateUser" (change)="friendInvate()" *ngIf="friendsCheck">
-    <option class="">Пригласить пользователя</option>
+    <option class="">Пригласить друга</option>
     <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}} ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})</option>
   </select>
 
+  <!---->
 
-
+  Пригласить пользователя по Email:
+  <textarea class="inviteUserEmail" (change)="emailInvate()" placeholder="Email" id="mailInput"></textarea>
+  <div *ngIf="usersByMailCheck">
+    Найденные пользователи:
+    <td *ngFor="let user of usersByMail" class="invitedUsers">
+      <div class="invitedUsersText">{{user.login}} ({{user.firstName}} {{user.lastName}})</div>
+      <div class="inviteButton" (click)="inviteUserByMail(user)">Пригласить пользователя</div>
+    </td>
+  </div>
 
 
 

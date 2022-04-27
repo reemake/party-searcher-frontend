@@ -49,6 +49,8 @@ export class EventCreateComponent implements OnInit {
   public friendsCheck: boolean = false;
   public invitedFriendsCheck: boolean = false;
   public invitedFriendsLogins: string[] = new Array;
+  public usersByMail: User[];
+  public usersByMailCheck: boolean = false;
 
 
   public mapWidth = "100%";
@@ -191,12 +193,14 @@ export class EventCreateComponent implements OnInit {
       this.error = "Заполните все обязательные поля!";
       return
     } else {
-      for (let i = 0; i < this.invitedFriendsLogins.length; i++) this.invitedFriendsLogins[i] = this.invitedFriendsLogins[i].split(" (")[0];
+      var tempArrayLogin: string[];
+      tempArrayLogin = this.invitedFriendsLogins;
+      for (let i = 0; i < tempArrayLogin.length; i++) tempArrayLogin[i] = tempArrayLogin[i].split(" (")[0];
       var tempUser: User;
       var tempArray: User[] = new Array();
-      for (let i = 0; i < this.invitedFriendsLogins.length; i++) {
+      for (let i = 0; i < tempArrayLogin.length; i++) {
         tempUser = new User;
-        tempUser.login = this.invitedFriendsLogins[i];
+        tempUser.login = tempArrayLogin[i];
         tempArray.push(tempUser);
       }
       this.error = "";
@@ -287,4 +291,30 @@ export class EventCreateComponent implements OnInit {
     }
   }
 
+  public emailInvate() {
+    var mail = (<HTMLInputElement>document.getElementById("mailInput")).value;
+    this.userService.getUsersByEmail(mail).subscribe((data) => {
+      this.usersByMailCheck = false;
+      this.usersByMail = data;
+      if (this.usersByMail.length != 0) this.usersByMailCheck = true;
+    });
+  }
+
+  public inviteUserByMail(user: User) {
+    for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+      if (this.invitedFriendsLogins[i] == (user.login + " (" + user.firstName + " " + user.lastName + ")")) {
+        alert("Данный пользователь уже приглашен!");
+        return;
+      }
+    }
+    if (user.pictureUrl == null) {
+      user.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+    }
+    if (user.pictureUrl == null) {
+      user.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+    }
+    this.invitedFriendsCheck = false;
+    this.invitedFriendsLogins.push((user.login + " (" + user.firstName + " " + user.lastName + ")"));
+    this.invitedFriendsCheck = true;
+  }
 }
