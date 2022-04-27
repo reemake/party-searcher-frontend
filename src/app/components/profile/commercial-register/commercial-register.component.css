@@ -7,7 +7,7 @@
   
   .container {
     max-width: 550px;
-    min-height: 510px;
+    min-height: 460px;
     background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
     border-radius: 5px;
   }

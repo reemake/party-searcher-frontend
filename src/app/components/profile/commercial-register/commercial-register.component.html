@@ -23,11 +23,6 @@
                       placeholder="Введите описание организации (не обязательно)" rows="3"></textarea>
         </div>
 
-        <div class="payment">
-          <label for="commercialPayment-button">Оплата коммерческого аккаунта: </label>
-          <button class="btn btn-link" id="commercialPayment-button">Оплатить</button>
-        </div>
-
         <button [disabled]="commercialRegisterForm.form.invalid" type="submit" class="btn btn-outline-danger" id="submit-button">Зарегистрироваться</button>
       </form>
     
