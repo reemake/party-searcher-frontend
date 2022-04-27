@@ -48,8 +48,8 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
 
-//export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
-export const BACKEND_URL: string = "http://localhost:8080";
+export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
+//export const BACKEND_URL: string = "http://localhost:8080";
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
