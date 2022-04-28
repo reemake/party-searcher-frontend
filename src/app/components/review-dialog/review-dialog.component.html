@@ -47,17 +47,10 @@
       <img alt="uploadImg" src="./assets/img/profile/add.png"/>
     </label>
     <mat-card *ngFor="let url of imagesUrls">
-      <mat-card-header>
-        <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(url)"/>
+        <img width="40px" height="40px" src="{{url}}" alt="review image" (click)="showFullImage(url)"/>
         <button mat-button (click)="removeImage(url)">remove</button>
-      </mat-card-header>
-
     </mat-card>
-    <ng-image-fullscreen-view
-      [imageIndex]="imageIndex"
-      [images]="imageObj"
-      [show]="isShowFullImage"
-      (close)="closeEventHandler()"></ng-image-fullscreen-view>
+
   </mat-card-content>
   <div mat-dialog-actions>
     <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
@@ -86,5 +79,9 @@
       </div>
     </div>
   </div>
-
+  <ng-image-fullscreen-view
+    [imageIndex]="imageIndex"
+    [images]="imageObj"
+    [show]="isShowFullImage"
+    (close)="closeEventHandler()"></ng-image-fullscreen-view>
 </div>
