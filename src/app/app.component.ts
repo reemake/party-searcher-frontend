@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {EventService} from "./services/event.service";
 import {AuthenticationService} from "./services/auth/authentication.service";
 import {CookieService} from "ngx-cookie-service";
@@ -24,7 +24,6 @@ export class AppComponent {
   constructor(private matDialog: MatDialog, private eventService: EventService, private authService: AuthenticationService,
               private cookieService: CookieService, private reviewService: ReviewService) {
     if (!cookieService.check("reviewsLoaded")) {
-      this.setCookie();
       this.eventService.getEndedEvents().subscribe(e => {
         this.events = e;
         if (e.length > 0) {
@@ -37,6 +36,7 @@ export class AppComponent {
             this.reviewService.add(review).subscribe((e) => {
                   if (!review.notReady)
                     this.matDialog.open(SuccessDialogComponent, {data: "Благодарим за оставленный отзыв"});
+                  else       this.setCookie();
                 }, error => alert("Произошла ошибка при добавлении отзыва"));
 
               this.eventIndex++;
@@ -46,6 +46,7 @@ export class AppComponent {
                 data: this.events[this.eventIndex],
                 scrollStrategy: new NoopScrollStrategy()
               });
+            else       this.setCookie();
           })
         }
       })

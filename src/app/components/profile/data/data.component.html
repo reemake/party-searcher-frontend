@@ -10,18 +10,14 @@
     </div>
 
     <div class="account-data">
-        <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
-                <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
-                <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
-        </div>
-        <div *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
-            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
-            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
-        </div>
+      <div  class="leftPart">
+        <img *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+        <img *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
         <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
-            <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
-            <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+          <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+          <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
         </div>
+      </div>
         <div *ngIf="!this.user.commercialUser" class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
             <hr class="accLine">
             <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
@@ -38,6 +34,8 @@
         <h2 id="title2">Мои данные</h2>
         <div class="data">
 
+
+
             <!-- Image uploading field -->
             <div *ngIf="!this.user.pictureUrl" class="profileImage">
                 <label class="btn btn-default uploadImg">
@@ -48,7 +46,7 @@
 
             <img *ngIf="this.user.pictureUrl" class="profileImage" alt="accImg" src={{this.user.pictureUrl}}/>
             <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3" (click)="deletePhoto(dataChangeForm)">Удалить фото</button>
-        
+
             <div class="profileData">
                 <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
                 <p class="dataColumns">Логин: <b>{{user.login}}</b></p>
@@ -112,7 +110,7 @@
         </div>
     </div>
 
-    
+
         <div *ngIf="this.isPhotoUploading">
             <div id="photoStatus" class="file" *ngFor="let response of responses; let i = index">
                     <h3>{{response.file.name}}</h3>

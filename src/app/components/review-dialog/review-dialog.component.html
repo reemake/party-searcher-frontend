@@ -40,6 +40,24 @@
       <textarea #text="ngModel" [(ngModel)]="review.text" id="reviewText" matInput required></textarea>
       <mat-hint *ngIf="text.errors?.['required']">Заполните поле</mat-hint>
     </mat-form-field>
+    <label>
+        <input *ngIf="review"  type="file" accept=".jpg,.jpeg,.png" ng2FileSelect
+               [uploader]="uploader" #fileInput (change)="fileInput.value=''"
+               (change)="photoSubmitOn()" [style.display]="'none'"  hidden multiple />
+      <img alt="uploadImg" src="./assets/img/profile/add.png"/>
+    </label>
+    <mat-card *ngFor="let url of imagesUrls">
+      <mat-card-header>
+        <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(url)"/>
+        <button mat-button (click)="removeImage(url)">remove</button>
+      </mat-card-header>
+
+    </mat-card>
+    <ng-image-fullscreen-view
+      [imageIndex]="imageIndex"
+      [images]="getImageObject()"
+      [show]="isShowFullImage"
+      (close)="closeEventHandler()"></ng-image-fullscreen-view>
   </mat-card-content>
   <div mat-dialog-actions>
     <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
@@ -47,5 +65,26 @@
             mat-button>
       Оценить
     </button>
+
+
+    <div *ngIf="this.isPhotoUploading">
+      <div id="photoStatus" class="file" *ngFor="let response of responses; let i = index">
+        <h3>{{response.file.name}}</h3>
+        <div class="status">
+          Uploading... {{response.progress}}%
+          <div *ngIf="!response.status">In progress</div>
+          <div class="status-code" *ngIf="response.status">Upload completed with status code {{response.status}}</div>
+        </div>
+        <div *ngIf="!response.status" class="progress-bar">
+          <div class="progress" role="progressbar" [style.width.%]="response.progress"></div>
+        </div>
+        <button *ngIf="response.status" class="btn btn-lg btn-danger modalBtn"
+                onclick="(document.getElementById('photoStatus').style.display='none')"
+                onclick="(document.getElementById('photoStatus').innerHTML = '')"
+                (click)="photoSubmitOff(responses)">Закрыть
+        </button>
+      </div>
+    </div>
   </div>
 
+</div>

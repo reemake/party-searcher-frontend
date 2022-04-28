@@ -4,7 +4,7 @@ export class Message {
   sendTime: Date
   chatId: number
   userId: string
-  messagesImagesUrl: string[]
+  messageImagesUrls: string[]
   removed?: boolean
   focus?: boolean
 }
