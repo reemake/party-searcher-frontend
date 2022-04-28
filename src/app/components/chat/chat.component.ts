@@ -35,6 +35,7 @@ export class ChatComponent implements OnDestroy, DoCheck {
   public username = localStorage.getItem("username") || '';
   private messageContainer: HTMLElement | null;
   public imagesFullScreens:Map<string,number>=new Map<string, number>();
+  public imageObj:any=[];
 
   public currentMessage: Message;
 
@@ -217,18 +218,12 @@ export class ChatComponent implements OnDestroy, DoCheck {
   showFullImage(message:Message,url: string) {
     this.currentMessage=message;
     this.imageIndex = this.imagesFullScreens.get(url) || 0;
-    this.isShowFullImage = true;
-  }
-
-  getImageObject(): any {
-    if (this.currentMessage) {
-      var imageObj = [];
-      for (let [index,image] of this.currentMessage.messageImagesUrls.entries()) {
-        imageObj.push({image: image, alt: 'message image'});
-        this.imagesFullScreens.set(image,index);
-      }
-      return imageObj;
+    this.imageObj=[];
+    for (let [index,image] of this.currentMessage.messageImagesUrls.entries()) {
+      this.imagesFullScreens.set(image,index);
+      this.imageObj.push({image: image, alt: 'message image'});
     }
+    this.isShowFullImage = true;
   }
 
   getFileProperties(fileProperties: any) {

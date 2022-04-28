@@ -30,6 +30,7 @@ export class ReviewDialogComponent implements OnInit {
   public imageIndex:number=0;
   @Input()
   responses: Array<any>=[];
+  public imageObj:any=[];
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Event,private cloudinary: Cloudinary,
@@ -181,14 +182,12 @@ export class ReviewDialogComponent implements OnInit {
 
   showFullImage(url:string){
 this.imageIndex=this.imagesFullScreens.get(url)||0;
-    this.isShowFullImage=true;
-  }
-  getImageObject():any {
-    var imageObj=[];
+this.imageObj=[];
     for(let image of this.imagesUrls){
-      imageObj.push({image:image,alt:'review image'});
+      this.imageObj.push({image:image,alt:'review image'});
     }
-    return imageObj;
+    this.isShowFullImage=true;
+
   }
 
   getFileProperties(fileProperties: any) {
