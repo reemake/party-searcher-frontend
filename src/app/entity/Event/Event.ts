@@ -26,5 +26,6 @@ export interface Event {
   guests: Array<EventAttendance>,
   invitedGuests: Array<User> ,
   hasChatWithOwner: boolean,
-  avgMark?: number
+  avgMark?: number,
+  recommendedBySurvey?:boolean
 }

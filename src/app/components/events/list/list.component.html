@@ -4,8 +4,14 @@
     <input [formControl]="nameInput" type="text"/>
     <table>
       <tr *ngFor="let event of nameInput.value===null?events:filteredEvents">
+
         <td>
-          <button (click)="showDescription(event)"><h2>{{event.name}}</h2></button>
+
+          <button (click)="showDescription(event)">
+            <h2>
+              <img *ngIf="event.recommendedBySurvey" src="assets/img/mapImages/favourite-event-icon.png" alt="favourite event from survey"/>{{event.name}}
+            </h2>
+          </button>
         </td>
         <td>
           <div class="big-container1">

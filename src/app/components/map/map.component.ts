@@ -241,6 +241,7 @@ export class MapComponent implements AfterViewInit{
     let featuresMap = new Map()
     let features: Array<any> = new Array<any>();
     if (this.previousEventsMarkersLayer.getSource() === null) {
+      console.log(this.events);
       this.events.forEach(event => {
         if (event.location !== undefined) {
           let feature: any = null;
@@ -254,11 +255,11 @@ export class MapComponent implements AfterViewInit{
               geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
               event: event
             });
+            var imageSrc=event.recommendedBySurvey?'../assets/img/mapImages/favourite-event-icon.png':'../assets/img/mapImages/landmark.png';
             feature.setStyle(new Style({
               image: new Icon(({
                 crossOrigin: 'anonymous',
-                src: '../assets/img/mapImages/landmark.png',
-                imgSize: [27, 30]
+                src: imageSrc
               }))
             }));
             featuresMap = featuresMap.set(locationStr, feature)
@@ -293,11 +294,12 @@ export class MapComponent implements AfterViewInit{
                 geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
                 event: event
               });
+
+              var imageSrc=event.recommendedBySurvey?'../assets/img/mapImages/favourite-event-icon.png':'../assets/img/mapImages/landmark.png';
               feature.setStyle(new Style({
                 image: new Icon(({
                   crossOrigin: 'anonymous',
-                  src: '../assets/img/mapImages/landmark.png',
-                  imgSize: [27, 30]
+                  src: imageSrc
                 }))
               }));
               featuresMap = featuresMap.set(locationStr, feature);
