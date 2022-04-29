@@ -3,7 +3,7 @@ import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {User} from "../../../entity/User";
 import {ChatService} from "../../../services/chat.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-description',
@@ -14,11 +14,20 @@ export class EventDescriptionComponent implements OnInit {
   @Output() public closeDescription: EventEmitter<any> = new EventEmitter<any>();
   @Input() public event: Event | null;
   public error: string = "";
+  public hasClose=true;
 
-  constructor(private eventService: EventService, private chatService: ChatService, private router: Router) {
+  constructor(private eventService: EventService, private chatService: ChatService, private router: Router,private activatedRoute:ActivatedRoute) {
+
   }
 
   ngOnInit(): void {
+  this.activatedRoute.queryParams.subscribe(params=>{
+    if (params['eventId']){
+      this.hasClose=false;
+      var eventId=params['eventId'];
+      this.eventService.get(eventId).subscribe(event=>this.event=event);
+    }
+  })
   }
 
   assignOnEvent(): void {

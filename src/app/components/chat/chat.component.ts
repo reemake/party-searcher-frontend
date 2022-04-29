@@ -43,7 +43,7 @@ export class ChatComponent implements OnDestroy, DoCheck {
   title: string;
   isPhotoUploading: boolean = false;
   public isShowFullImage = false;
-  public imageIndex: number = 0;
+  public imageIndex: number = -1;
   @Input()
   responses: Array<any> = [];
 
@@ -209,6 +209,8 @@ export class ChatComponent implements OnDestroy, DoCheck {
 
   closeEventHandler() {
     this.isShowFullImage = false;
+    this.imageIndex=-1;
+    this.imageObj=[];
   }
 
   removeImage(url: string) {
@@ -217,12 +219,13 @@ export class ChatComponent implements OnDestroy, DoCheck {
 
   showFullImage(message:Message,url: string) {
     this.currentMessage=message;
-    this.imageIndex = this.imagesFullScreens.get(url) || 0;
-    this.imageObj=[];
+    this.imagesFullScreens=new Map<string, number>();
     for (let [index,image] of this.currentMessage.messageImagesUrls.entries()) {
-      this.imagesFullScreens.set(image,index);
+      this.imagesFullScreens=  this.imagesFullScreens.set(image,index);
       this.imageObj.push({image: image, alt: 'message image'});
     }
+    this.imageIndex = (this.imagesFullScreens.get(url) || 0);
+    console.log(this.imageIndex)
     this.isShowFullImage = true;
   }
 

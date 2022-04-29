@@ -15,4 +15,8 @@ export class ReviewService {
   public add(review: Review): Observable<any> {
     return this.httpClient.post(BACKEND_URL + "/api/reviews", review);
   }
+
+  public getReviewsForUserEvents(login:string):Observable<Review[]>{
+    return this.httpClient.get<Array<Review>>(BACKEND_URL+"/api/reviews/getReviewsForUserEvents",{params:{login:login}});
+  }
 }

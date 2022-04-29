@@ -1,5 +1,5 @@
 <div class="container" *ngIf="event!=null" id="description">
-  <h1 id="title">Информация о мероприятии&nbsp;<button (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
+  <h1 id="title">Информация о мероприятии&nbsp;<button *ngIf="hasClose" (click)="closeDescriptionFun()" class="exit-btn"><img alt="close"
     src="./assets/img/mapImages/buttons/close-btn.png"/>
 </button></h1>
   <div class="description-row header">
@@ -12,13 +12,15 @@
       <a *ngIf="event.url" href="{{event.url}}"><img *ngIf="event.isOnline" src="./assets/img/mapImages/online location.png"/>{{event.url}}</a>
       <p *ngIf="event?.location?.name"><img *ngIf="!event.isOnline" src="./assets/img/mapImages/event location.png"/>{{event?.location?.name}}</p>
     </div>
-    
+
 
   </div>
   <div class="description-row owner">
     <p><u>Организатор:</u></p>
-    <div class="owner-container">
-      <p>{{event.owner?.login}}</p>
+    <div class="owner-container" *ngIf="event.owner && event.owner.login">
+      <a href="reviews?login={{event.owner.login}}">
+        <p>{{event.owner?.login}}</p>
+      </a>
 
       <img *ngFor="let item of [].constructor(event.avgMark||0); let i = index"
            src="./assets/img/rating-star-icon.png"/>

@@ -49,6 +49,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
 import {MatMenuModule} from "@angular/material/menu";
 import {NgImageFullscreenViewModule} from "ng-image-fullscreen-view";
+import { ReviewsComponent } from './components/reviews/reviews.component';
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
@@ -69,7 +70,9 @@ const ROUTES: Routes = [
   {path: "events/edit", component: EditComponent, canActivate: [AuthGuardService]},
   {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
   {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]},
-  {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuardService]}
+  {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuardService]},
+  {path:'reviews',component:ReviewsComponent},
+  {path:'events/description',component:EventDescriptionComponent}
 
 ];
 
@@ -101,7 +104,8 @@ const ROUTES: Routes = [
     ReviewDialogComponent,
     SuccessDialogComponent,
     OauthLoginDialogComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    ReviewsComponent
   ],
   imports: [
     BrowserModule,
