@@ -11,9 +11,6 @@ body {
   margin: 0 0 !important;
 }
 
-.switchBtn {
-
-}
 .mapButtons{
   display: flex;
   justify-content: space-around;
