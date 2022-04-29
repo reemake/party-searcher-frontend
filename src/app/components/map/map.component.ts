@@ -1,12 +1,12 @@
 import {
-  AfterContentChecked,
+  AfterContentChecked, AfterContentInit,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
+  NgZone, OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -32,7 +32,7 @@ import {Observable, Subject} from "rxjs";
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit{
   @ViewChild('mapElementRef', {static: true}) mapElementRef: ElementRef
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
@@ -65,7 +65,6 @@ export class MapComponent implements AfterViewInit {
 
   @Input() mapBoundsChange: Subject<any> = new Subject<any>();
 
-  @Input()mapNeedInit:Observable<boolean>;
 
   view: View | undefined;
   projection: Projection | undefined;
@@ -83,9 +82,11 @@ export class MapComponent implements AfterViewInit {
   constructor(private zone: NgZone, private cd: ChangeDetectorRef, private mapService: EventService) {
   }
 
+
+
+
   ngAfterViewInit(): void {
     this.init();
-    this.mapNeedInit?.subscribe(e=>this.init());
   }
 
 
@@ -155,9 +156,7 @@ export class MapComponent implements AfterViewInit {
     buttonElement.addEventListener('click', () => {
       this.setUserLocation();
     })
-    //let control = new Control({element: buttonElement});
     buttonsContainer.append(buttonElement);
-    //this.map.addControl(control);
     if (this.hasSearch) {
       let buttonSearchElement: any = document.createElement('button')
       buttonSearchElement.className = "mapBtn searchBtn"
@@ -167,9 +166,6 @@ export class MapComponent implements AfterViewInit {
         this.callSearch.emit(true);
       })
       buttonsContainer.append(buttonSearchElement);
-      //let searchControl = new Control({element: buttonSearchElement});
-     // this.map.addControl(searchControl);
-
 
       let switchMap: any = document.createElement('button');
 
@@ -182,9 +178,6 @@ export class MapComponent implements AfterViewInit {
       })
 
       buttonsContainer.append(switchMap);
-      //let switchControl = new Control({element: switchMap});
-
-      //this.map.addControl(switchControl);
     }
 
     var divControl=new Control({

@@ -9,10 +9,9 @@
            [hasSearch]="true"
            (mapReady)="onMapReady($event)" [mapBoundsChange]="changeMapBounds"
            (selectEvents)="userEventSelectHandler($event)" [ngStyle]="{'width':mapSize}"
-           *ngIf="showMap" [center]="[-483281,6904172]"
+           [hidden]="!showMap" [center]="[-483281,6904172]"
            [events]="events"
            [zoom]="14.5"
-           [mapNeedInit]="mapNeedInit"
            class="map"></app-map>
   <app-event-search (closeSearch)="onCallSearch($event)" (eventsSearched)="search($event)"
                     (filterChanged)="filter=$event" *ngIf="isSearchActive || !showMap" [isPagingUsed]="!showMap"

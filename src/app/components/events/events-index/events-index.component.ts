@@ -27,8 +27,6 @@ export class EventsIndexComponent implements OnInit {
   private prevMapSize: string = "100%";
   public currentLocation: number[] = [];
   public changeMapBounds = new Subj<any>();
-  public mapNeedInit=new Subj<boolean>();
-
   private currentDistance: number = 0;
   private maxSW: number[] = [];
   private maxNE: number[] = [];
@@ -103,7 +101,6 @@ export class EventsIndexComponent implements OnInit {
       this.showMap = false;
     } else {
       this.showMap = true;
-      this.mapNeedInit.next(true);
     }
   }
 
