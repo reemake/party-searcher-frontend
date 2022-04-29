@@ -27,6 +27,7 @@ export class EventsIndexComponent implements OnInit {
   private prevMapSize: string = "100%";
   public currentLocation: number[] = [];
   public changeMapBounds = new Subj<any>();
+  public mapNeedInit=new Subj<boolean>();
 
   private currentDistance: number = 0;
   private maxSW: number[] = [];
@@ -92,7 +93,6 @@ export class EventsIndexComponent implements OnInit {
 
   public showList(event: any): void {
     if (event) {
-
       if (this.filter == null)
         this.filter = {
           eventFormats: ['OFFLINE']
@@ -102,8 +102,8 @@ export class EventsIndexComponent implements OnInit {
       this.filter.userLocation = this.currentLocation
       this.showMap = false;
     } else {
-
       this.showMap = true;
+      this.mapNeedInit.next(true);
     }
   }
 

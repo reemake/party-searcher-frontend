@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -24,7 +25,7 @@ import {Icon, Style} from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import * as olSphere from 'ol/sphere';
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 @Component({
   selector: 'app-map',
@@ -64,6 +65,8 @@ export class MapComponent implements AfterViewInit {
 
   @Input() mapBoundsChange: Subject<any> = new Subject<any>();
 
+  @Input()mapNeedInit:Observable<boolean>;
+
   view: View | undefined;
   projection: Projection | undefined;
   extent: Extent = [-20026376.39, -20048966.10, 20026376.39, 20048966.10];
@@ -82,15 +85,15 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.init();
+    this.mapNeedInit?.subscribe(e=>this.init());
   }
 
+
   public init(): void {
-    if (!this.map) {
       this.zone.run(() => {
         this.initMap();
         this.setHandlers();
       });
-    }
     setTimeout(() => this.mapReady.emit(this.map));
     this.setUserLocation();
     this.view?.on('change:center', () => {
@@ -143,40 +146,51 @@ export class MapComponent implements AfterViewInit {
       ])
     });
 
-
-    let buttonElement: any = document.createElement('button');
+    let buttonsContainer: HTMLDivElement = document.createElement('div');
+    buttonsContainer.className='mapButtons'
+    let buttonElement: HTMLButtonElement = document.createElement('button');
     buttonElement.className = "mapBtn";
-    buttonElement.innerHTML = ' <img style="margin-left: 40px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> <small style="margin-left: 40px; font-weight: 700;">Моё местоположение</small>';
+    buttonElement.innerHTML = ' <img style="margin-left: 40px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> ' +
+      '<small style="margin-left: 40px; font-weight: 700;">Моё местоположение</small>';
     buttonElement.addEventListener('click', () => {
       this.setUserLocation();
     })
-    let control = new Control({element: buttonElement});
-    this.map.addControl(control);
+    //let control = new Control({element: buttonElement});
+    buttonsContainer.append(buttonElement);
+    //this.map.addControl(control);
     if (this.hasSearch) {
       let buttonSearchElement: any = document.createElement('button')
       buttonSearchElement.className = "mapBtn searchBtn"
-      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 30px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/> <br> <small style="margin-left: 30px; font-weight: 700;">Поиск мероприятий</small>';
+      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 30px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/>' +
+        ' <br> <small style="margin-left: 30px; font-weight: 700;">Поиск мероприятий</small>';
       buttonSearchElement.addEventListener('click', () => {
         this.callSearch.emit(true);
       })
-      let searchControl = new Control({element: buttonSearchElement});
-      this.map.addControl(searchControl);
+      buttonsContainer.append(buttonSearchElement);
+      //let searchControl = new Control({element: buttonSearchElement});
+     // this.map.addControl(searchControl);
 
 
       let switchMap: any = document.createElement('button');
 
 
       switchMap.className = "mapBtn switchBtn"
-      switchMap.innerHTML = ' <img style="width: 57px; height: 50px; margin-top: 5px; margin-left: -350px" alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" /> <br> <small style="margin-left: -350px; font-weight: 700;">Список доступных мероприятий</small>';
+      switchMap.innerHTML = ' <img style="width: 57px; height: 50px; margin-top: 5px; margin-left: 30px" alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" /> ' +
+        '<br> <small style="margin-left: 30px; font-weight: 700;">Список доступных мероприятий</small>';
       switchMap.addEventListener('click', () => {
         this.callListItem.emit(true);
       })
 
+      buttonsContainer.append(switchMap);
+      //let switchControl = new Control({element: switchMap});
 
-      let switchControl = new Control({element: switchMap});
-
-      this.map.addControl(switchControl);
+      //this.map.addControl(switchControl);
     }
+
+    var divControl=new Control({
+      element:buttonsContainer
+    });
+    this.map.addControl(divControl);
     this.map?.addLayer(this.previousEventsMarkersLayer);
     this.map.setTarget(this.mapElementRef.nativeElement)
   }
@@ -351,6 +365,7 @@ export class MapComponent implements AfterViewInit {
 
     this.map?.addLayer(this.previousCurrentUserLocationICON);
   }
+
 
 
 }

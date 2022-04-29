@@ -12,16 +12,19 @@ body {
 }
 
 .switchBtn {
-  float: right;
-}
 
+}
+.mapButtons{
+  display: flex;
+  justify-content: space-around;
+}
 .mapBtn {
   border: none !important;
   background: none !important;
 }
 
 .searchBtn {
-  width: 80%;
+
   margin: 0 auto;
 }
 
