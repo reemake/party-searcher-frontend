@@ -24,6 +24,14 @@ export class UserService {
     return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateUser", user);
   }
 
+  public updateUserAuthority(user: User): Observable<any> {
+    return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateUserAuthority", user);
+  }
+
+  public updateUsersAuthorities(users:User[]):Observable<any>{
+    return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateUsersAuthorities", users);
+  }
+
   public updateUserPhoto(user: User): Observable<any> {
     return this.httpClient.patch<any>(BACKEND_URL + "/api/users/updateUserPhoto", user);
   }

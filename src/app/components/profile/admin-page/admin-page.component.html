@@ -1,0 +1,24 @@
+<div class="container">
+  <div *ngFor="let user of users">
+    <div class="data">
+      <img *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="profileImage" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
+      <img *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="profileImage"  alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
+      <img *ngIf="this.user.pictureUrl" class="profileImage" alt="accImg" src={{this.user.pictureUrl}}/>
+      <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3" (click)="deletePhoto(user)">Удалить фото</button>
+
+      <div class="profileData">
+        <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
+        <p class="dataColumns">Логин: <b>{{user.login}}</b></p>
+        <p class="dataColumns">E-mail: <b>{{user.email}}</b></p>
+        <p class="dataColumns">Телефон: <b>{{user.phone}}</b></p>
+      </div>
+    </div>
+      <ng-select [multiple]="true" (ngModelChange)="logging($event)" [(ngModel)]="user.authorities" placeholder="привелегии" >
+        <ng-option value="{{rolesMap.get(option)}}" *ngFor="let option of rolesMap.keys()">{{option}}</ng-option>
+      </ng-select>
+      <input  class="btn-primary align-self-center" (click)="updatePrivelleges(user)" type="submit" value="Обновить привелегии" />
+  </div>
+  <input style="margin-top: 25px;" class="btn-primary" (click)="updatePrivellegesOfAll()" type="submit" value="Обновить привелегии всех пользователей" />
+</div>
+
+

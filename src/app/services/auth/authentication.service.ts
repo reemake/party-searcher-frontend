@@ -4,6 +4,7 @@ import {map, Observable, Subject} from 'rxjs';
 import {BACKEND_URL} from 'src/app/app.module';
 import {Jwt} from 'src/app/entity/Jwt';
 import {Router} from "@angular/router";
+import {User} from "../../entity/User";
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,10 @@ export class AuthenticationService {
     console.log("NOT UPDATE")
     return new Observable<HttpResponse<Jwt>>();
 
+  }
+
+  public getUserData():Observable<User>{
+    return this.httpClient.get<User>(BACKEND_URL+"/api/users/getCurrentUser");
   }
 
   public getToken(): string {

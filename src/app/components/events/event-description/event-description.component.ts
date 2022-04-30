@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./event-description.component.css']
 })
 export class EventDescriptionComponent implements OnInit {
+  public userName:string=localStorage.getItem("username")||'';
   @Output() public closeDescription: EventEmitter<any> = new EventEmitter<any>();
   @Input() public event: Event | null;
   public error: string = "";
@@ -70,7 +71,8 @@ export class EventDescriptionComponent implements OnInit {
 
 
   complainOnEvent(): void {
-
+    if (this.event  && this.event.id)
+    this.router.navigateByUrl(`events/complaints/create?eventId=${this.event.id}`);
   }
 
   createAndGoToChat(): void {

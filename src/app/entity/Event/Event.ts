@@ -3,7 +3,7 @@ import {Location} from "../Location";
 import {EventAttendance} from "./EventAttendance";
 import {Tag} from "./Tag";
 import {EventType} from "./EventType";
-import {User} from "../../components/pages/friends/user";
+import {User} from "../../components/profile/friends/user";
 
 export interface Event {
   id?: number

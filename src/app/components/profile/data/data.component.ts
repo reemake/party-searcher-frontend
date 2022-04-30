@@ -1,13 +1,14 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { User } from 'src/app/entity/User';
-import { AuthenticationService } from 'src/app/services/auth/authentication.service';
-import { UserService } from 'src/app/services/user.service';
+import {Component, Input, NgZone, OnInit} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {User} from 'src/app/entity/User';
+import {AuthenticationService} from 'src/app/services/auth/authentication.service';
+import {UserService} from 'src/app/services/user.service';
 
 
-import { FileUploader, FileUploaderOptions, ParsedResponseHeaders } from 'ng2-file-upload';
-import { Cloudinary } from '@cloudinary/angular-5.x';
-import { HttpClient } from '@angular/common/http';
+import {FileUploader, FileUploaderOptions, ParsedResponseHeaders} from 'ng2-file-upload';
+import {Cloudinary} from '@cloudinary/angular-5.x';
+import {HttpClient} from '@angular/common/http';
+import {Role} from "../../../entity/Role";
 
 @Component({
   selector: 'app-data',
@@ -36,7 +37,7 @@ export class DataComponent implements OnInit {
   isPasswordMatches: boolean = false;
 
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     public authService: AuthenticationService,
     private cloudinary: Cloudinary,
     private zone: NgZone,
@@ -136,6 +137,10 @@ export class DataComponent implements OnInit {
       );
   }
 
+  isAdmin():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ADMIN).length>0;
+  }
+
   updateUser(dataChangeForm: NgForm) {
 
     console.log("CURRENT PASSWORD = " + this.currentPassword);
@@ -175,7 +180,7 @@ export class DataComponent implements OnInit {
             this.userEdited.commercialUser = this.user.commercialUser;
           if (this.userEdited.commercialUserCreated == null)
             this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
-    
+
           console.log(this.userEdited);
           this.userService.updateUser(this.userEdited).subscribe(
             result => {
@@ -194,7 +199,7 @@ export class DataComponent implements OnInit {
       }
     )
 
-  
+
   }
 
   getUserInfo() {
@@ -347,5 +352,5 @@ export class DataComponent implements OnInit {
       }
     )
   }
-    
+
 }
