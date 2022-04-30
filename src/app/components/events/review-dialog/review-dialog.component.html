@@ -2,8 +2,8 @@
 <div mat-dialog-content>
   <div class="star-btns" mat-card-content>
     <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
-      <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="./assets/img/empty-starr.png"/>
-      <img *ngIf="review && review.eventMark && review.eventMark>=num" src="./assets/img/rating-star-icon.png"/>
+      <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="../../../../assets/img/empty-starr.png"/>
+      <img *ngIf="review && review.eventMark && review.eventMark>=num" src="../../../../assets/img/rating-star-icon.png"/>
     </button>
   </div>
   <label *ngIf="review" class="mat-checkbox-label" for="deep">Оценить подробно</label>
@@ -44,7 +44,7 @@
         <input *ngIf="review"  type="file" accept=".jpg,.jpeg,.png" ng2FileSelect
                [uploader]="uploader" #fileInput (change)="fileInput.value=''"
                (change)="photoSubmitOn()" [style.display]="'none'"  hidden multiple />
-      <img alt="uploadImg" src="./assets/img/profile/add.png"/>
+      <img alt="uploadImg" src="../../../../assets/img/profile/add.png"/>
     </label>
     <mat-card *ngFor="let url of imagesUrls">
         <img width="40px" height="40px" src="{{url}}" alt="review image" (click)="showFullImage(url)"/>

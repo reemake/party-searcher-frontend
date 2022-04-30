@@ -3,7 +3,7 @@ import {EventService} from "./services/event.service";
 import {AuthenticationService} from "./services/auth/authentication.service";
 import {CookieService} from "ngx-cookie-service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ReviewDialogComponent} from "./components/review-dialog/review-dialog.component";
+import {ReviewDialogComponent} from "./components/events/review-dialog/review-dialog.component";
 import {Review} from "./entity/Event/Review";
 import {ReviewService} from "./services/review.service";
 import {Event} from "./entity/Event/Event";

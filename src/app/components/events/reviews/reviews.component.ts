@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ReviewService} from "../../services/review.service";
+import {ReviewService} from "../../../services/review.service";
 import {ActivatedRoute} from "@angular/router";
-import {EventLengthMark, Review} from "../../entity/Event/Review";
+import {EventLengthMark, Review} from "../../../entity/Event/Review";
 
 @Component({
   selector: 'app-reviews',

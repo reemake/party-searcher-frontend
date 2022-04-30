@@ -39,7 +39,7 @@ import {CommercialRegisterComponent} from './components/profile/commercial-regis
 import {MyEventsComponent} from './components/profile/my-events/my-events.component';
 import {MatInputModule} from "@angular/material/input";
 import {MatDialogModule} from "@angular/material/dialog";
-import {ReviewDialogComponent} from './components/review-dialog/review-dialog.component';
+import {ReviewDialogComponent} from './components/events/review-dialog/review-dialog.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatButtonModule} from "@angular/material/button";
 import {SuccessDialogComponent} from './components/success-dialog/success-dialog.component';
@@ -49,7 +49,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
 import {MatMenuModule} from "@angular/material/menu";
 import {NgImageFullscreenViewModule} from "ng-image-fullscreen-view";
-import { ReviewsComponent } from './components/reviews/reviews.component';
+import { ReviewsComponent } from './components/events/reviews/reviews.component';
 import { AdminPageComponent } from './components/profile/admin-page/admin-page.component';
 import {NgSelectModule} from "@ng-select/ng-select";
 import {AdminGuard} from "./services/auth/admin.guard";

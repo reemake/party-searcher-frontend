@@ -1,7 +1,7 @@
 import {Component, Inject, Input, NgZone, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Event} from "../../entity/Event/Event";
-import {EventLengthMark, Review} from "../../entity/Event/Review";
+import {Event} from "../../../entity/Event/Event";
+import {EventLengthMark, Review} from "../../../entity/Event/Review";
 import {NgForm} from "@angular/forms";
 import {FileUploader, FileUploaderOptions, ParsedResponseHeaders} from "ng2-file-upload";
 import {Cloudinary} from "@cloudinary/angular-5.x";
