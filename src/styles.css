@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ol/ol.css";
+
+@import "~@ng-select/ng-select/themes/material.theme.css";
 html, body {
   height: 100%;
 }
@@ -11,17 +13,19 @@ body {
   margin: 0 0 !important;
 }
 
-.switchBtn {
-  float: right;
-}
 
+
+.mapButtons{
+  display: flex;
+  justify-content: space-around;
+}
 .mapBtn {
   border: none !important;
   background: none !important;
 }
 
 .searchBtn {
-  width: 80%;
+
   margin: 0 auto;
 }
 

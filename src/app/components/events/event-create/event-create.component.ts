@@ -4,8 +4,8 @@ import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
-import {Relationship} from '../../pages/friends/Relationship';
-import {UserService} from '../../pages/friends/user.service';
+import {Relationship} from '../../profile/friends/Relationship';
+import {UserService} from '../../profile/friends/user.service';
 import {User} from 'src/app/entity/User';
 import {Router} from "@angular/router";
 

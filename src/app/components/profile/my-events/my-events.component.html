@@ -42,9 +42,9 @@
                 <div *ngFor="let event of createdEvents" style="text-indent: 15px;">
                     {{ event.name }}
                     <div class="createdEventsButtons">
-                        <button type="button" class="btn btn-lg btn-danger eventBtn1">Подробнее о мероприятии</button>
-                        <button type="button" class="btn btn-lg btn-danger eventBtn2">Изменить мероприятие</button>
-                        <button type="button" class="btn btn-lg btn-danger eventBtn3">Удалить мероприятие</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn1" (click)="showDescription(event)">Подробнее о мероприятии</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn2" (click)="editEvent(event)">Изменить мероприятие</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn3" (click)="deleteEvent(event.id!)">Удалить мероприятие</button>
                     </div>
                     <hr class="eventsLine">
                 </div>
@@ -60,8 +60,8 @@
                 <div *ngFor="let event of attendedEvents" style="text-indent: 15px;">
                     {{ event.name }}
                     <div class="attendedEventsButtons">
-                        <button type="button" class="btn btn-lg btn-danger eventBtn1" style="margin-left: 680px;">Подробнее о мероприятии</button>
-                        <button type="button" class="btn btn-lg btn-danger eventBtn2">Отказаться от посещения</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn1" style="margin-left: 680px;" (click)="showDescription(event)">Подробнее о мероприятии</button>
+                        <button type="button" class="btn btn-lg btn-danger eventBtn2" (click)="removeFromEvent(event)">Отказаться от посещения</button>
                     </div>
                     <hr class="eventsLine">
                 </div>
@@ -71,4 +71,78 @@
             </div>
         </div>
     </div>
+
+    <div class="eventDescription" *ngIf="descriptionOpened" id="description">
+        <h1 id="title1">Информация о мероприятии<button (click)="closeDescription()" class="exit-btn"><img alt="close"
+          src="./assets/img/mapImages/buttons/close-btn.png"/>
+      </button></h1>
+        <div class="description-row header">
+          <h2 class="eventName">{{viewingEvent.name}}</h2>
+        </div>
+      
+        <div class="description-row">
+          <div class="locationImage">
+            <a *ngIf="viewingEvent.url" href="{{viewingEvent.url}}"><img *ngIf="viewingEvent.isOnline" src="./assets/img/mapImages/online location.png"/>{{viewingEvent.url}}</a>
+            <p *ngIf="viewingEvent?.location?.name"><img *ngIf="!viewingEvent.isOnline" src="./assets/img/mapImages/event location.png"/>{{viewingEvent?.location?.name}}</p>
+          </div>
+          
+      
+        </div>
+        <div class="description-row owner">
+          <p><u>Организатор:</u></p>
+          <div class="owner-container">
+            <p>{{viewingEvent.owner?.login}}</p>
+            <img src="./assets/img/rating-star-icon.png"/>
+            <p>{{viewingEvent.owner?.rating}}</p>
+          </div>
+        </div>
+        <div class="description-row owner">
+          <p><u>Время начала:</u></p>
+          <p>{{viewingEvent.dateTimeStart | date:'dd.MM.YY HH:mm'}}</p>
+        </div>
+        <div *ngIf="viewingEvent.dateTimeEnd!==null" class="description-row owner">
+          <p><u>Время окончания мероприятия:</u></p>
+          <p>{{viewingEvent.dateTimeEnd | date:'dd.MM.YY HH:mm'}}</p>
+        </div>
+        <div *ngIf="viewingEvent.maxNumberOfGuests!==0" class="description-row owner">
+          <p><u>Максимальное кол-во участников:</u></p>
+          <p>{{viewingEvent.maxNumberOfGuests}}</p>
+        </div>
+        <div class="description-row">
+          <p><u>Участников:</u></p>
+          <p>{{viewingEvent.guests?.length}}</p>
+        </div>
+        <div class="description-row description">
+          <p><u>Дополнительная информация:</u></p>
+          <pre>
+            {{viewingEvent.description}}
+          </pre>
+        </div>
+        <div class="description-row">
+          <p>{{viewingEvent.isOnline ? "Этот сайт" : "Эту локацию"}} за все время посетило 0 человек.</p>
+        </div>
+        <hr>
+        <div class="description-row description-buttons">
+          <div *ngIf="viewingEvent.currentUserEntered" class="description-button">
+            <button (click)="createAndGoToChat()" *ngIf="viewingEvent.chatId===undefined"><img
+              src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>
+            <button (click)="goToChat(viewingEvent.chatId)" *ngIf="viewingEvent.chatId!==undefined"><img
+              src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>
+          </div>
+          <div *ngIf="viewingEvent.hasChatWithOwner" class="description-button">
+            <button (click)="callEventOwner()"><img src="./assets/img/mapImages/buttons/chat_with_admin.png"/>&nbsp;&nbsp;&nbsp;Связь с организатором</button>
+          </div>
+          <div class="description-button">
+            <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/>&nbsp;&nbsp;&nbsp;Пожаловаться на мероприятие</button>
+          </div>
+        </div>
+        <div class="description-row tags">
+          <h3 *ngFor="let tag of viewingEvent.tags" class="description-tag">#{{tag.name}}&nbsp;&nbsp;</h3>
+        </div>
+        <div class="price">
+          <img *ngIf="viewingEvent.price==0" alt="free event" src="./assets/img/FREE%20PRICE.png"/>
+          <p *ngIf="viewingEvent.price !==0">{{viewingEvent.price}}</p>
+          <img *ngIf="viewingEvent.price!==0" alt="paid event" src="./assets/img/ruble.png"/>
+        </div>
+      </div>
 </div>

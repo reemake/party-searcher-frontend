@@ -9,7 +9,7 @@
            [hasSearch]="true"
            (mapReady)="onMapReady($event)" [mapBoundsChange]="changeMapBounds"
            (selectEvents)="userEventSelectHandler($event)" [ngStyle]="{'width':mapSize}"
-           *ngIf="showMap" [center]="[-483281,6904172]"
+           [hidden]="!showMap" [center]="[-483281,6904172]"
            [events]="events"
            [zoom]="14.5"
            class="map"></app-map>

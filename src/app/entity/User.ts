@@ -1,3 +1,5 @@
+import {Role} from "./Role";
+
 export class User {
   login:string;
   firstName:string;
@@ -10,5 +12,6 @@ export class User {
   pictureUrl:string;
   organizationName:string;
   description:string;
+  authorities?:Role[]
   constructor(){}
 }

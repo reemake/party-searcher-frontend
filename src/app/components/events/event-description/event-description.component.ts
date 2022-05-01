@@ -3,7 +3,7 @@ import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {User} from "../../../entity/User";
 import {ChatService} from "../../../services/chat.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-description',
@@ -11,14 +11,24 @@ import {Router} from "@angular/router";
   styleUrls: ['./event-description.component.css']
 })
 export class EventDescriptionComponent implements OnInit {
+  public userName:string=localStorage.getItem("username")||'';
   @Output() public closeDescription: EventEmitter<any> = new EventEmitter<any>();
   @Input() public event: Event | null;
   public error: string = "";
+  public hasClose=true;
 
-  constructor(private eventService: EventService, private chatService: ChatService, private router: Router) {
+  constructor(private eventService: EventService, private chatService: ChatService, private router: Router,private activatedRoute:ActivatedRoute) {
+
   }
 
   ngOnInit(): void {
+  this.activatedRoute.queryParams.subscribe(params=>{
+    if (params['eventId']){
+      this.hasClose=false;
+      var eventId=params['eventId'];
+      this.eventService.get(eventId).subscribe(event=>this.event=event);
+    }
+  })
   }
 
   assignOnEvent(): void {
@@ -61,7 +71,8 @@ export class EventDescriptionComponent implements OnInit {
 
 
   complainOnEvent(): void {
-
+    if (this.event  && this.event.id)
+    this.router.navigateByUrl(`events/complaints/create?eventId=${this.event.id}`);
   }
 
   createAndGoToChat(): void {

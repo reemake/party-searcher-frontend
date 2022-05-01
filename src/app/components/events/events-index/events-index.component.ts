@@ -2,9 +2,10 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
 import {FilterData} from "../../../entity/filterData";
-import {MapComponent} from "../../map/map.component";
+import {MapComponent} from "../map/map.component";
 import * as olSphere from "ol/sphere";
 import {debounceTime, Observable, Subject as Subj} from "rxjs";
+import { MyEventsComponent } from 'src/app/components/profile/my-events/my-events.component';
 
 type Subject = Observable<any>;
 
@@ -26,7 +27,6 @@ export class EventsIndexComponent implements OnInit {
   private prevMapSize: string = "100%";
   public currentLocation: number[] = [];
   public changeMapBounds = new Subj<any>();
-
   private currentDistance: number = 0;
   private maxSW: number[] = [];
   private maxNE: number[] = [];
@@ -47,7 +47,6 @@ export class EventsIndexComponent implements OnInit {
 
     })
   }
-
 
   public userEventSelectHandler(eventsArray: Array<Event>) {
     if (eventsArray.length > 1) {
@@ -92,7 +91,6 @@ export class EventsIndexComponent implements OnInit {
 
   public showList(event: any): void {
     if (event) {
-
       if (this.filter == null)
         this.filter = {
           eventFormats: ['OFFLINE']
@@ -102,7 +100,6 @@ export class EventsIndexComponent implements OnInit {
       this.filter.userLocation = this.currentLocation
       this.showMap = false;
     } else {
-
       this.showMap = true;
     }
   }

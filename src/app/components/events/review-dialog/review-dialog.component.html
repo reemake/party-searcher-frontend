@@ -1,0 +1,87 @@
+<h1 mat-dialog-title>Оцените мероприятие '{{data.name}}'</h1>
+<div mat-dialog-content>
+  <div class="star-btns" mat-card-content>
+    <button (click)="onChange(num)" *ngFor="let num of numbers" class="rating-btn">
+      <img *ngIf="!review || (review && review.eventMark&& review.eventMark<num)" src="../../../../assets/img/empty-starr.png"/>
+      <img *ngIf="review && review.eventMark && review.eventMark>=num" src="../../../../assets/img/rating-star-icon.png"/>
+    </button>
+  </div>
+  <label *ngIf="review" class="mat-checkbox-label" for="deep">Оценить подробно</label>
+  <input *ngIf="review" [(ngModel)]="deepReview" class="mat-checkbox" id="deep" type="checkbox">
+
+  <mat-card-content *ngIf="deepReview">
+    <mat-form-field *ngIf="review">
+      <label class="mat-step-label" for="eventOrganization">Оценка организации события</label>
+      <input #eventOrganization="ngModel" [(ngModel)]="review.eventOrganizationMark" class="mat-input-server"
+             id="eventOrganization" matInput min="1"
+             max="5" name="eventOrganization" required type="number">
+      <mat-hint *ngIf="eventOrganization.errors?.['min']">Минимальное значение = 1</mat-hint>
+      <mat-hint *ngIf="eventOrganization.errors?.['max']">Максимальное значение = 5</mat-hint>
+      <mat-hint *ngIf="eventOrganization.errors?.['required']">Заполните поле</mat-hint>
+
+    </mat-form-field>
+    <mat-form-field *ngIf="review">
+      <label class="mat-step-label" for="recommendToOther">Будете рекомендовать события этого пользователя к посещению
+        другим людям</label>
+      <input #recommendToOther="ngModel" [(ngModel)]="review.recommendToOthersMark" class="mat-input-server"
+             id="recommendToOther" min="1"
+             matInput max="5" required type="number"/>
+      <mat-hint *ngIf="recommendToOther.errors?.['min']">Минимальное значение = 1</mat-hint>
+      <mat-hint *ngIf="recommendToOther.errors?.['max']">Максимальное значение = 5</mat-hint>
+      <mat-hint *ngIf="recommendToOther.errors?.['required']">Заполните поле</mat-hint>
+    </mat-form-field>
+    <label class="mat-step-label" for="length">Оцените длительность мероприятия</label>
+    <mat-select #eventLength="ngModel" [(ngModel)]="lenMarkModel" class="mat-select-panel" id="length" required>
+      <mat-option *ngFor="let val of lengthsKeys" value="{{val}}">{{val}}</mat-option>
+    </mat-select>
+    <mat-hint *ngIf="eventLength.errors?.['required']">Заполните поле</mat-hint>
+    <mat-form-field *ngIf="review">
+      <label for="reviewText">Текст отзыва</label>
+      <textarea #text="ngModel" [(ngModel)]="review.text" id="reviewText" matInput required></textarea>
+      <mat-hint *ngIf="text.errors?.['required']">Заполните поле</mat-hint>
+    </mat-form-field>
+    <label>
+        <input *ngIf="review"  type="file" accept=".jpg,.jpeg,.png" ng2FileSelect
+               [uploader]="uploader" #fileInput (change)="fileInput.value=''"
+               (change)="photoSubmitOn()" [style.display]="'none'"  hidden multiple />
+      <img alt="uploadImg" src="../../../../assets/img/profile/add.png"/>
+    </label>
+    <mat-card *ngFor="let url of imagesUrls">
+        <img width="40px" height="40px" src="{{url}}" alt="review image" (click)="showFullImage(url)"/>
+        <button mat-button (click)="removeImage(url)">remove</button>
+    </mat-card>
+
+  </mat-card-content>
+  <div mat-dialog-actions>
+    <button (click)="onCancel()" mat-button>Не хочу оценивать</button>
+    <button *ngIf="review && isValidDEEPrEVIEW()" [mat-dialog-close]="goReview()"
+            mat-button>
+      Оценить
+    </button>
+
+
+    <div *ngIf="this.isPhotoUploading">
+      <div id="photoStatus" class="file" *ngFor="let response of responses; let i = index">
+        <h3>{{response.file.name}}</h3>
+        <div class="status">
+          Uploading... {{response.progress}}%
+          <div *ngIf="!response.status">In progress</div>
+          <div class="status-code" *ngIf="response.status">Upload completed with status code {{response.status}}</div>
+        </div>
+        <div *ngIf="!response.status" class="progress-bar">
+          <div class="progress" role="progressbar" [style.width.%]="response.progress"></div>
+        </div>
+        <button *ngIf="response.status" class="btn btn-lg btn-danger modalBtn"
+                onclick="(document.getElementById('photoStatus').style.display='none')"
+                onclick="(document.getElementById('photoStatus').innerHTML = '')"
+                (click)="photoSubmitOff(responses)">Закрыть
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-image-fullscreen-view
+    [imageIndex]="imageIndex"
+    [images]="imageObj"
+    [show]="isShowFullImage"
+    (close)="closeEventHandler()"></ng-image-fullscreen-view>
+</div>

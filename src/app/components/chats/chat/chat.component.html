@@ -1,0 +1,95 @@
+<div class="chat">
+
+  <div class="chat-div" id="chat-div">
+    <h2 id="title">{{chat.name}}</h2>
+    <hr style="margin-bottom: 20px;"/>
+    <div style="max-height: 650px; overflow: hidden; overflow-y: scroll;">
+    <ul appScrollDirective id="messages-list">
+      <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
+          (mouseleave)="message.focus=false" *ngFor="let message of messages" id="message{{message.id}}"
+          inViewport>
+        <img alt="user-image" class="user-img"
+             src="{{usersImages.get(message.userId)||'assets/img/profile/accImgExample.png'}}"/>
+        <div class="message">
+          <p class="userId"><u>{{message.userId}}</u></p>
+          <pre>{{message.text}}</pre>
+
+          <div *ngFor="let url of message.messageImagesUrls">
+            <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(message,url)"/>
+
+          </div>
+
+
+        </div>
+        <button (click)="removeMessage(message)" *ngIf="message.focus &&(message.userId===username || isAdmin)"
+                class="remove-btn"><img alt="remove" src="../../../../assets/img/mapImages/buttons/close-btn.png"/></button>
+      </li>
+      <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
+          (mouseleave)="message.focus=false" *ngFor="let message of onlineMessages"
+          id="message{{message.id}}" inViewport>
+        <img alt="user-image" class="user-img"
+             src="{{usersImages.get(message.userId)||'assets/img/profile/accImgExample.png'}}"/>
+        <div class="message">
+          <p class="userId"><u>{{message.userId}}</u></p>
+          <pre>{{message.text}}</pre>
+
+          <div *ngFor="let url of message.messageImagesUrls">
+              <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(message,url)"/>
+
+          </div>
+
+
+        </div>
+        <button (click)="removeMessage(message)" *ngIf="message.focus&&(message.userId===username || isAdmin)"
+                class="remove-btn"><img alt="remove" src="../../../../assets/img/mapImages/buttons/close-btn.png"/></button>
+      </li>
+    </ul>
+    </div>
+
+
+
+    <div>
+      <form>
+        <textarea rows="1" #text="ngModel" [(ngModel)]="message.text" class="form-control" name="text" placeholder="Напишите сообщение..."
+                  id="messageArea" style="resize: vertical; width: 88%; max-height: 100px;background-color:white;"></textarea>
+        <label>
+          <input   type="file" accept=".jpg,.jpeg,.png" ng2FileSelect
+                 [uploader]="uploader" #fileInput (change)="fileInput.value=''"
+                 (change)="photoSubmitOn()" [style.display]="'none'"  hidden multiple />
+          <img alt="uploadImg" src="../../../../assets/img/profile/add.png"/>
+        </label>
+        <div *ngFor="let url of message.messageImagesUrls">
+            <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(message,url)"/>
+            <button mat-button (click)="removeImage(url)">remove</button>
+        </div>
+        <button class="btn btn-danger sendBtn" (click)="sendMessage()">Отправить
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="this.isPhotoUploading">
+    <div id="photoStatus" class="file" *ngFor="let response of responses; let i = index">
+      <h3>{{response.file.name}}</h3>
+      <div class="status">
+        Uploading... {{response.progress}}%
+        <div *ngIf="!response.status">In progress</div>
+        <div class="status-code" *ngIf="response.status">Upload completed with status code {{response.status}}</div>
+      </div>
+      <div *ngIf="!response.status" class="progress-bar">
+        <div class="progress" role="progressbar" [style.width.%]="response.progress"></div>
+      </div>
+      <button *ngIf="response.status" class="btn btn-lg btn-danger modalBtn"
+              onclick="(document.getElementById('photoStatus').style.display='none')"
+              onclick="(document.getElementById('photoStatus').innerHTML = '')"
+              (click)="photoSubmitOff(responses)">Закрыть
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-image-fullscreen-view
+  [imageIndex]="imageIndex"
+  [images]="imageObj"
+  [show]="isShowFullImage"
+  (close)="closeEventHandler()"></ng-image-fullscreen-view>

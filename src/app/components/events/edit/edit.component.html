@@ -1,63 +1,42 @@
+<div class="page">
+<h1 id="title">Редактирование мероприятия</h1>
+<div class="container">
 <form (submit)="submit()" [formGroup]="formGroup">
-  <label for="name">Название мероприятия</label>
+  <label for="name">Название мероприятия:</label>
   <input [formControl]="nameInput" class="form-control" id="name" type="text"/>
   <div *ngIf="nameInput.errors?.['required']&& (nameInput.dirty || nameInput.touched)" class="alert alert-danger">
     Название не заполнено
   </div>
-  <label for="theme">Тема мероприятия</label>
+  <label for="theme">Тема мероприятия:</label>
   <input [formControl]="eventThemeInput" class="form-control" id="theme" type="text"/>
   <div *ngIf="eventThemeInput.errors?.['required']&& (eventThemeInput.dirty || eventThemeInput.touched)"
        class="alert alert-danger">Тема мероприятия не заполнена
   </div>
-  <label for="type">Тип мероприятия</label>
-  <select [formControl]="eventTypeInput" class="form-control" id="type">
+  <label for="type">Тип мероприятия:</label>
+  <select [formControl]="eventTypeInput" class="form-select" id="type">
     <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
   </select>
   <div *ngIf="eventTypeInput.errors?.['required'] && (eventTypeInput.dirty || eventTypeInput.touched)"
        class="alert alert-danger">Тип мероприятия не заполнен
   </div>
 
-  <label for="description">Описание</label>
-  <textarea [formControl]="descriptionInput" class="form-control" id="description"></textarea>
+  <label for="description">Описание:</label>
+  <textarea style="resize: none;" [formControl]="descriptionInput" class="form-control" id="description"></textarea>
 
-  <label *ngIf="!isOnlineInput.value" for="location">Местоположение</label>
-  <input *ngIf="!isOnlineInput.value" [formControl]="locationInput" class="form-control" id="location" type="text"
-         value="{{location}}"/>
-
-  <label for="begin">Время начала мероприятия</label>
+  <label for="begin">Время начала мероприятия:</label>
   <input [formControl]="startTimeInput" class="form-control" id="begin" required type="datetime-local"/>
   <div *ngIf="startTimeInput.errors?.['required'] && (startTimeInput.dirty || startTimeInput.touched)"
        class="alert alert-danger">Дата начала не заполнена
   </div>
-  <label for="end">Время окончания мероприятия</label>
+  <label for="end">Время окончания мероприятия:</label>
   <input [formControl]="endTimeInput" class="form-control" id="end" type="datetime-local"/>
   <label for="maxCount">Максимальное кол-во участников</label>
   <input [formControl]="maxGuestsCountInput" class="form-control" id="maxCount" type="number"/>
   <label for="price">Цена</label>
   <input [formControl]="priceInput" class="form-control" id="price" type="number"/>
-  <label for="isCloseChat">Закрыть личный чат с организатором</label>
-  <input [formControl]="hasChatWithOwnerInput" class="mat-checkbox" id="isCloseChat" type="checkbox"/>
-  <label for="private">Приватное мероприятие</label>
-  <input [formControl]="isPrivateInput" class="form-check-input" id="private" type="checkbox"/>
-  <label for="online">Онлайн</label>
-  <input [formControl]="isOnlineInput" class="form-check-input" id="online" type="checkbox"/>
-
-
-  <div *ngIf="invitedFriendsCheck">
-    Приглашенные пользователи:
-    <td *ngFor="let friend of invitedFriendsLogins" class="invitedUsers">
-      {{friend}}
-      <div (click)="removeInvate($event)" class="deleteButton" id={{friend}}>x</div>
-    </td>
-  </div>
-
-
-  <select (change)="friendInvate()" *ngIf="friendsCheck" [formControl]="invateUser" class="invateUser">
-    <option class="">Пригласить пользователя</option>
-    <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}}
-      ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})
-    </option>
-  </select>
+  <label for="isCloseChat"><input [formControl]="hasChatWithOwnerInput" class="form-check-input" id="isCloseChat" type="checkbox"/>&nbsp;&nbsp;&nbsp;Закрыть личный чат с организатором</label>
+  <label for="private"><input [formControl]="isPrivateInput" class="form-check-input" id="private" type="checkbox"/>&nbsp;&nbsp;&nbsp;Приватное мероприятие</label>
+  <label for="online"><input [formControl]="isOnlineInput" class="form-check-input" id="online" type="checkbox"/>&nbsp;&nbsp;&nbsp;Онлайн</label>
 
 
   <label *ngIf="isOnlineInput.value===true" for="urlInput">URL</label>
@@ -66,33 +45,52 @@
        class="alert alert-danger">Ссылка на мероприятие не заполнена
   </div>
 
-
-  <div *ngFor="let theme of tagsInputs">
-    <label for="tags">Тег</label>
-    <input [formControl]="theme" class="form-control" id="tags" style="margin-bottom: 10px;" type="text"/>
-    <button (click)="remove(theme)" class="btn btn-danger" style="margin-bottom: 10px;" t>удалить</button>
+  <div style="margin-top: 20px;" *ngIf="invitedFriendsCheck">
+    Приглашенные пользователи:
+    <td *ngFor="let friend of invitedFriendsLogins" class="invitedUsers">
+      {{friend}}
+      <button (click)="removeInvate($event)" class="deleteFriendBtn" id={{friend}}><img alt="close"
+        src="./assets/img/mapImages/buttons/close-btn.png"/></button>
+    </td>
   </div>
-  <button (click)="addTag()" class="btn btn-secondary">add tag</button>
 
+  <select (change)="friendInvate()" *ngIf="friendsCheck" [formControl]="invateUser" class="form-select invateUser">
+    <option class="">Пригласить пользователя</option>
+    <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}}
+      ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})
+    </option>
+  </select>
 
-  <input class="btn btn-primary" type="submit" value="Обновить">
+  <label style="margin-top: 15px;">Теги:</label>
+  <div *ngFor="let theme of tagsInputs">
+    <input [formControl]="theme" class="form-control" id="tags" style="margin-bottom: 20px;" type="text"/>
+    <button (click)="remove(theme)" class="btn deleteTagBtn"><img alt="close"
+      src="./assets/img/mapImages/buttons/close-btn.png"/></button>
+  </div>
+  <button (click)="addTag()" class="btn btn-secondary">Добавить тег</button>
+  <label *ngIf="!isOnlineInput.value" for="location">Место проведения мероприятия:</label>
+  <input *ngIf="!isOnlineInput.value" [formControl]="locationInput" class="form-control" id="location" type="text"
+         value="{{location}}"/>
 
+  <div class="mycontainer">
+    <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
+    <app-map
+      [isEdit]="true"
+      (changeLocation)="locationChangeSubject.next($event)"
+      (selectEvents)="selectEvents($event)"
+      [center]="[-483281,6904172]"
+      [events]="events"
+      [mapBoundsChange]="changeBounds"
+      [ngStyle]="{'width':mapWidth}"
+      [zoom]="14.5"
+      class="map">
+  
+    </app-map>
+  </div>
+  <input class="btn btn-danger updateBtn" type="submit" value="Обновить">
   <p *ngIf="error!==''" class="alert-danger alert">{{error|json}}</p>
 </form>
 
 <h3 *ngIf="message!==''">{{message}}</h3>
-<div class="mycontainer">
-  <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
-  <app-map
-    [isEdit]="true"
-    (changeLocation)="locationChangeSubject.next($event)"
-    (selectEvents)="selectEvents($event)"
-    [center]="[-483281,6904172]"
-    [events]="events"
-    [mapBoundsChange]="changeBounds"
-    [ngStyle]="{'width':mapWidth}"
-    [zoom]="14.5"
-    class="map">
-
-  </app-map>
+</div>
 </div>

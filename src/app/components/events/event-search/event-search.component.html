@@ -1,96 +1,100 @@
+<div class="container">
+
 <form (ngSubmit)="search()">
+  
   <div class="header">
     <button (click)="closeSearch.emit(false)"><img alt="close" src="./assets/img/mapImages/buttons/close-btn.png"/>
     </button>
   </div>
+  <h1 id="title">Поиск мероприятий</h1>
   <div class="form-row">
-    <label for="wordInput">ключевые слова</label>
-    <input [formControl]="wordsInput" id="wordInput"/>
-
+    <label for="wordInput"><u>Ключевые слова:</u></label>
+    <input class="form-control" [formControl]="wordsInput" id="wordInput"/>
   </div>
   <ol>
-    <li (click)="setWords(word)" *ngFor="let word of words">{{word}}</li>
+    <li (click)="setWords(word)" *ngFor="let word of words">&nbsp;&nbsp;{{word}}</li>
   </ol>
 
   <div class="form-row">
-    <label for="eventTypeInput">Тип события</label>
-    <select [formControl]="eventTypeInput" id="eventTypeInput">
+    <label for="eventTypeInput"><u>Тип события:</u></label>
+    <select class="form-select" [formControl]="eventTypeInput" id="eventTypeInput">
       <option selected value=""></option>
       <option *ngFor="let type of eventTypes" value="{{type}}">{{type}}</option>
     </select>
 
   </div>
-  <h3>Длительность мероприятия</h3>
+  <h3><u>Длительность мероприятия:</u></h3>
   <div class="form-row-2">
-    <label for="eventLengthFromInput">От</label>
-    <input [formControl]="eventLengthFromInput" id="eventLengthFromInput" type="number"/>
-    <select [formControl]="eventLengthMeasureFromInput">
+    <label for="eventLengthFromInput">От&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="eventLengthFromInput" id="eventLengthFromInput" type="number"/>
+    <select class="form-select" [formControl]="eventLengthMeasureFromInput">
       <option value="minutes">Минуты</option>
       <option [defaultSelected]="true" value="hours">Часы</option>
       <option value="days">Дни</option>
     </select>
-    <label for="eventLengthToInput">До</label>
-    <input [formControl]="eventLengthToInput" id="eventLengthToInput" type="number"/>
-    <select [formControl]="eventLengthMeasureToInput">
+    <label for="eventLengthToInput">&nbsp;&nbsp;&nbsp;До&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="eventLengthToInput" id="eventLengthToInput" type="number"/>
+    <select class="form-select" [formControl]="eventLengthMeasureToInput">
       <option value="minutes">Минуты</option>
       <option [defaultSelected]="true" value="hours">Часы</option>
       <option value="days">Дни</option>
     </select>
   </div>
 
-  <h3>Время начала</h3>
+  <h3><u>Время начала:</u></h3>
   <div class="form-row-2">
-    <label for="eventBeginTimeFromInput">От</label>
-    <input [formControl]="eventBeginTimeInput" id="eventBeginTimeFromInput" type="datetime-local"/>
-    <label for="eventBeginTimeToInput">До</label>
-    <input [formControl]="eventEndTimeInput" id="eventBeginTimeToInput" type="datetime-local"/>
+    <label for="eventBeginTimeFromInput">От&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="eventBeginTimeInput" id="eventBeginTimeFromInput" type="datetime-local"/>
+    <label for="eventBeginTimeToInput">&nbsp;&nbsp;&nbsp;До&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="eventEndTimeInput" id="eventBeginTimeToInput" type="datetime-local"/>
   </div>
-  <h3>Количество участников</h3>
+  <h3><u>Количество участников:</u></h3>
   <div class="form-row-2">
-    <label for="guestsCountFromInput">От</label>
-    <input [formControl]="guestsCountFromInput" id="guestsCountFromInput" type="number"/>
-    <label for="guestsCountToInput">До</label>
-    <input [formControl]="guestsCountToInput" id="guestsCountToInput" type="number"/>
+    <label for="guestsCountFromInput">От&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="guestsCountFromInput" id="guestsCountFromInput" type="number"/>
+    <label for="guestsCountToInput">&nbsp;&nbsp;&nbsp;До&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="guestsCountToInput" id="guestsCountToInput" type="number"/>
   </div>
 
-  <h3 *ngIf="paidEventInput.value">Стоимость участия</h3>
-  <div *ngIf="paidEventInput.value" class="form-row-2">
-    <label for="priceFromInput">От</label>
-    <input [formControl]="priceFromInput" id="priceFromInput" type="number"/>
-    <label for="priceToInput">До</label>
-    <input [formControl]="priceToInput" id="priceToInput" type="number"/>
-    <p>рублей</p>
-  </div>
+  
   <div class="free-btn">
-    <label for="freeRadio" style="margin-right: 10px;">платные эвенты</label>
-    <input [formControl]="paidEventInput" id="freeRadio" type="checkbox" value="false"/>
+    <label for="freeRadio" style="margin-right: 10px;"><input class="form-check-input" [formControl]="paidEventInput" id="freeRadio" type="checkbox" value="false"/>&nbsp;&nbsp;&nbsp;Платные эвенты</label>
   </div>
-  <div class="form-row">
-    <label for="themeInput">Тематика мероприятия</label>
-    <input [formControl]="eventThemeInput" id="themeInput" type="text"/>
+  <h3 *ngIf="paidEventInput.value"><u>Стоимость участия (в рублях):</u></h3>
+  <div *ngIf="paidEventInput.value" class="form-row-2">
+    <label for="priceFromInput">От&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="priceFromInput" id="priceFromInput" type="number"/>
+    <label for="priceToInput">&nbsp;&nbsp;&nbsp;До&nbsp;&nbsp;&nbsp;</label>
+    <input class="form-control" [formControl]="priceToInput" id="priceToInput" type="number"/>
   </div>
 
   <div class="form-row">
-    <label for="maxDistanceInput">max расстояние</label>
-    <input [formControl]="maxDistanceInput" id="maxDistanceInput" type="number"/>
-    <select [formControl]="distanceMeasureInput">
+    <label for="themeInput"><u>Тематика мероприятия:</u></label>
+    <input class="form-control" [formControl]="eventThemeInput" id="themeInput" type="text"/>
+  </div>
+
+  <div class="form-row">
+    <label for="maxDistanceInput"><u>Максимальное расстояние:</u></label>
+    <input class="form-control" [formControl]="maxDistanceInput" id="maxDistanceInput" type="number"/>
+    <select class="form-select" [formControl]="distanceMeasureInput" id="maxDistanceInputMeasure">
       <option value="METRES">М</option>
       <option [selected]="true" value="KILOMETERS">КМ</option>
     </select>
   </div>
 
   <div class="form-row">
-    <label for="ownerRatingInput">Рейтинг организатора</label>
-    <input [formControl]="ratingInput" id="ownerRatingInput" type="number"/>
+    <label for="ownerRatingInput"><u>Рейтинг организатора:</u></label>
+    <input class="form-control" [formControl]="ratingInput" id="ownerRatingInput" type="number"/>
   </div>
 
   <div class="form-row">
-    <label>Формат</label>
-    <label> <input [checked]="true" [formControl]="eventFormatInput" name="formatInput" type="radio"
-                   value="offline"/>Offline</label>
-    <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="online"/>Online</label>
-    <label> <input [formControl]="eventFormatInput" name="formatInput" type="radio" value="all"/>ALL</label>
+    <label><u>Формат:</u></label>
+    <label> <input class="form-check-input" [checked]="true" [formControl]="eventFormatInput" name="formatInput" type="radio"
+                   value="offline"/>&nbsp;&nbsp;Офлайн</label>
+    <label> <input class="form-check-input" [formControl]="eventFormatInput" name="formatInput" type="radio" value="online"/>&nbsp;&nbsp;Онлайн</label>
+    <label> <input class="form-check-input" [formControl]="eventFormatInput" name="formatInput" type="radio" value="all"/>&nbsp;&nbsp;Любой</label>
   </div>
 
-  <input type="submit" value="Поиск">
+  <input class="btn btn-danger searchBtn" type="submit" value="Найти мероприятия">
 </form>
+</div>

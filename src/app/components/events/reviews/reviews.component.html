@@ -1,0 +1,23 @@
+
+<div>
+<div *ngFor="let review of reviews">
+<h2>{{review.id.userId}}</h2>
+  <a href="events/description?eventId={{review.id.eventId}}">перейти к событию</a>
+  <p>Оценка мероприятия: {{review.eventMark}}</p>
+  <div *ngIf="review.eventOrganizationMark!==0 && review.recommendToOthersMark!==0 && review.text!=='' && review.eventLengthMark">
+    <pre>{{review.text}}</pre>
+    <div>
+      <img (click)="showImage(review,photo)" *ngFor="let photo of review.reviewImagesUrls" src="{{photo}}" alt="review image" />
+    </div>
+    <p>Оценка организации события:{{review.eventOrganizationMark}}</p>
+    <p>Готов рекомендовать событие другим: {{review.recommendToOthersMark}}</p>
+    <p>Оценка длительности мероприятия:{{lengthsMarks.get(review.eventLengthMark)}}</p>
+  </div>
+</div>
+</div>
+
+<ng-image-fullscreen-view
+  [imageIndex]="imageIndex"
+  [images]="imageObj"
+  [show]="isShowFullImage"
+  (close)="closeEventHandler()"></ng-image-fullscreen-view>
