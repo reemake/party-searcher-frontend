@@ -1,0 +1,15 @@
+<div>
+  <div *ngFor="let complaint of complaints">
+    <span>Отправитель:</span>
+    <p>{{complaint.id.eventId}}</p>
+    <span>Содержание:</span>
+    <p>{{complaint.text}}</p>
+    <a href="events/description?eventId={{complaint.event.id}}">Перейти к событию</a>
+    <button (click)="rejectComplaint(complaint.id)">Отклонить жалобу</button>
+    <button (click)="banComplaintAuthor(complaint.id.userId,complaint.id)">Заблокировать автора жалобы</button>
+    <button (click)="sendWarning(complaint)">Вынести предупреждение организатору эвента</button>
+    <button (click)="banEventOwner(complaint.id.eventId,complaint.id)">Заблокировать организатора</button>
+    <button (click)="banEvent(complaint.id.eventId,complaint.id)">Заблокировать событие</button>
+    <p *ngIf="statusesOfOperations.get(complaint.id)">{{statusesOfOperations.get(complaint.id)}}</p>
+  </div>
+</div>

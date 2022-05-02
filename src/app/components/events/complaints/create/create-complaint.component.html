@@ -3,9 +3,9 @@
     <label for="text">Описание жалобы:</label>
     <textarea [(ngModel)]="complaint.text" id="text" >
     </textarea>
-    <p class="alert-info" *ngIf="complaint&&complaint.text===''">Заполните текст жалобы</p>
+    <p *ngIf="complaint&&complaint.text==''" class="alert-info">Заполните текст жалобы</p>
   </div>
   <div>
-    <input type="submit" [disabled]="complaint&&complaint.text===''" (submit)="createComplaint()" />
+    <input (submit)="createComplaint()" [disabled]="complaint&&complaint.text==''" type="submit"/>
   </div>
 </form>

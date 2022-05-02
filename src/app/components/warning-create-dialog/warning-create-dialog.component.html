@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Предупреждение для организатора события</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <label for="text">Текст предупреждения:</label>
+    <textarea [(ngModel)]="warningText" id="text" matInput> </textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <input (click)="sendWarning()" [disabled]="warningText===''" matInput type="submit" value="Отправить"/>
+  </mat-form-field>
+</div>
