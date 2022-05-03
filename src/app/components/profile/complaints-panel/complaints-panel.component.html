@@ -1,10 +1,13 @@
 <div>
-  <div *ngFor="let complaint of complaints">
+  <ng-select (ngModelChange)="changeFilter()" [(ngModel)]="currentStatus" [items]="items" bindLabel="name"
+             bindValue="id">
+  </ng-select>
+  <div *ngFor="let complaint of currentComplaints">
     <span>Отправитель:</span>
     <p>{{complaint.id.eventId}}</p>
     <span>Содержание:</span>
     <p>{{complaint.text}}</p>
-    <a href="events/description?eventId={{complaint.event.id}}">Перейти к событию</a>
+    <a href="events/description?eventId={{complaint.id.eventId}}">Перейти к событию</a>
     <button (click)="rejectComplaint(complaint.id)">Отклонить жалобу</button>
     <button (click)="banComplaintAuthor(complaint.id.userId,complaint.id)">Заблокировать автора жалобы</button>
     <button (click)="sendWarning(complaint)">Вынести предупреждение организатору эвента</button>
