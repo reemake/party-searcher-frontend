@@ -67,6 +67,17 @@
         </option>
       </select>
 
+      Пригласить пользователя по Email:
+      <textarea (change)="emailInvate()" class="inviteUserEmail" id="mailInput" placeholder="Email"></textarea>
+      <div *ngIf="usersByMailCheck">
+        Найденные пользователи:
+        <td *ngFor="let user of usersByMail" class="invitedUsers">
+          <div class="invitedUsersText">{{user.login}} ({{user.firstName}} {{user.lastName}})</div>
+          <div (click)="inviteUserByMail(user)" class="inviteButton">Пригласить пользователя</div>
+        </td>
+      </div>
+
+
       <label style="margin-top: 15px;">Теги:</label>
       <div *ngFor="let theme of tagsInputs">
         <input [formControl]="theme" class="form-control" id="tags" style="margin-bottom: 20px;" type="text"/>
