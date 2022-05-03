@@ -31,19 +31,16 @@ export class NotificationsComponent implements OnInit {
   }
 
   public acceptClick(event: any): void {
-    console.log(event.path[0].id);
+    this.inviteCheck = false;
     this.eventService.assignOnEvent(event.path[0].id).subscribe();
+    location.reload();
   }
 
   public rejectClick(event: any): void {
+    this.inviteCheck = false;
     var id: number = event.path[0].id;
-    console.log(id);
     this.eventService.rejectInvite(id).subscribe();
-    this.inviteService.getInvites().subscribe((data: Invite[]) => {
-      this.invites = data;
-      if (this.invites.length > 0) this.inviteCheck = true;
-      else this.inviteCheck = false;
-    });
+    location.reload();
   }
 
   public detailsClick(event: Invite): void {

@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("refreshToken", <string>headers.get("refreshToken"));
         }
         console.log("response recieved");
-        this._router.navigate(['/'])
+        this._router.navigate(['/']);
       },
       error => {
         console.log("exception occured");

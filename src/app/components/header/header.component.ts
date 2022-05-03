@@ -14,16 +14,25 @@ export class HeaderComponent implements OnInit {
 
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService) {
     if (localStorage.getItem("token")) {
-      if (inviteService.isInvated()) this.invitesCheck = true;
-      else this.invitesCheck = false;
+      inviteService.isInvated().subscribe((data) => {
+        this.invitesCheck = data;
+      });
     }
     setInterval(() => {
       if (localStorage.getItem("token")) {
-        if (inviteService.isInvated()) this.invitesCheck = true;
-        else this.invitesCheck = false;
+        inviteService.isInvated().subscribe((data) => {
+          this.invitesCheck = data;
+        });
       }
     }, 60000);
+  }
 
+  public invateCheck(): void {
+    if (localStorage.getItem("token")) {
+      this.inviteService.isInvated().subscribe((data) => {
+        this.invitesCheck = data;
+      });
+    }
   }
 
   ngOnInit(): void {
