@@ -4,6 +4,7 @@ import {Complaint} from "../../../entity/Event/Complaint";
 import {MatDialog} from "@angular/material/dialog";
 import {WarningCreateDialogComponent} from "../../warning-create-dialog/warning-create-dialog.component";
 import {ComplaintStatus} from "../../../entity/Event/ComplaintStatus";
+import {NoopScrollStrategy} from "@angular/cdk/overlay";
 
 @Component({
   selector: 'app-complaints-panel',
@@ -14,8 +15,8 @@ export class ComplaintsPanelComponent implements OnInit {
   public complaints: Complaint[] = [];
   public currentComplaints: Complaint[] = [];
   public statusesOfOperations = new WeakMap<any, string>();
-  public complaintsStatusesMap = new Map<ComplaintStatus, string>();
-  public currentStatus = ComplaintStatus.ACCEPTED;
+  public complaintsStatusesMap = new Map<string, string>();
+  public currentStatus = ComplaintStatus.ACCEPTED.toString();
   public items: any[] = [];
 
   constructor(private complaintsService: ComplaintService, private dialog: MatDialog) {
@@ -39,10 +40,12 @@ export class ComplaintsPanelComponent implements OnInit {
     for (let status of this.complaintsStatusesMap.keys()) {
       array.push({id: status, name: this.complaintsStatusesMap.get(status)});
     }
+    console.log(array);
     this.items = array;
   }
 
-  changeFilter() {
+  changeFilter(event: any) {
+    this.currentStatus = event;
     this.currentComplaints = this.complaints.filter(e => {
       return e.status === this.currentStatus;
     })
@@ -53,7 +56,10 @@ export class ComplaintsPanelComponent implements OnInit {
   }
 
   sendWarning(complaint: Complaint) {
-    this.dialog.open(WarningCreateDialogComponent, {data: complaint});
+    this.dialog.open(WarningCreateDialogComponent, {
+      data: complaint, width: '250px',
+      scrollStrategy: new NoopScrollStrategy()
+    });
   }
 
   rejectComplaint(complaintId: any) {

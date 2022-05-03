@@ -1,6 +1,6 @@
 <div>
-  <ng-select (ngModelChange)="changeFilter()" [(ngModel)]="currentStatus" [items]="items" bindLabel="name"
-             bindValue="id">
+  <ng-select (ngModelChange)="changeFilter($event)" [(ngModel)]="currentStatus">
+    <ng-option *ngFor="let status of items" [value]="status.id">{{status.name}}</ng-option>
   </ng-select>
   <div *ngFor="let complaint of currentComplaints">
     <span>Отправитель:</span>
