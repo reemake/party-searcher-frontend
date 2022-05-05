@@ -97,10 +97,25 @@
 
                     <div class="right-form">
                         <div class="form-group" id="phone-form">
-                            <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone" name="phone"
-                                placeholder="Номер телефона" type="tel"
-                                [class.is-invalid]="phone.invalid" pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$"
-                            >
+                          <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone"
+                                 name="phone"
+                                 placeholder="Номер телефона" type="tel"
+                                 [class.is-invalid]="phone.invalid"
+                                 pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$">
+                          <button (click)="sendCode()"
+                                  *ngIf="userEdited.phone && userEdited.phone!=='' && !checkIfHasUnexpiredSmsTokens()">
+                            Отправить код
+                          </button>
+
+                          <p *ngIf="checkIfHasUnexpiredSmsTokens()" class="alert-warning">Вам уже был отправлен код,
+                            подождите {{remainsTime}} секунд</p>
+
+                          <input *ngIf="userEdited.phone && userEdited.phone!==''" placeholder="код из смс"
+                                 type="text"/>
+                          <p *ngIf="incorrectCode" class="alert-warning">Неверный код</p>
+                          <button (click)="checkCode()" *ngIf="userEdited.phone && userEdited.phone!==''">Потдвердить
+                            телефон
+                          </button>
                         </div>
 
                         <div class="form-group" id="password-form">

@@ -9,6 +9,8 @@ import {FileUploader, FileUploaderOptions, ParsedResponseHeaders} from 'ng2-file
 import {Cloudinary} from '@cloudinary/angular-5.x';
 import {HttpClient} from '@angular/common/http';
 import {Role} from "../../../entity/Role";
+import {PhoneConfirmService} from "../../../services/phone-confirm.service";
+import {PhoneToken} from "../../../entity/PhoneToken";
 
 @Component({
   selector: 'app-data',
@@ -21,6 +23,8 @@ export class DataComponent implements OnInit {
   @Input()
   responses: Array<any>;
 
+  public phoneCode: string = "";
+
   hasBaseDropZoneOver: boolean = false;
   uploader: FileUploader;
   title: string;
@@ -28,22 +32,26 @@ export class DataComponent implements OnInit {
   photoUrl: string = '';
 
 
-
+  public remainsTime = 0;
   userLogin: string = localStorage.getItem("username") || '';
   user = new User();
   userEdited = new User();
   msg = "";
   currentPassword: string = "";
   isPasswordMatches: boolean = false;
+  public incorrectCode: boolean = false;
+  public timerHandler: any = undefined;
 
   constructor(
     private userService: UserService,
     public authService: AuthenticationService,
     private cloudinary: Cloudinary,
     private zone: NgZone,
-    private http: HttpClient) {
-      this.responses = [];
-      this.title = '';}
+    private http: HttpClient,
+    private phoneConfirmService: PhoneConfirmService) {
+    this.responses = [];
+    this.title = '';
+  }
 
   ngOnInit(): void {
     this.getUserInfo();
@@ -200,6 +208,70 @@ export class DataComponent implements OnInit {
     )
 
 
+  }
+
+  public sendCode() {
+    console.log(this.user)
+    this.phoneConfirmService.sendCode(this.userEdited.phone).subscribe(e => {
+      this.incorrectCode = false;
+      var token: PhoneToken = {
+        id: {
+          userId: this.user.login,
+          dateTimeSend: new Date()
+        },
+        phone: this.userEdited.phone
+      }
+      this.user.tokens?.push(token);
+    }, error => alert("Произошла ошибка " + error.message && error.message !== '' ? error.message : JSON.stringify(error.error)))
+  }
+
+  public checkCode() {
+    this.phoneConfirmService.checkCode(this.userEdited.phone, this.phoneCode).subscribe(status => {
+      if (status) {
+        this.user.isPhoneConfirmed = true;
+        this.incorrectCode = false;
+      } else {
+        this.incorrectCode = true;
+      }
+    }, error => alert("Произошла ошибка " + error.message && error.message !== '' ? error.message : JSON.stringify(error.error)));
+  }
+
+  checkIfHasUnexpiredSmsTokens(): boolean {
+    if (this.user.tokens && this.user.tokens.length > 0) {
+      for (let token of this.user.tokens) {
+        var date = new Date(token.id.dateTimeSend.toString());
+
+        if (date.setDate(date.getMilliseconds() + 10 * 60000) > Date.now()) {
+          console.log(date)
+          if (this.timerHandler === undefined)
+            this.timerHandler = setInterval(() => {
+              if (this.getSecondsToSendNewSmsCode() > 0)
+                this.remainsTime = this.getSecondsToSendNewSmsCode();
+              else clearTimeout(this.timerHandler);
+            }, 1000);
+          return true;
+        }
+      }
+      return false;
+    } else return false;
+  }
+
+  public getSecondsToSendNewSmsCode(): number {
+    var array = this.user.tokens?.sort((a: PhoneToken, b: PhoneToken) => {
+
+      if (a.id.dateTimeSend > b.id.dateTimeSend) {
+        return 1;
+      } else if (a.id.dateTimeSend === b.id.dateTimeSend) {
+        return 0;
+      } else return -1;
+
+    });
+    if (array) {
+      var arrayElement = array[array.length - 1];
+      console.log(arrayElement)
+      var date = new Date(arrayElement.id.dateTimeSend);
+      return (date.getMilliseconds() + (10 * 60000) - Date.now()) / 1000;
+    } else return 0;
   }
 
   getUserInfo() {
