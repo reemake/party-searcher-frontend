@@ -107,8 +107,9 @@
                             Отправить код
                           </button>
 
-                          <p *ngIf="checkIfHasUnexpiredSmsTokens()" class="alert-warning">Вам уже был отправлен код,
-                            подождите {{remainsTime}} секунд</p>
+                          <p *ngIf="checkIfHasUnexpiredSmsTokens() && remainsTime!=0" class="alert-warning">Вам уже был
+                            отправлен код,
+                            подождите {{remainsTime | number : '1.0-0'}} секунд</p>
 
                           <input *ngIf="userEdited.phone && userEdited.phone!==''" placeholder="код из смс"
                                  type="text"/>

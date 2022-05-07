@@ -239,16 +239,20 @@ export class DataComponent implements OnInit {
   checkIfHasUnexpiredSmsTokens(): boolean {
     if (this.user.tokens && this.user.tokens.length > 0) {
       for (let token of this.user.tokens) {
-        var date = new Date(token.id.dateTimeSend.toString());
-
-        if (date.setDate(date.getMilliseconds() + 10 * 60000) > Date.now()) {
-          console.log(date)
-          if (this.timerHandler === undefined)
+        var date = new Date(token.id.dateTimeSend);
+        if (date.setTime(date.getTime() + 10 * 60000) > Date.now()) {
+          if (this.timerHandler === undefined) {
             this.timerHandler = setInterval(() => {
-              if (this.getSecondsToSendNewSmsCode() > 0)
+              console.log("timer")
+              if (this.getSecondsToSendNewSmsCode() > 0) {
                 this.remainsTime = this.getSecondsToSendNewSmsCode();
-              else clearTimeout(this.timerHandler);
+              } else {
+                clearInterval(this.timerHandler);
+                this.timerHandler = undefined;
+              }
             }, 1000);
+
+          }
           return true;
         }
       }
@@ -257,20 +261,19 @@ export class DataComponent implements OnInit {
   }
 
   public getSecondsToSendNewSmsCode(): number {
-    var array = this.user.tokens?.sort((a: PhoneToken, b: PhoneToken) => {
 
-      if (a.id.dateTimeSend > b.id.dateTimeSend) {
-        return 1;
-      } else if (a.id.dateTimeSend === b.id.dateTimeSend) {
-        return 0;
-      } else return -1;
-
-    });
-    if (array) {
-      var arrayElement = array[array.length - 1];
+    if (this.user.tokens) {
+      var max = this.user.tokens[0];
+      for (let token of this.user.tokens) {
+        if (token.id.dateTimeSend > max.id.dateTimeSend) {
+          max = token;
+        }
+      }
+      var arrayElement = max;
       console.log(arrayElement)
       var date = new Date(arrayElement.id.dateTimeSend);
-      return (date.getMilliseconds() + (10 * 60000) - Date.now()) / 1000;
+      console.log(`diff ${(date.getTime() + (10 * 60000) - Date.now()) / 1000}`)
+      return (date.getTime() + (10 * 60000) - Date.now()) / 1000;
     } else return 0;
   }
 

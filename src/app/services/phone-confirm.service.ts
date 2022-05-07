@@ -16,7 +16,7 @@ export class PhoneConfirmService {
   }
 
   public checkCode(phone: string, code: string): Observable<boolean> {
-    return this.httpClient.get<boolean>(BACKEND_URL + "/api/phoneToken/sendToken", {
+    return this.httpClient.get<boolean>(BACKEND_URL + "/api/phoneToken/checkCode", {
       params: {
         phone: phone,
         code: code
