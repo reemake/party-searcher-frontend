@@ -9,6 +9,8 @@ import {FileUploader, FileUploaderOptions, ParsedResponseHeaders} from 'ng2-file
 import {Cloudinary} from '@cloudinary/angular-5.x';
 import {HttpClient} from '@angular/common/http';
 import {Role} from "../../../entity/Role";
+import {PhoneConfirmService} from "../../../services/phone-confirm.service";
+import {PhoneToken} from "../../../entity/PhoneToken";
 
 @Component({
   selector: 'app-data',
@@ -21,6 +23,8 @@ export class DataComponent implements OnInit {
   @Input()
   responses: Array<any>;
 
+  public phoneCode: string = "";
+
   hasBaseDropZoneOver: boolean = false;
   uploader: FileUploader;
   title: string;
@@ -28,22 +32,26 @@ export class DataComponent implements OnInit {
   photoUrl: string = '';
 
 
-
+  public remainsTime = 0;
   userLogin: string = localStorage.getItem("username") || '';
   user = new User();
   userEdited = new User();
   msg = "";
   currentPassword: string = "";
   isPasswordMatches: boolean = false;
+  public incorrectCode: boolean = false;
+  public timerHandler: any = undefined;
 
   constructor(
     private userService: UserService,
     public authService: AuthenticationService,
     private cloudinary: Cloudinary,
     private zone: NgZone,
-    private http: HttpClient) {
-      this.responses = [];
-      this.title = '';}
+    private http: HttpClient,
+    private phoneConfirmService: PhoneConfirmService) {
+    this.responses = [];
+    this.title = '';
+  }
 
   ngOnInit(): void {
     this.getUserInfo();
@@ -200,6 +208,73 @@ export class DataComponent implements OnInit {
     )
 
 
+  }
+
+  public sendCode() {
+    console.log(this.user)
+    this.phoneConfirmService.sendCode(this.user.phone).subscribe(e => {
+      this.incorrectCode = false;
+      var token: PhoneToken = {
+        id: {
+          userId: this.user.login,
+          dateTimeSend: new Date()
+        },
+        phone: this.user.phone
+      }
+      this.user.tokens?.push(token);
+    }, error => alert("Произошла ошибка " + error.message && error.message !== '' ? error.message : JSON.stringify(error.error)))
+  }
+
+  public checkCode() {
+    this.phoneConfirmService.checkCode(this.user.phone, this.phoneCode).subscribe(status => {
+      if (status) {
+        this.user.phoneConfirmed = true;
+        this.incorrectCode = false;
+      } else {
+        this.incorrectCode = true;
+      }
+    }, error => alert("Произошла ошибка " + error.message && error.message !== '' ? error.message : JSON.stringify(error.error)));
+  }
+
+  checkIfHasUnexpiredSmsTokens(): boolean {
+    if (this.user.tokens && this.user.tokens.length > 0) {
+      for (let token of this.user.tokens) {
+        var date = new Date(token.id.dateTimeSend);
+        if (date.setTime(date.getTime() + 10 * 60000) > Date.now()) {
+          if (this.timerHandler === undefined) {
+            this.timerHandler = setInterval(() => {
+              console.log("timer")
+              if (this.getSecondsToSendNewSmsCode() > 0) {
+                this.remainsTime = this.getSecondsToSendNewSmsCode();
+              } else {
+                clearInterval(this.timerHandler);
+                this.timerHandler = undefined;
+              }
+            }, 1000);
+
+          }
+          return true;
+        }
+      }
+      return false;
+    } else return false;
+  }
+
+  public getSecondsToSendNewSmsCode(): number {
+
+    if (this.user.tokens) {
+      var max = this.user.tokens[0];
+      for (let token of this.user.tokens) {
+        if (token.id.dateTimeSend > max.id.dateTimeSend) {
+          max = token;
+        }
+      }
+      var arrayElement = max;
+      console.log(arrayElement)
+      var date = new Date(arrayElement.id.dateTimeSend);
+      console.log(`diff ${(date.getTime() + (10 * 60000) - Date.now()) / 1000}`)
+      return (date.getTime() + (10 * 60000) - Date.now()) / 1000;
+    } else return 0;
   }
 
   getUserInfo() {

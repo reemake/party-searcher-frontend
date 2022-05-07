@@ -14,15 +14,24 @@
             </tr>
         </tbody>
         <div class="inviteDescription" *ngIf="inviteDescription">
-            <img src="../../../assets/img/mapImages/buttons/remove-from-event.png" (click)="closeDescription()" class="inviteDescriptionClose">
-            <div class="inviteTexst">
-                "{{inviteEl.name}}"<br>Тема: {{inviteEl.theme}}<br>Описание: {{inviteEl.description}}<br>
-                <div *ngIf="inviteEl.isOnline">Онлайн</div><div *ngIf="!inviteEl.isOnline">Офлайн</div><br>
-                Время начала: {{ inviteEl.dateTimeStart | date:'dd.MM.YY в HH:mm'}}<br>
-                Время окончания: {{ inviteEl.dateTimeEnd | date:'dd.MM.YY в HH:mm'}}<br>
-                Цена: {{inviteEl.price}}<br>
-            </div>
-            <div class="inviteHeader"></div>
+          <img src="../../../assets/img/mapImages/buttons/remove-from-event.png" (click)="closeDescription()"
+               class="inviteDescriptionClose">
+          <div class="inviteTexst">
+            "{{inviteEl.name}}"<br>Тема: {{inviteEl.theme}}<br>Описание: {{inviteEl.description}}<br>
+            <div *ngIf="inviteEl.isOnline">Онлайн</div>
+            <div *ngIf="!inviteEl.isOnline">Офлайн</div>
+            <br>
+            Время начала: {{ inviteEl.dateTimeStart | date:'dd.MM.YY в HH:mm'}}<br>
+            Время окончания: {{ inviteEl.dateTimeEnd | date:'dd.MM.YY в HH:mm'}}<br>
+            Цена: {{inviteEl.price}}<br>
+          </div>
+          <div class="inviteHeader"></div>
         </div>
     </div>
+  <div (mouseenter)="setNotificationAsRead(notification)" *ngFor="let notification of notifications">
+    <h2>{{notification.title}}</h2>
+    <p>{{notification.notificationTime | date}}</p>
+    <p>{{notification.description}}</p>
+
+  </div>
 </div>

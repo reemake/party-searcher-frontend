@@ -80,7 +80,7 @@
 }
 
 .dataColumns {
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .excMark {
@@ -263,7 +263,7 @@
 
   .profileData {
     margin-left: 270px;
-    margin-top: -240px;
+    margin-top: -255px;
   }
 
   .form-control {
@@ -316,4 +316,19 @@
 
     margin-top: 20px;
     margin-left: 20px;
+  }
+
+  .phoneCodeBtn {
+    height: 35px;
+    line-height: 5px;
+  }
+
+  #sendCodeBtn {
+    margin-top: -85px;
+    margin-left: 420px;
+  }
+
+  #confirmCodeBtn {
+    margin-top: -75px;
+    margin-left: 385px;
   }

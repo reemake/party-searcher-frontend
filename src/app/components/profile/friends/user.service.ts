@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from './user';
+import {User} from 'src/app/entity/User';
 import { BACKEND_URL } from 'src/app/app.module';
 import { Relationship } from './Relationship';
 
@@ -39,5 +39,13 @@ export class UserService {
   getSendedRequests(): Observable<Relationship[]> {
     console.log("waiting data");
     return this.http.get<Relationship[]>(BACKEND_URL + "/api/friends/getSendedRequests");
+  }
+
+  getUsersByEmail(mail: string): Observable<User[]> {
+    const headers = { 
+      "mail": mail
+     };
+     console.log("waiting data");
+     return this.http.get<User[]>(BACKEND_URL + "/api/users/usersListByEmail", {params: headers});
   }
 }

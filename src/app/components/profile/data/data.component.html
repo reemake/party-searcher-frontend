@@ -6,27 +6,42 @@
         <p><a href="/profile/events" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
         <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
         <p *ngIf="isAdmin()"><a href="/profile/admin" class="btn btn-link menuBtn"><img class="menuImg" alt="admin panel" src="./assets/img/profile/admin-icon.png"/>Панель администратора</a></p>
+      <p><a class="btn btn-link menuBtn" href="/profile/complaintsPanel"><img alt="myEvents" class="menuImg"
+                                                                              src="./assets/img/profile/users.png"/>Жалобы</a>
+      </p>
         <p><a href="/" class="btn btn-link menuBtn">...</a></p>
     </div>
 
-    <div class="account-data">
-      <div  class="leftPart">
-        <img *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
-        <img *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="accImg" alt="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
-        <div *ngIf="this.user.pictureUrl" class="leftPart"><img class="accImg" alt="accImg" src="{{this.user.pictureUrl}}"/>
-          <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
-          <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
-        </div>
-      </div>
-        <div *ngIf="!this.user.commercialUser" class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
-            <hr class="accLine">
-            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
-            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
-        </div>
-        <div *ngIf="this.user.commercialUser" class="rightPart"><b>"{{user.organizationName}}"</b>
-            <hr class="accLine">
-            <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие</button>
-            <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">Выйти</button>
+  <div class="account-data">
+    <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart">
+      <img alt="accImg" class="accImg" src="./assets/img/profile/accImgExample.png"/>
+      <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+      <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+    </div>
+    <div *ngIf="!this.user.pictureUrl && this.user.commercialUser" class="leftPart">
+      <img alt="accImg" class="accImg" src="./assets/img/profile/commercialAccImgExample.png"/>
+      <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+      <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+    </div>
+    <div *ngIf="this.user.pictureUrl" class="leftPart"><img alt="accImg" class="accImg" src="{{this.user.pictureUrl}}"/>
+      <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
+      <p *ngIf="!this.user.commercialUser" class="accType2">Личный аккаунт</p>
+    </div>
+    <div *ngIf="!this.user.commercialUser" class="rightPart"><b>{{user.firstName}} {{user.lastName}}</b>
+      <hr class="accLine">
+      <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие
+      </button>
+      <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">
+        Выйти
+      </button>
+    </div>
+    <div *ngIf="this.user.commercialUser" class="rightPart"><b>"{{user.organizationName}}"</b>
+      <hr class="accLine">
+      <button type="button" class="btn btn-lg btn-danger accBtn1" [routerLink]="['/events/add']">Создать мероприятие
+      </button>
+      <button [disabled]="!authService.isAuth()" type="button" class="btn btn-lg btn-danger accBtn2" (click)="logOut()">
+        Выйти
+      </button>
         </div>
     </div>
 
@@ -43,15 +58,33 @@
                 </label>
             </div>
 
-
             <img *ngIf="this.user.pictureUrl" class="profileImage" alt="accImg" src={{this.user.pictureUrl}}/>
             <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3" (click)="deletePhoto(dataChangeForm)">Удалить фото</button>
 
             <div class="profileData">
-                <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
+                <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}<img *ngIf="user.phoneConfirmed" alt="confirm" src="assets/img/profile/confirm-icon.png"  height="30px" width="30px"/></b></p>
                 <p class="dataColumns">Логин: <b>{{user.login}}</b></p>
                 <p class="dataColumns">E-mail: <b>{{user.email}}</b></p>
-                <p class="dataColumns">Телефон: <b>{{user.phone}}</b></p>
+                <p class="dataColumns">Телефон: <b>{{user.phone}} </b>             </p>
+                <button class="btn btn-lg btn-danger contentBtn phoneCodeBtn" (click)="sendCode()" id="sendCodeBtn"
+                *ngIf="user.phone && user.phone!=='' && !checkIfHasUnexpiredSmsTokens() && !user.phoneConfirmed">
+                 Отправить код
+               </button>
+              <p class="dataColumns" style="margin-top: -50px; margin-left: 35px;">                 <!-- PHONE CONFIRMATION -->
+                <input class="form-control" [(ngModel)]="phoneCode" *ngIf="user.phone && user.phone!=='' && !user.phoneConfirmed" placeholder="Код из смс"
+                       type="text"/>
+                <button class="btn btn-lg btn-danger contentBtn phoneCodeBtn" (click)="checkCode()" *ngIf="user.phone && user.phone!=='' && !user.phoneConfirmed" id="confirmCodeBtn"
+                       >Подтвердить
+                         телефон
+                </button>
+              </p>
+              <p *ngIf="checkIfHasUnexpiredSmsTokens() && remainsTime!=0 && !user.phoneConfirmed" class="alert-warning" style="margin-top: -40px; margin-left: 35px; width: 660px;">Вам уже был
+                отправлен код,
+                подождите {{remainsTime | number : '1.0-0'}} секунд</p>
+              <p *ngIf="incorrectCode && !user.phoneConfirmed" class="alert-warning" style="margin-top: -40px; margin-left: 35px; width: 350px;">Неверный код</p>
+
+
+
             </div>
         </div>
 
@@ -82,10 +115,12 @@
 
                     <div class="right-form">
                         <div class="form-group" id="phone-form">
-                            <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone" name="phone"
-                                placeholder="Номер телефона" type="tel"
-                                [class.is-invalid]="phone.invalid" pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$"
-                            >
+                          <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone"
+                                 name="phone"
+                                 placeholder="Номер телефона" type="tel"
+                                 [class.is-invalid]="phone.invalid"
+                                 pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$">
+
                         </div>
 
                         <div class="form-group" id="password-form">

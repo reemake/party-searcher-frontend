@@ -49,13 +49,17 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCardModule} from "@angular/material/card";
 import {MatMenuModule} from "@angular/material/menu";
 import {NgImageFullscreenViewModule} from "ng-image-fullscreen-view";
-import { ReviewsComponent } from './components/events/reviews/reviews.component';
-import { AdminPageComponent } from './components/profile/admin-page/admin-page.component';
+import {ReviewsComponent} from './components/events/reviews/reviews.component';
+import {AdminPageComponent} from './components/profile/admin-page/admin-page.component';
 import {NgSelectModule} from "@ng-select/ng-select";
 import {AdminGuard} from "./services/auth/admin.guard";
+import {ComplaintsPanelComponent} from './components/profile/complaints-panel/complaints-panel.component';
+import {WarningCreateDialogComponent} from './components/warning-create-dialog/warning-create-dialog.component';
+import {ComplaintsResolverGuard} from "./services/auth/complaints-resolver.guard";
 
 //export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 export const BACKEND_URL: string = "http://localhost:8080";
+export var INVITE_CHECK: boolean = false;
 
 const ROUTES: Routes = [
   {path: 'events/map', component: EventsIndexComponent},
@@ -77,7 +81,9 @@ const ROUTES: Routes = [
   {path: 'reviews', component: ReviewsComponent},
   {path: 'events/description', component: EventDescriptionComponent},
   {path: 'events/complaints/create', component: CreateComplaintComponent},
-  {path: 'profile/admin', component: AdminPageComponent, canActivate: [AdminGuard]}
+  {path: 'profile/admin', component: AdminPageComponent, canActivate: [AdminGuard]},
+  {path: 'profile/complaintsPanel', component: ComplaintsPanelComponent, canActivate: [ComplaintsResolverGuard]}
+
 ];
 
 @NgModule({
@@ -111,7 +117,9 @@ const ROUTES: Routes = [
     OauthLoginDialogComponent,
     NotificationsComponent,
     ReviewsComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    ComplaintsPanelComponent,
+    WarningCreateDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -143,4 +151,3 @@ const ROUTES: Routes = [
 })
 export class AppModule {
 }
-
