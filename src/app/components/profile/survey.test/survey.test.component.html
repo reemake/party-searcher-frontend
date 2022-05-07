@@ -1,57 +1,57 @@
-<form class="surveyTest" id="surveyTest-container">
+<div class="container">
+<h1 id="title">Опрос</h1>
+<form class="surveyTest form-control" id="surveyTest-container">
     <div class="surveyTest-text">
         <div class="surveyTest-text-caption" id="surveyTest-text-captionType">
-            1. Какие типы мероприятий вам интересны?
+            <u>1. Какие типы мероприятий Вам интересны?</u>
         </div>
         <div [formControl]="typeCheck">
-        <td *ngFor = "let type of types">
+        <td *ngFor="let type of types">
             <label class="radio-area">
-                <input type="checkbox" name="type" value={{type.name}}>
-                {{ type.name}}
+                <input class="form-check-input" type="checkbox" name="type" value={{type.name}}>
+                &nbsp;{{type.name}}
             </label>
         </td>
     </div>
         <div class="surveyTest-text-caption">
-            2. Мероприятия какого формата вас интересуют?
+            <u>2. Мероприятия какого формата Вас интересуют?</u>
         </div>
         <label class="radio-area">
-            <input type="checkbox" name="format" value="Online">
+            <input class="form-check-input" type="checkbox" name="format" value="Online">
             Online
         </label>
         <label class="radio-area">
-            <input type="checkbox" name="format" value="Offline">
+            <input class="form-check-input" type="checkbox" name="format" value="Offline">
             Offline
         </label>
+        <div style="margin-bottom: 30px;" class="surveyTest-text-caption">
+            <u>3. Когда Вы желаете посетить мероприятие?</u>
+        </div>
+        С:
+        <input style="margin-bottom: 10px;" type="datetime-local" class="form-control dateTime" id="timeStart">
+        По:
+        <input type="datetime-local" class="form-control dateTime" id="timeEnd">
+
+        <div style="margin-bottom: 30px;" class="surveyTest-text-caption">
+            <u>4. Какое количество участников должно быть на мероприятии?</u>
+        </div>
+        От:
+        <input style="margin-bottom: 10px;" type="search" class="form-control surveyTest-textarea" id="memberStart">
+        До:
+        <input type="search" class="form-control surveyTest-textarea" id="memberEnd">
+        <div style="margin-bottom: 30px;" class="surveyTest-text-caption">
+            <u>5. Какова стоимость участия на мероприятии?</u>
+        </div>
+        От:
+        <input style="margin-bottom: 10px;" type="search" class="form-control surveyTest-textarea" id="moneyStart">
+        До:
+        <input type="search" class="form-control surveyTest-textarea" id="moneyEnd">
         <div class="surveyTest-text-caption">
-            3. Когда вы желаете посетить мероприятие?
+            <u>6. Мероприятия какого города Вас интересуют?</u>
         </div>
-        <div class="radio-area">
-            С
-            <input type="datetime-local" class="radio-area-time" id="timeStart">
-        </div>
-        <div class="radio-area">
-            По
-            <input type="datetime-local" class="radio-area-time" id="timeEnd">
-        </div>
-        <div class="surveyTest-text-caption">
-            4. Какое количество участников должно быть на мероприятии?
-        </div>
-        От
-        <input type="search" class="surveyTest-textarea" id="memberStart">
-        До
-        <input type="search" class="surveyTest-textarea" id="memberEnd">
-        <div class="surveyTest-text-caption">
-            5. Какова стоимость участия на мероприятии?
-        </div>
-        От
-        <input type="search" class="surveyTest-textarea" id="moneyStart">
-        До
-        <input type="search" class="surveyTest-textarea" id="moneyEnd">
-        <div class="surveyTest-text-caption">
-            7. Мероприятия какого города вас интересуют?
-        </div>
-        <input type="search" class="surveyTest-textarea" id="text-city" id="city">
-        <button class="surveyTest-button" id="surveyTest-button-end" (click)="click()">Завершить прохождение</button>
-        <button class="surveyTest-button" id="surveyTest-button-cancel" routerLink="/">Отменить прохождение</button>
+        <input type="search" class="form-control surveyTest-textarea" id="text-city" id="city">
+        <button class="btn btn-danger surveyTest-button" id="surveyTest-button-end" (click)="click()">Завершить прохождение</button>
+        <button class="btn btn-danger surveyTest-button" id="surveyTest-button-cancel" routerLink="/">Отменить прохождение</button>
     </div>
 </form>
+</div>
