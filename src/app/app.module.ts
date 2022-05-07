@@ -74,11 +74,10 @@ const ROUTES: Routes = [
   {path: 'profile/commercialRegister', component: CommercialRegisterComponent, canActivate: [AuthGuardService]},
   {path: 'profile/events', component: MyEventsComponent, canActivate: [AuthGuardService]},
   {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuardService]},
-  {path:'reviews',component:ReviewsComponent},
-  {path:'events/description',component:EventDescriptionComponent},
-  {path:'events/complaints/create',component:CreateComplaintComponent},
-  {path:'profile/admin',component:AdminPageComponent,canActivate:[AdminGuard]}
-
+  {path: 'reviews', component: ReviewsComponent},
+  {path: 'events/description', component: EventDescriptionComponent},
+  {path: 'events/complaints/create', component: CreateComplaintComponent},
+  {path: 'profile/admin', component: AdminPageComponent, canActivate: [AdminGuard]}
 ];
 
 @NgModule({

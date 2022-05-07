@@ -62,6 +62,14 @@ form {
   margin-top: -1px;
 }
 
+.remove-btn1 {
+  height: 40px;
+  width: 40px;
+  background: none;
+  border: none;
+  margin-left: 16px;
+}
+
 #title {
   position: relative;
   margin-bottom: 20px;
@@ -84,8 +92,8 @@ form {
   text-align: center;
   color: white;
 
-  margin-left: 20px;
-  margin-top: 4px;
+  margin-left: -15px;
+  margin-top: 55px;
 }
 
 .btn-danger:hover {
@@ -116,5 +124,31 @@ form {
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
+}
 
+.modalBtn {
+  width: 100px;
+  height: 40px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  color: white;
+
+  background: #D15D55;
+  border-radius: 10px;
+
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.uploadImg {
+  margin-top: -9px;
+  margin-left: 5px;
+  width: 30px;
+  height: 30px;
+}
+
+.imagePreview {
+  margin-top: -50px;
 }

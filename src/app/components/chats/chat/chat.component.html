@@ -50,20 +50,20 @@
 
     <div>
       <form>
-        <textarea rows="1" #text="ngModel" [(ngModel)]="message.text" class="form-control" name="text" placeholder="Напишите сообщение..."
-                  id="messageArea" style="resize: vertical; width: 88%; max-height: 100px;background-color:white;"></textarea>
-        <label>
-          <input   type="file" accept=".jpg,.jpeg,.png" ng2FileSelect
+        <textarea rows="3" #text="ngModel" [(ngModel)]="message.text" class="form-control" name="text" placeholder="Напишите сообщение..."
+                  id="messageArea" style="resize: none; width: 83%; max-height: 100px;background-color:white;"></textarea>
+        <label class="btn btn-default uploadImg">
+          <input type="file" accept=".jpg,.jpeg,.png" ng2FileSelect
                  [uploader]="uploader" #fileInput (change)="fileInput.value=''"
-                 (change)="photoSubmitOn()" [style.display]="'none'"  hidden multiple />
-          <img alt="uploadImg" src="../../../../assets/img/profile/add.png"/>
+                 (change)="photoSubmitOn()" [style.display]="'none'" multiple/>
+          <img alt="uploadImg" src="../../../../assets/img/profile/add2.png"/>
         </label>
-        <div *ngFor="let url of message.messageImagesUrls">
-            <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(message,url)"/>
-            <button mat-button (click)="removeImage(url)">remove</button>
+        
+        <button class="btn btn-danger sendBtn" (click)="sendMessage()">Отправить</button>
+        <div class="imagePreview" *ngFor="let url of message.messageImagesUrls">
+          <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(message,url)"/>
+          <button class="remove-btn1" (click)="removeImage(url)"><img alt="remove" src="../../../../assets/img/mapImages/buttons/close-btn.png"/></button>
         </div>
-        <button class="btn btn-danger sendBtn" (click)="sendMessage()">Отправить
-        </button>
       </form>
     </div>
   </div>
@@ -92,4 +92,5 @@
   [imageIndex]="imageIndex"
   [images]="imageObj"
   [show]="isShowFullImage"
-  (close)="closeEventHandler()"></ng-image-fullscreen-view>
+  (close)="closeEventHandler()">
+</ng-image-fullscreen-view>
