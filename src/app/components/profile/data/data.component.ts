@@ -212,23 +212,23 @@ export class DataComponent implements OnInit {
 
   public sendCode() {
     console.log(this.user)
-    this.phoneConfirmService.sendCode(this.userEdited.phone).subscribe(e => {
+    this.phoneConfirmService.sendCode(this.user.phone).subscribe(e => {
       this.incorrectCode = false;
       var token: PhoneToken = {
         id: {
           userId: this.user.login,
           dateTimeSend: new Date()
         },
-        phone: this.userEdited.phone
+        phone: this.user.phone
       }
       this.user.tokens?.push(token);
     }, error => alert("Произошла ошибка " + error.message && error.message !== '' ? error.message : JSON.stringify(error.error)))
   }
 
   public checkCode() {
-    this.phoneConfirmService.checkCode(this.userEdited.phone, this.phoneCode).subscribe(status => {
+    this.phoneConfirmService.checkCode(this.user.phone, this.phoneCode).subscribe(status => {
       if (status) {
-        this.user.isPhoneConfirmed = true;
+        this.user.phoneConfirmed = true;
         this.incorrectCode = false;
       } else {
         this.incorrectCode = true;

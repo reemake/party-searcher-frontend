@@ -63,10 +63,29 @@
             <button [disabled]="!this.user.pictureUrl" type="button" class="btn btn-lg btn-danger accBtn3" (click)="deletePhoto(dataChangeForm)">Удалить фото</button>
 
             <div class="profileData">
-                <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}</b></p>
+                <p style="font-size: 32px;" class="dataColumns"><b>{{user.firstName}} {{user.lastName}}<img *ngIf="user.phoneConfirmed" alt="confirm" src="assets/img/profile/confirm-icon.png"  height="30px" width="30px"/></b></p>
                 <p class="dataColumns">Логин: <b>{{user.login}}</b></p>
                 <p class="dataColumns">E-mail: <b>{{user.email}}</b></p>
-                <p class="dataColumns">Телефон: <b>{{user.phone}}</b></p>
+                <p class="dataColumns">Телефон: <b>{{user.phone}} </b>              <button class="btn btn-lg btn-danger contentBtn" (click)="sendCode()"
+                 *ngIf="user.phone && user.phone!=='' && !checkIfHasUnexpiredSmsTokens() && !user.phoneConfirmed">
+                  Отправить код
+                </button></p>
+              <p class="dataColumns">                 <!-- PHONE CONFIRMATION -->
+                <input class="spanLike" [(ngModel)]="phoneCode" *ngIf="user.phone && user.phone!=='' && !user.phoneConfirmed" placeholder="код из смс"
+                       type="text"/>
+
+              <span *ngIf="checkIfHasUnexpiredSmsTokens() && remainsTime!=0 && !user.phoneConfirmed" class="alert-warning">Вам уже был
+                отправлен код,
+                подождите {{remainsTime | number : '1.0-0'}} секунд</span>
+
+
+              <span *ngIf="incorrectCode && !user.phoneConfirmed" class="alert-warning">Неверный код</span>
+              <button class="btn btn-lg btn-danger contentBtn spanLike" (click)="checkCode()" *ngIf="user.phone && user.phone!=='' && !user.phoneConfirmed">Потдвердить
+                телефон
+              </button></p>
+
+
+
             </div>
         </div>
 
@@ -102,21 +121,7 @@
                                  placeholder="Номер телефона" type="tel"
                                  [class.is-invalid]="phone.invalid"
                                  pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$">
-                          <button (click)="sendCode()"
-                                  *ngIf="userEdited.phone && userEdited.phone!=='' && !checkIfHasUnexpiredSmsTokens()">
-                            Отправить код
-                          </button>
 
-                          <p *ngIf="checkIfHasUnexpiredSmsTokens() && remainsTime!=0" class="alert-warning">Вам уже был
-                            отправлен код,
-                            подождите {{remainsTime | number : '1.0-0'}} секунд</p>
-
-                          <input *ngIf="userEdited.phone && userEdited.phone!==''" placeholder="код из смс"
-                                 type="text"/>
-                          <p *ngIf="incorrectCode" class="alert-warning">Неверный код</p>
-                          <button (click)="checkCode()" *ngIf="userEdited.phone && userEdited.phone!==''">Потдвердить
-                            телефон
-                          </button>
                         </div>
 
                         <div class="form-group" id="password-form">

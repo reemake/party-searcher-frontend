@@ -15,7 +15,7 @@ export class User {
   description: string;
   authorities?: Role[];
   tokens?: PhoneToken[];
-  isPhoneConfirmed?: boolean
+  phoneConfirmed?: boolean
 
   constructor() {
   }
