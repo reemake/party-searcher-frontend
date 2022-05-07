@@ -1,7 +1,7 @@
 import {Component, DoCheck, ElementRef, Input, NgZone, OnDestroy} from '@angular/core';
 import {ChatService} from "../../../services/chat.service";
 import {Message} from "../../../entity/Chat/Message";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Chat} from "../../../entity/Chat/Chat";
 import {debounceTime, Subscription} from "rxjs";
 import {UserService} from "../../../services/user.service";
@@ -49,7 +49,7 @@ export class ChatComponent implements OnDestroy, DoCheck {
 
   constructor(private chatService: ChatService, private route: ActivatedRoute, private userService: UserService,
               private scroller: ViewportScroller, private cloudinary: Cloudinary,
-              private zone: NgZone, private http: HttpClient) {
+              private zone: NgZone, private http: HttpClient,private router:Router) {
     var elementsByClassName = document.getElementsByClassName("lightbox-image");
     if(elementsByClassName && elementsByClassName[0]){
       elementsByClassName[0].addEventListener('touchstart', ()=>{
@@ -59,6 +59,16 @@ export class ChatComponent implements OnDestroy, DoCheck {
 
     this.initChat();
     this.initImageCloud();
+  }
+
+  public leaveChat(){
+    this.chatService.leaveChat(this.chat.id).subscribe(success=> {
+      this.router.navigateByUrl("/messages");
+    }
+    ,fail=>{
+      alert(`произошла ошибка ${JSON.stringify(fail)}`)
+      }
+    )
   }
 
   public initImageCloud() {

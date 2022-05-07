@@ -2,6 +2,7 @@
 
   <div class="chat-div" id="chat-div">
     <h2 id="title">{{chat.name}}</h2>
+    <button (click)="leaveChat()">Покинуть чат</button>
     <hr style="margin-bottom: 20px;"/>
     <div style="max-height: 650px; overflow: hidden; overflow-y: scroll;">
     <ul appScrollDirective id="messages-list">
