@@ -43,6 +43,10 @@ export class ChatService {
 
   }
 
+  public leaveChat(id:number):Observable<any>{
+    return this.httpClient.delete(BACKEND_URL+"/api/chat/removeUserFromChat",{params:{chatId:id}});
+  }
+
   public createChat(event: Event): Observable<number> {
     return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createEventChat", event);
   }
