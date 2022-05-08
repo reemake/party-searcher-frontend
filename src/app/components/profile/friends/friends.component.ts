@@ -4,6 +4,8 @@ import { User } from './user';
 import {HttpClient} from "@angular/common/http";
 import { BACKEND_URL } from 'src/app/app.module';
 import { Relationship } from './Relationship';
+import {ChatService} from "../../../services/chat.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-friends',
@@ -22,7 +24,7 @@ export class FriendsComponent implements OnInit {
   sendedRequestsCheck: boolean = false;
   autorisationCheck: boolean;
 
-  constructor(private userService: UserService, private httpClient: HttpClient) {
+  constructor(private userService: UserService, private httpClient: HttpClient,private chatService:ChatService,private router:Router) {
     if (localStorage.getItem("token")) {
       this.autorisationCheck = true;
       this.userService.getRequests().subscribe((data: Relationship[]) => {
@@ -134,7 +136,7 @@ export class FriendsComponent implements OnInit {
       console.log("sending data");
       location.reload();
     });
-    
+
   }
 
   clickRequestButton(event: any): void {
@@ -163,6 +165,16 @@ export class FriendsComponent implements OnInit {
   clickAddedFriendButton(event: any): void {
     var friendLogin: string = (<HTMLInputElement>event.path[0]).id;
     if ((<HTMLInputElement>event.path[0]).textContent == "Отправить сообщение") {
+      this.chatService.findChatWithUser(friendLogin).subscribe(chat=>{
+        if (chat){
+          this.router.navigateByUrl("/chat;id="+chat.id);
+        }
+        else {
+          this.chatService.createChatWithUser(friendLogin).subscribe(id=>{
+            this.router.navigateByUrl("/chat;id="+id);
+          },error => alert(`Произошла ошибка ${JSON.stringify(error)}`))
+        }
+      })
       console.log("К сожалению, в данный момент, отправка сообщений не доступна");
     }
     if ((<HTMLInputElement>event.path[0]).textContent == "Удалить из друзей") {

@@ -175,7 +175,7 @@ export class ChatComponent implements OnDestroy, DoCheck {
         }
         if (chat.private) {
           var user = chat.chatUsers.filter(cu => cu.user.login !== localStorage.getItem('username'))[0];
-          chat.name = `${user.user.firstName} ${user.user.lastName}`;
+          chat.name = `${user.user.firstName?user.user.firstName:''} ${user.user.lastName?user.user.lastName:''}`;
         }
         this.fillUsersImagesMap();
 
@@ -273,6 +273,7 @@ export class ChatComponent implements OnDestroy, DoCheck {
 
   ngDoCheck(): void {
     if (this.lastMessageIdSCROLL !== this.maxReadedMessageId && this.messages.length > 0 && document.getElementById("message" + this.maxReadedMessageId)) {
+      console.log(this.maxReadedMessageId)
       this.scroller.scrollToAnchor("message" + this.maxReadedMessageId);
       this.lastMessageIdSCROLL = this.maxReadedMessageId;
     }

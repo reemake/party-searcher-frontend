@@ -139,7 +139,8 @@ const ROUTES: Routes = [
     MatButtonToggleModule,
     MatCardModule, MatMenuModule,
     NgImageFullscreenViewModule,
-  NgSelectModule],
+  NgSelectModule,
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

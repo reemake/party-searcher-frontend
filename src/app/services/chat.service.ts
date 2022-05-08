@@ -55,6 +55,10 @@ export class ChatService {
     return this.httpClient.post<number>(BACKEND_URL + "/api/chat/createChatWithUser", {}, {params: {username: username}});
   }
 
+  public findChatWithUser(user:string ){
+    return this.httpClient.get<Chat>(BACKEND_URL + "/api/chat/getChatWithUser",{params: {username: user}});
+  }
+
   public getMessages(chatId: number): Observable<Array<Message>> {
     return this.httpClient.get<Array<Message>>(BACKEND_URL + "/api/chat/getMessages", {params: {chatId: chatId}});
   }

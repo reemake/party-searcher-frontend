@@ -2,10 +2,13 @@
 
   <div class="chat-div" id="chat-div">
     <h2 id="title">{{chat.name}}</h2>
-    <button (click)="leaveChat()">Покинуть чат</button>
+    <div class="leave-btn-div">
+      <button class="btn btn-danger sendBtn" (click)="leaveChat()">Покинуть</button>
+    </div>
+
     <hr style="margin-bottom: 20px;"/>
     <div style="max-height: 650px; overflow: hidden; overflow-y: scroll;">
-    <ul appScrollDirective id="messages-list">
+    <ul  appScrollDirective id="messages-list">
       <li (inViewportAction)="setMessageAsRead(message)" (mouseenter)="message.focus=true"
           (mouseleave)="message.focus=false" *ngFor="let message of messages" id="message{{message.id}}"
           inViewport>
@@ -59,7 +62,7 @@
                  (change)="photoSubmitOn()" [style.display]="'none'" multiple/>
           <img alt="uploadImg" src="../../../../assets/img/profile/add2.png"/>
         </label>
-        
+
         <button class="btn btn-danger sendBtn" (click)="sendMessage()">Отправить</button>
         <div class="imagePreview" *ngFor="let url of message.messageImagesUrls">
           <img width="70px" height="70px" src="{{url}}" alt="review image" (click)="showFullImage(message,url)"/>

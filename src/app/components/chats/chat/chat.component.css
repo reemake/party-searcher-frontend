@@ -6,6 +6,10 @@
   justify-content: center;
   align-items: center;
 }
+.leave-btn-div{
+  display: flex;
+  justify-content: right;
+}
 
 .chat-div {
   background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
