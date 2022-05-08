@@ -40,7 +40,6 @@ export class ComplaintsPanelComponent implements OnInit {
     for (let status of this.complaintsStatusesMap.keys()) {
       array.push({id: status, name: this.complaintsStatusesMap.get(status)});
     }
-    console.log(array);
     this.items = array;
   }
 
