@@ -83,7 +83,7 @@ const ROUTES: Routes = [
   {path: 'events/description', component: EventDescriptionComponent},
   {path: 'events/complaints/create', component: CreateComplaintComponent},
   {path: 'profile/admin', component: AdminPageComponent, canActivate: [AdminGuard]},
-  {path: 'profile/complaintsPanel', component: ComplaintsPanelComponent, canActivate: [ComplaintsResolverGuard]}
+  {path: 'profile/complaintsPanel', component: ComplaintsPanelComponent, canActivate: [ComplaintsResolverGuard]},
   {path: 'profile/eventsHistory', component: EventsHistoryComponent, canActivate: [AuthGuardService]}
 ];
 
