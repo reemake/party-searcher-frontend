@@ -9,6 +9,7 @@ import {Relationship} from "../../profile/friends/Relationship";
 import {UserService} from "../../profile/friends/user.service";
 import {User} from "../../../entity/User";
 import {Location} from "../../../entity/Location";
+import {UserService as ArtyomUserService} from "../../../services/user.service" ;
 
 @Component({
   selector: 'app-edit',
@@ -25,7 +26,7 @@ export class EditComponent implements OnInit {
   public formGroup: FormGroup;
   public nameInput: FormControl = new FormControl(null, [Validators.required]);
   public descriptionInput: FormControl = new FormControl();
-  public startTimeInput: FormControl = new FormControl(null, [Validators.required]);
+  public startTimeInput: FormControl = new FormControl("", [Validators.required]);
   public endTimeInput: FormControl = new FormControl();
   public maxGuestsCountInput: FormControl = new FormControl();
   public priceInput: FormControl = new FormControl();
@@ -52,8 +53,14 @@ export class EditComponent implements OnInit {
   public invitedFriendsCheck: boolean = false;
   public invitedFriendsLogins: string[] = new Array;
   private eventLocation: Location;
+  public currentUser:User;
 
-  constructor(private eventService: EventService, private router: Router, private userService: UserService, private changeDetector: ChangeDetectorRef, private activatedRoute: ActivatedRoute) {
+  constructor(private eventService: EventService, private router: Router, private userService: UserService, private changeDetector: ChangeDetectorRef,
+              private activatedRoute: ActivatedRoute,private artyomUserService:ArtyomUserService) {
+    this.artyomUserService.getUser(localStorage.getItem("username")||'')
+      .subscribe(user=>{
+        this.currentUser=user;
+      })
     this.userService.getFriends().subscribe((data: Relationship[]) => {
         console.log("waiting friends");
         this.friends = data;
@@ -99,16 +106,17 @@ export class EditComponent implements OnInit {
       name: this.nameInput,
       description: this.descriptionInput,
       startTime: this.startTimeInput,
-      endTime: this.endTimeInput,
+      endTime: new FormControl(this.endTimeInput.value,[this.endDateValidator().bind(this.formGroup)]),
       maxGuests: this.maxGuestsCountInput,
       price: this.priceInput,
       isPrivate: this.isPrivateInput,
       isOnline: this.isOnlineInput,
       location: this.locationInput,
-      url: new FormControl("", [this.urlValidator().bind(this.formGroup)]),
+      url: new FormControl(this.urlInput.value, [this.urlValidator().bind(this.formGroup)]),
       theme: this.eventThemeInput,
       type: this.eventTypeInput
     });
+    this.endTimeInput=this.formGroup.controls['endTime'] as FormControl;
     this.urlInput = this.formGroup.controls['url'] as FormControl;
     this.changeBounds.pipe(
       debounceTime(500)
@@ -150,6 +158,10 @@ export class EditComponent implements OnInit {
     this.isOnlineInput.valueChanges.subscribe((val) => {
       this.urlInput.updateValueAndValidity();
     })
+
+    this.startTimeInput.valueChanges.subscribe((value => {
+      this.endTimeInput.updateValueAndValidity();
+    }))
   }
 
 
@@ -166,6 +178,22 @@ export class EditComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
 
+  endDateValidator():ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+      console.log(control.value)
+      console.log(control.parent?.get('startTime')?.value);
+      if (control.value!=='' && control.parent?.get('startTime')?.value===''){
+        console.log("no begin")
+        return {"no begin date":true};
+      }
+      if (control.parent?.get('startTime')?.value > control.value ) {
+        console.log("less begin")
+        return {"end date less begin":true};
+      }
+
+      return null;
+    }
+  }
   urlValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       console.log(this.isOnlineInput.value)

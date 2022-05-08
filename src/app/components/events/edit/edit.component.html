@@ -30,10 +30,19 @@
   </div>
   <label for="end">Время окончания мероприятия:</label>
   <input [formControl]="endTimeInput" class="form-control" id="end" type="datetime-local"/>
+  <div *ngIf="endTimeInput.errors?.['no begin date']"
+       class="alert alert-danger">Заполните дату начала мероприятия
+  </div>
+
+  <div *ngIf="endTimeInput.errors?.['end date less begin']"
+       class="alert alert-danger">  Дата окончания не может быть раньше даты начала
+  </div>
+
   <label for="maxCount">Максимальное кол-во участников</label>
-  <input [formControl]="maxGuestsCountInput" class="form-control" id="maxCount" type="number"/>
-  <label for="price">Цена</label>
-  <input [formControl]="priceInput" class="form-control" id="price" type="number"/>
+  <input [formControl]="maxGuestsCountInput" min="0" class="form-control" id="maxCount" type="number"/>
+  <label for="price" >Цена</label>
+  <input [formControl]="priceInput" min="0" class="form-control"   [readOnly]="!currentUser.commercialUser"  id="price" type="number"/>
+  <p class="alert-warning" *ngIf="!currentUser.commercialUser">Только пользователи с включенным коммерческим аккаунтом могут создавать платные мероприятия</p>
   <label for="isCloseChat"><input [formControl]="hasChatWithOwnerInput" class="form-check-input" id="isCloseChat" type="checkbox"/>&nbsp;&nbsp;&nbsp;Закрыть личный чат с организатором</label>
   <label for="private"><input [formControl]="isPrivateInput" class="form-check-input" id="private" type="checkbox"/>&nbsp;&nbsp;&nbsp;Приватное мероприятие</label>
   <label for="online"><input [formControl]="isOnlineInput" class="form-check-input" id="online" type="checkbox"/>&nbsp;&nbsp;&nbsp;Онлайн</label>
@@ -84,7 +93,7 @@
       [ngStyle]="{'width':mapWidth}"
       [zoom]="14.5"
       class="map">
-  
+
     </app-map>
   </div>
   <input class="btn btn-danger updateBtn" type="submit" value="Обновить">

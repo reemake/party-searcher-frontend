@@ -5,9 +5,11 @@ import {EventService} from "../../../services/event.service";
 import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
 import {Relationship} from '../../profile/friends/Relationship';
-import {UserService} from '../../profile/friends/user.service';
 import {User} from 'src/app/entity/User';
 import {Router} from "@angular/router";
+import {UserService} from "../../profile/friends/user.service";
+import {UserService as ArtyomUserService} from "../../../services/user.service" ;
+
 
 @Component({
   selector: 'app-event-create',
@@ -25,7 +27,7 @@ export class EventCreateComponent implements OnInit {
   public formGroup: FormGroup;
   public nameInput: FormControl = new FormControl(null, [Validators.required]);
   public descriptionInput: FormControl = new FormControl();
-  public startTimeInput: FormControl = new FormControl(null, [Validators.required]);
+  public startTimeInput: FormControl = new FormControl('', [Validators.required]);
   public endTimeInput: FormControl = new FormControl();
   public maxGuestsCountInput: FormControl = new FormControl();
   public priceInput: FormControl = new FormControl();
@@ -51,12 +53,17 @@ export class EventCreateComponent implements OnInit {
   public invitedFriendsLogins: string[] = new Array;
   public usersByMail: User[];
   public usersByMailCheck: boolean = false;
+  public currentUser:User;
 
 
   public mapWidth = "100%";
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
 
-  constructor(private eventService: EventService, private userService: UserService, private router: Router) {
+
+
+  constructor(private eventService: EventService, private userService: UserService, private router: Router,private userServiceArt:ArtyomUserService) {
+    this.userServiceArt.getUser(localStorage.getItem("username")||'')
+      .subscribe(user=>this.currentUser=user);
     this.userService.getFriends().subscribe((data: Relationship[]) => {
         console.log("waiting friends");
         this.friends = data;
@@ -76,7 +83,7 @@ export class EventCreateComponent implements OnInit {
       name: this.nameInput,
       description: this.descriptionInput,
       startTime: this.startTimeInput,
-      endTime: this.endTimeInput,
+      endTime: new FormControl('',[this.endDateValidator().bind(this.formGroup)]),
       maxGuests: this.maxGuestsCountInput,
       price: this.priceInput,
       isPrivate: this.isPrivateInput,
@@ -86,6 +93,7 @@ export class EventCreateComponent implements OnInit {
       theme: this.eventThemeInput,
       type: this.eventTypeInput
     });
+    this.endTimeInput=this.formGroup.controls['endTime'] as FormControl;
     this.urlInput = this.formGroup.controls['url'] as FormControl;
     this.changeBounds.pipe(
       debounceTime(500)
@@ -118,6 +126,10 @@ export class EventCreateComponent implements OnInit {
     this.isOnlineInput.valueChanges.subscribe((val) => {
       this.urlInput.updateValueAndValidity();
     })
+
+    this.startTimeInput.valueChanges.subscribe((value => {
+      this.endTimeInput.updateValueAndValidity();
+    }))
   }
   ngOnInit(): void {
     this.eventService.getTypes().subscribe(types => {
@@ -126,6 +138,23 @@ export class EventCreateComponent implements OnInit {
         alert("При загрузке типов мероприятий произошла ошибка, повторите еще раз")
       }
     );
+  }
+
+  endDateValidator():ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+      console.log(control.value)
+      console.log(control.parent?.get('startTime')?.value);
+      if (control.value!=='' && control.parent?.get('startTime')?.value===''){
+        console.log("no begin")
+        return {"no begin date":true};
+      }
+      if (control.parent?.get('startTime')?.value > control.value ) {
+        console.log("less begin")
+        return {"end date less begin":true};
+      }
+
+      return null;
+    }
   }
 
 
