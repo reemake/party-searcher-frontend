@@ -37,6 +37,7 @@ import {EditComponent} from './components/events/edit/edit.component';
 import {CloudinaryModule} from '@cloudinary/angular-5.x';
 import {CommercialRegisterComponent} from './components/profile/commercial-register/commercial-register.component';
 import {MyEventsComponent} from './components/profile/my-events/my-events.component';
+import {EventsHistoryComponent} from './components/profile/events-history/events-history.component';
 import {MatInputModule} from "@angular/material/input";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ReviewDialogComponent} from './components/events/review-dialog/review-dialog.component';
@@ -77,8 +78,8 @@ const ROUTES: Routes = [
   {path:'reviews',component:ReviewsComponent},
   {path:'events/description',component:EventDescriptionComponent},
   {path:'events/complaints/create',component:CreateComplaintComponent},
-  {path:'profile/admin',component:AdminPageComponent,canActivate:[AdminGuard]}
-
+  {path:'profile/admin',component:AdminPageComponent,canActivate:[AdminGuard]},
+  {path: 'profile/eventsHistory', component: EventsHistoryComponent, canActivate: [AuthGuardService]}
 ];
 
 @NgModule({
@@ -112,7 +113,8 @@ const ROUTES: Routes = [
     OauthLoginDialogComponent,
     NotificationsComponent,
     ReviewsComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    EventsHistoryComponent
   ],
   imports: [
     BrowserModule,
