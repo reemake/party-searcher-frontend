@@ -104,21 +104,14 @@ export class EventService {
   }
 
   public getEndedEventsInInterval(date1: string, date2: string): Observable<Array<Event>> {
-    this.endedEventsInInterval = undefined;
-    if (this.endedEventsInInterval === undefined) {
+      this.endedEventsInInterval = undefined;
       var params: HttpParams = new HttpParams();
       params = params.set("date1", date1).set("date2", date2);
-      return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEndedEventsInInterval", { params: params }).pipe(tap((events) => {
+      console.log("REQUEST FOR ENDED EVENTS")
+      return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEndedEventsInInterval", {params: params}).pipe(tap((events) => {
         this.endedEventsInInterval = events;
       }));
-    } else {
-      console.log("NO REQUEST")
-      var subject = new Subject();
-      subject.next(this.endedEventsInInterval);
-      return subject as Observable<Array<Event>>;
-    }
   }
-
 
   public setAddressByLonLat(event: any, func: Function): void {
 
