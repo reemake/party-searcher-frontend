@@ -37,6 +37,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
       this.chats = chats;
       this.sortChats();
       this.chats.forEach(chat => {
+        console.log(chat)
         if (chat.private) {
           var otherUser = chat.chatUsers.filter(cu => cu.user.login !== localStorage.getItem("username"))[0];
           if (otherUser)
@@ -128,11 +129,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
     friends.map(friend => {
 
       if (privateChats.filter(chat => chat.chatUsers.filter(user => user.user.login === friend.id.owner.login).length != 0).length == 0) {
-        if (`${friend.id.owner.firstName} ${friend.id.owner.lastName}`.toLowerCase().startsWith(this.searchString.toLowerCase()))
+        if (`${friend.id.owner.firstName} ${friend.id.owner.lastName}`.toLowerCase().startsWith(this.searchString.toLowerCase()) ||
+          friend.id.owner.login.toLowerCase().startsWith(this.searchString.toLowerCase()))
           this.searchedChats.push({
             isNewFriendChat: true,
             private: true,
-            name: `${friend.id.owner.firstName} ${friend.id.owner.lastName}`,
+            name: `${friend.id.owner.firstName?friend.id.owner.firstName:''} ${friend.id.owner.lastName?friend.id.owner.lastName:''} ${friend.id.owner.lastName&&!friend.id.owner.firstName?friend.id.owner.login:''}`,
             id: -1,
             chatUsers:
               [{

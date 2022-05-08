@@ -19,7 +19,7 @@
     <p><u>Организатор:</u></p>
     <div class="owner-container" *ngIf="event.owner && event.owner.login">
       <a href="reviews?login={{event.owner.login}}">
-        <p>{{event.owner?.login}}</p>
+        <img *ngIf="event.owner.phoneConfirmed" alt="confirm" src="assets/img/profile/confirm-icon.png"  height="30px" width="30px"/><p>{{event.owner?.login}}</p>
       </a>
 
       <img *ngFor="let item of [].constructor(event.avgMark||0); let i = index"
@@ -53,11 +53,11 @@
   </div>
   <hr>
   <div class="description-row description-buttons">
-    <div class="description-button">
+    <div class="description-button" *ngIf="event.owner?.login!==userName">
       <button (click)="removeFromEvent()" *ngIf="event.currentUserEntered"><img
         src="./assets/img/mapImages/buttons/remove-from-event.png"/>&nbsp;&nbsp;&nbsp;Отменить запись</button>
 
-      <button (click)="assignOnEvent()" *ngIf="!event.currentUserEntered"><img
+      <button (click)="assignOnEvent()" *ngIf="!event.currentUserEntered "><img
         src="./assets/img/mapImages/buttons/assign-event-btn.png"/>&nbsp;&nbsp;&nbsp;Записаться на мероприятие</button>
     </div>
     <div *ngIf="event.currentUserEntered || (event.owner&& event.owner.login===userName)" class="description-button">
@@ -66,10 +66,10 @@
       <button (click)="goToChat(event.chatId)" *ngIf="event.chatId!==undefined"><img
         src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>
     </div>
-    <div *ngIf="event.hasChatWithOwner" class="description-button">
+    <div *ngIf="event.hasChatWithOwner && event.owner?.login!==userName" class="description-button">
       <button (click)="callEventOwner()"><img src="./assets/img/mapImages/buttons/chat_with_admin.png"/>&nbsp;&nbsp;&nbsp;Связь с организатором</button>
     </div>
-    <div class="description-button">
+    <div *ngIf="event.owner?.login!==userName" class="description-button">
       <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/>&nbsp;&nbsp;&nbsp;Пожаловаться на мероприятие</button>
     </div>
   </div>
