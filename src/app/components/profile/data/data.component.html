@@ -10,6 +10,8 @@
                                                                               src="./assets/img/profile/users.png"/>Жалобы</a>
       </p>
         <p><a href="/" class="btn btn-link menuBtn">...</a></p>
+        <p><a href="/profile/eventsHistory" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
+        <p><button [disabled]="!isAdmin()" [routerLink]="['/profile/admin']" class="btn btn-link menuBtn"><img class="menuImg" alt="admin panel" src="./assets/img/profile/admin-icon.png"/>Панель администратора</button>
     </div>
 
   <div class="account-data">
@@ -115,12 +117,10 @@
 
                     <div class="right-form">
                         <div class="form-group" id="phone-form">
-                          <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone"
-                                 name="phone"
-                                 placeholder="Номер телефона" type="tel"
-                                 [class.is-invalid]="phone.invalid"
-                                 pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$">
-
+                            <input #phone="ngModel" [(ngModel)]="userEdited.phone" class="form-control" id="phone" name="phone"
+                                placeholder="Номер телефона" type="tel"
+                                [class.is-invalid]="phone.invalid" pattern="^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$"
+                            >
                         </div>
 
                         <div class="form-group" id="password-form">

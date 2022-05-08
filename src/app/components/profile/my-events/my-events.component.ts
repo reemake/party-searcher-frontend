@@ -7,6 +7,7 @@ import { EventService } from 'src/app/services/event.service';
 import { UserService } from 'src/app/services/user.service';
 import { FilterData } from 'src/app/entity/filterData';
 import { ChatService } from 'src/app/services/chat.service';
+import { Role } from 'src/app/entity/Role';
 
 @Component({
   selector: 'app-my-events',
@@ -17,10 +18,9 @@ export class MyEventsComponent implements OnInit {
 
   userLogin: string = localStorage.getItem("username") || '';
   user = new User();
-  userEdited = new User();
 
-  createdEvents: Array<Event>;
-  attendedEvents: Array<Event>;
+  createdEvents: Array<Event> = [];
+  attendedEvents: Array<Event> = [];
 
   descriptionOpened: boolean = false;
   viewingEvent: Event;
@@ -133,29 +133,41 @@ export class MyEventsComponent implements OnInit {
   }
 
   deleteEvent(eventId: number) {
-    this.eventsService.removeEvent(eventId).subscribe(
-      result => {
-        console.log('event successfully deleted');
-        alert("Мероприятие успешно удалено");
-        window.location.reload();
-      },
-      error => {
-        console.log('error while deleting event');
-        console.log(error);
-        alert("При удалении мероприятия произошла ошибка");
-      }
-    )
+    var isConfirmed = confirm("Удалить мероприятие?");
+    if (isConfirmed) {
+      this.eventsService.removeEvent(eventId).subscribe(
+        result => {
+          console.log('event successfully deleted');
+          alert("Мероприятие успешно удалено");
+          window.location.reload();
+        },
+        error => {
+          console.log('error while deleting event');
+          console.log(error);
+          alert("При удалении мероприятия произошла ошибка");
+        }
+      )
+    }
+  
   }
 
   removeFromEvent(event: Event): void {
-      this.eventsService.removeCurrentUserFromEvent(event.id!)
-        .subscribe(success => {
+    var isConfirmed = confirm("Отказаться от участия в данном мероприятии?");
+    if (isConfirmed) {
+      this.eventsService.removeCurrentUserFromEvent(event.id!).subscribe(
+        result => {
           console.log("user successfully removed from event");
           alert("Вы успешно отменили свое участие в данном мероприятии");
           window.location.reload();
-        }, error => {
+        }, 
+        error => {
           alert("Произошла ошибка");
         })
+    }
+  }
+
+  isAdmin():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ADMIN).length>0;
   }
 
 }

@@ -1,62 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.container {
+    width: 1000px;
+    max-height: 100%;
+    margin: 0 auto;
+    padding-top: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #title {
+    position: relative;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+  
+    color: #000000;
+  }
+
 .surveyTest {
-    display: block;
-    position: absolute;
-    height: 1130px;
-    width: 1500px;
-    background: #D15D55;
-    left: calc(50% - 750px);
-    top: 55px;
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+    padding: 30px 40px 30px 40px;
 }
 
 .surveyTest-text {
-    display: block;
-    padding: 5px 0 0 50px;
-    font-family: Roboto;
     font-style: normal;
     font-weight: normal;
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 18px;
+    line-height: 32px;
 }
 
 .surveyTest-text-caption{
     width: 100%;
-    margin-top: 50px;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .radio-area {
-    display: inline-block;
-    margin: 34px 50px 0 0;
-}
-
-.surveyTest-button {
-    position: absolute;
-    width: 315px;
-    height: 50px;
-    background: #FFFFFF;
-    border: 2px solid #000000;
-    box-sizing: border-box;
-    text-align: center;
-    bottom: 50px;
-    line-height: 50px;
-    font-size: 24px;
+    margin: 34px 40px 0 0;
 }
 
 .surveyTest-textarea {
-    margin: 50px 25px 0 25px;
-    width: 500px;
-    height: 50px;
+    width: 100%;
+    height: 40px;
     background: #FFFFFF;
-    border: 2px solid #000000;
-    box-sizing: border-box;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    line-height: 28px;
-    padding: 7px;
 }
 
 .radio-area-time {
@@ -64,20 +52,43 @@
     margin: 0 0 0 10px;
 }
 
-
+.dateTime {
+    width: 100%;
+    height: 40px;
+}
 
 #surveyTest-text-captionType {
-    margin-top: 0;
+    margin-left: 0;
 }
 
 #surveyTest-button-end {
-    left: 50px;
+    margin-left: 50px;
 }
 
 #surveyTest-button-cancel {
-    right: 50px;
+    margin-left: 190px;
 }
 
 #text-city {
     margin-left: 0;
+}
+
+.surveyTest-button {
+    width: 300px;
+    height: 60px;
+    background: #D15D55;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: white;
+
+    margin-top: 40px;
+  }
+
+.btn-danger:hover {
+    background: #FF0000;
+    transition: .7s;
 }

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppModule, BACKEND_URL } from 'src/app/app.module';
+import { Role } from 'src/app/entity/Role';
 import { User } from 'src/app/entity/User';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { UserService } from 'src/app/services/user.service';
@@ -141,6 +142,10 @@ export class AccountsComponent implements OnInit {
       }
     )
     this.router.navigate(["/profile/accounts"]);
+  }
+
+  isAdmin():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ADMIN).length>0;
   }
 
 }
