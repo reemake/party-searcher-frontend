@@ -4,8 +4,13 @@
     <div class="menu">
       <p><a href="/profile/me" class="btn btn-link menuBtn"><img class="menuImg" alt="myData" src="./assets/img/profile/user.png"/>Мои данные</a></p>
       <p><a href="/profile/events" class="btn btn-link menuBtn"><img class="menuImg" alt="myEvents" src="./assets/img/profile/users.png"/>Мои мероприятия</a></p>
-      <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
       <p><a href="/profile/eventsHistory" class="btn btn-link menuBtn"><img class="menuImg" alt="eventsHistory" src="./assets/img/profile/time.png"/>История мероприятий</a></p>
+      <p><a href="/profile/accounts" class="btn btn-link menuBtn"><img class="menuImg" alt="commercialAcc" src="./assets/img/profile/dollarCoin.png"/>Коммерческий аккаунт</a></p>
+      <p *ngIf="isAdmin()"><a href="/profile/admin" class="btn btn-link menuBtn"><img class="menuImg" alt="admin panel" src="./assets/img/profile/admin-icon.png"/>Панель администратора</a></p>
+    <p><a class="btn btn-link menuBtn" href="/profile/complaintsPanel"><img alt="myEvents" class="menuImg"
+                                                                            src="./assets/img/profile/compl.png"/>Жалобы</a>
+    </p>
+
       <p><button [disabled]="!isAdmin()" [routerLink]="['/profile/admin']" class="btn btn-link menuBtn"><img class="menuImg" alt="admin panel" src="./assets/img/profile/admin-icon.png"/>Панель администратора</button>
   </div>
 

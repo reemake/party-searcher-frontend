@@ -28,8 +28,6 @@ export class EventsHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.getUserInfo();
     this.getAllTimeEvents();
-    var date = new Date('2022-05-01T19:06')
-    console.log(date.toLocaleString());
   }
 
   getUserInfo() {
