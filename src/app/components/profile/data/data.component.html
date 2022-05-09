@@ -123,21 +123,19 @@
                             >
                         </div>
 
-                        <div class="form-group" id="password-form">
+                        <div class="form-group" id="password-form" *ngIf="!user.oauthUser">
                             <input #password="ngModel" [(ngModel)]="userEdited.password" class="form-control" id="pwd" name="password"
-                                placeholder="Новый пароль" type="password"
-                            >
+                                placeholder="Новый пароль" type="password"/>
                         </div>
 
-                        <div class="form-group" id="cpassword-form">
+                        <div class="form-group" id="cpassword-form" *ngIf="!user.oauthUser">
                             <input #cpassword="ngModel" [(ngModel)]="this.currentPassword" class="form-control" id="cpwd" name="cpassword" ngModel
-                                placeholder="Текущий пароль (для подтверждения)" required type="password"
-                            >
+                                placeholder="Текущий пароль (для подтверждения)" [required]="!user.oauthUser" type="password"/>
                             <small class="text-danger">{{msg}}</small>
                         </div>
                     </div>
 
-                    <p style="text-indent:32%">
+                    <p style="text-indent:32%" [ngStyle]="{'margin-top':user.oauthUser?'130px':''}">
                         <button [disabled]="dataChangeForm.form.invalid" type="submit" class="btn btn-lg btn-danger contentBtn">Сохранить изменения</button>
                     </p>
             </form>

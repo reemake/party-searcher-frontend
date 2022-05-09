@@ -155,6 +155,10 @@ export class DataComponent implements OnInit {
 
     console.log(this.user.login);
     console.log(this.currentPassword);
+    if (this.user.oauthUser){
+      this.update(dataChangeForm);
+    }
+    else
     this.userService.approvePassword(this.user.login, this.currentPassword).subscribe(
       result => {
         console.log("RESULT = " + result);
@@ -164,42 +168,7 @@ export class DataComponent implements OnInit {
           this.msg = "Неверный пароль!"
         }
         else {
-          this.msg = "";
-          this.userEdited.login = this.user.login;
-          if (this.userEdited.email == null)
-            this.userEdited.email = this.user.email;
-          if (this.userEdited.password == null) {
-            this.userEdited.password = this.currentPassword;
-            console.log(this.userEdited.password);
-          }
-          if (this.userEdited.firstName == null)
-            this.userEdited.firstName = this.user.firstName;
-          if (this.userEdited.lastName == null)
-            this.userEdited.lastName = this.user.lastName;
-          if (this.userEdited.phone == null)
-            this.userEdited.phone = this.user.phone;
-          if (this.userEdited.pictureUrl == null)
-            this.userEdited.pictureUrl = this.user.pictureUrl;
-          if (this.userEdited.organizationName == null)
-            this.userEdited.organizationName = this.user.organizationName;
-          if (this.userEdited.description == null)
-            this.userEdited.description = this.user.description;
-          if (this.userEdited.commercialUser == null)
-            this.userEdited.commercialUser = this.user.commercialUser;
-          if (this.userEdited.commercialUserCreated == null)
-            this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
-
-          console.log(this.userEdited);
-          this.userService.updateUser(this.userEdited).subscribe(
-            result => {
-                console.log("user successfully updated");
-                dataChangeForm.reset();
-                this.getUserInfo();
-            },
-            error => {
-                console.log(error);
-            }
-          )
+this.update(dataChangeForm);
         }
       },
       error => {
@@ -208,6 +177,45 @@ export class DataComponent implements OnInit {
     )
 
 
+  }
+
+  private update(dataChangeForm: NgForm){
+    this.msg = "";
+    this.userEdited.login = this.user.login;
+    if (this.userEdited.email == null)
+      this.userEdited.email = this.user.email;
+    if (this.userEdited.password == null) {
+      this.userEdited.password = this.currentPassword;
+      console.log(this.userEdited.password);
+    }
+    if (this.userEdited.firstName == null)
+      this.userEdited.firstName = this.user.firstName;
+    if (this.userEdited.lastName == null)
+      this.userEdited.lastName = this.user.lastName;
+    if (this.userEdited.phone == null)
+      this.userEdited.phone = this.user.phone;
+    if (this.userEdited.pictureUrl == null)
+      this.userEdited.pictureUrl = this.user.pictureUrl;
+    if (this.userEdited.organizationName == null)
+      this.userEdited.organizationName = this.user.organizationName;
+    if (this.userEdited.description == null)
+      this.userEdited.description = this.user.description;
+    if (this.userEdited.commercialUser == null)
+      this.userEdited.commercialUser = this.user.commercialUser;
+    if (this.userEdited.commercialUserCreated == null)
+      this.userEdited.commercialUserCreated = this.user.commercialUserCreated;
+
+    console.log(this.userEdited);
+    this.userService.updateUser(this.userEdited).subscribe(
+      result => {
+        console.log("user successfully updated");
+        dataChangeForm.reset();
+        this.getUserInfo();
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   public sendCode() {

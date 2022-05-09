@@ -15,7 +15,8 @@ export class User {
   description: string;
   authorities?: Role[];
   tokens?: PhoneToken[];
-  phoneConfirmed?: boolean
+  phoneConfirmed?: boolean;
+  oauthUser?:boolean
 
   constructor() {
   }
