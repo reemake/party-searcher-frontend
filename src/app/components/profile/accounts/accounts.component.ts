@@ -21,11 +21,11 @@ export class AccountsComponent implements OnInit {
   private currentPayUrl:string
 
   constructor(private userService: UserService, public authService: AuthenticationService, private router: Router,private commercialService:CommercialServiceService) {
-this.commercialService.getUrlForPaying().subscribe(url=>this.currentPayUrl=url);
+this.commercialService.getUrlForPaying().subscribe(url=>{
+  this.currentPayUrl=url.url});
    }
 
    public hasReceipt():boolean{
-     console.log(`PAY URL: ${this.currentPayUrl}`)
     return this.currentPayUrl!==null;
    }
 
@@ -53,11 +53,11 @@ this.commercialService.getUrlForPaying().subscribe(url=>this.currentPayUrl=url);
     this.commercialService.getNewUrlForPaying().subscribe(url => {
       console.log(`new url =${url}`)
       if (url) {
-        location.href = url;
+        location.href = url.url;
       } else {
 
       }
-    }, error => console.log("Произошла ошибка"))
+    }, error => alert("Произошла ошибка "+JSON.stringify(error)))
   }
 
   deleteCommercialUser() {

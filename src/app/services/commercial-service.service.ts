@@ -17,12 +17,12 @@ export class CommercialServiceService {
     return this.httpClient.get<CommercialAccountConnectionTicket>(BACKEND_URL + "/api/users/getExistingCommercialRegistration");
   }
 
-  public getUrlForPaying(): Observable<string> {
-    return this.httpClient.get<string>(BACKEND_URL + "/api/paid/getPayingUrl");
+  public getUrlForPaying(): Observable<any> {
+    return this.httpClient.get(BACKEND_URL + "/api/paid/getPayingUrl");
   }
 
-  public getNewUrlForPaying(): Observable<string> {
-    return this.httpClient.get<string>(BACKEND_URL + "/api/paid/getNewUrl");
+  public getNewUrlForPaying(): Observable<any> {
+    return this.httpClient.get(BACKEND_URL + "/api/paid/getNewUrl");
   }
 
 }
