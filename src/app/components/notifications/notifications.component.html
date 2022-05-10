@@ -1,6 +1,10 @@
 <div class="container">
   <h2 class="notifications_header">Приглашения</h2>
 <div class="notifications">
+    <div *ngIf="!inviteCheck" style="font-size: 24px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;">Вас ещё не пригласили на мероприятия :(</div>
     <div *ngIf="inviteCheck">
         <tbody class="notifications_selector">
             <tr *ngFor="let invite of invites">
