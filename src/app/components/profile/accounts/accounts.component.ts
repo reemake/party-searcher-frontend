@@ -50,7 +50,7 @@ this.commercialService.getUrlForPaying().subscribe(url=>this.currentPayUrl=url);
   }
 
   payForCommercial(){
-    this.commercialService.getUrlForPaying().subscribe(url => {
+    this.commercialService.getNewUrlForPaying().subscribe(url => {
       if (url) {
         location.href = url;
       } else {
