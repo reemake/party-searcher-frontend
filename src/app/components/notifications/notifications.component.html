@@ -6,9 +6,9 @@
                 <div class="notifications_selector_element">
                     <td class="inviteText">Пользователь {{ invite.owner.login }} приглашает вас на мероприятие "{{ invite.name }}", которое состоится {{ invite.dateTimeStart | date:'dd.MM.YY в HH:mm'}}</td>
                     <td class="inviteButtonArea">
-                        <button class="inviteButton" (click)="acceptClick($event)" id={{invite.id}}>Принять</button>
-                        <button class="inviteButton" (click)="rejectClick($event)" id={{invite.id}}>Отклонить</button>
-                        <button class="inviteButton" (click)="detailsClick(invite)">Подробности</button>
+                        <button class="inviteButton btn-secondary" (click)="acceptClick($event)" id={{invite.id}}>Принять</button>
+                        <button class="inviteButton btn-secondary " (click)="rejectClick($event)" id={{invite.id}}>Отклонить</button>
+                        <button class="inviteButton btn-secondary" (click)="detailsClick(invite)">Подробности</button>
                     </td>
                 </div>
             </tr>

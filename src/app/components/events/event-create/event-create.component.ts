@@ -148,7 +148,7 @@ export class EventCreateComponent implements OnInit {
         console.log("no begin")
         return {"no begin date":true};
       }
-      if (control.parent?.get('startTime')?.value > control.value ) {
+      if (control.parent?.get('startTime')?.value > control.value && control.value) {
         console.log("less begin")
         return {"end date less begin":true};
       }

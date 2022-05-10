@@ -33,7 +33,7 @@ export class EditComponent implements OnInit {
   public isPrivateInput: FormControl = new FormControl();
   public isOnlineInput: FormControl = new FormControl(false);
   public locationInput: FormControl = new FormControl();
-  public urlInput: FormControl;
+  public urlInput: FormControl=new FormControl();
   public eventThemeInput: FormControl = new FormControl(null, [Validators.required]);
   public eventTypeInput: FormControl = new FormControl(null, [Validators.required]);
   public hasChatWithOwnerInput: FormControl = new FormControl(false);
@@ -52,6 +52,8 @@ export class EditComponent implements OnInit {
   public friendsCheck: boolean = false;
   public invitedFriendsCheck: boolean = false;
   public invitedFriendsLogins: string[] = new Array;
+  public usersByMail: User[];
+  public usersByMailCheck: boolean = false;
   private eventLocation: Location;
   public currentUser:User;
 
@@ -77,6 +79,7 @@ export class EditComponent implements OnInit {
     );
     this.activatedRoute.queryParams.subscribe(params => {
       this.eventService.get(params['id']).subscribe(event => {
+        console.log(event)
         this.currentEvent = event;
         this.location = event.location?.name || '';
         this.invitedFriendsLogins = event.invitedGuests.map(e => e.login);
@@ -84,8 +87,9 @@ export class EditComponent implements OnInit {
         this.descriptionInput.setValue(event.description);
         this.nameInput.setValue(event.name);
         this.isOnlineInput.setValue(event.isOnline);
-        this.endTimeInput.setValue(event.dateTimeEnd);
-        this.startTimeInput.setValue(event.dateTimeStart);
+        this.endTimeInput.setValue(event.dateTimeEnd?event.dateTimeEnd:"");
+
+        this.startTimeInput.setValue(event.dateTimeStart?event.dateTimeStart:"");
         this.eventThemeInput.setValue(event.theme);
         this.hasChatWithOwnerInput.setValue(event.hasChatWithOwner);
         this.eventTypeInput.setValue(event.eventType.name);
@@ -93,6 +97,79 @@ export class EditComponent implements OnInit {
         this.priceInput.setValue(event.price);
         this.locationInput.setValue(event.location?.name);
         this.urlInput.setValue(event.url);
+        this.isPrivateInput.setValue(event.isPrivate);
+
+
+        this.locationInput.disable();
+
+        console.log("type ")
+        this.formGroup = new FormGroup({
+          name: this.nameInput,
+          description: this.descriptionInput,
+          startTime: this.startTimeInput,
+          endTime: new FormControl(this.endTimeInput.value,[this.endDateValidator().bind(this.formGroup)]),
+          maxGuests: this.maxGuestsCountInput,
+          price: this.priceInput,
+          isPrivate: this.isPrivateInput,
+          isOnline: this.isOnlineInput,
+          location: this.locationInput,
+          url: new FormControl(this.urlInput.value, [this.urlValidator().bind(this.formGroup)]),
+          theme: this.eventThemeInput,
+          type: this.eventTypeInput
+        });
+
+        console.log(this.eventTypeInput.value);
+        this.endTimeInput=this.formGroup.controls['endTime'] as FormControl;
+        this.urlInput = this.formGroup.controls['url'] as FormControl;
+
+        this.isOnlineInput.valueChanges.subscribe((val) => {
+          this.urlInput.updateValueAndValidity();
+        })
+
+        this.startTimeInput.valueChanges.subscribe((value => {
+          this.endTimeInput.updateValueAndValidity();
+        }))
+
+
+
+        this.changeBounds.pipe(
+          debounceTime(500)
+        )
+          .subscribe(event => {
+            if (this.isSWandNEmore(event[2], event[3])) {
+              this.eventService.getEventsWithinRadius(event[0], event[1])
+                .subscribe((events: Event[]) => {
+                  this.events = events;
+                  this.currentLocation = event[0];
+                });
+            }
+          })
+        this.locationChangeSubject.pipe(debounceTime(2000))
+          .subscribe(location => {
+            var eventData: any = {
+              location: {
+                location: {
+                  coordinates: location
+                }
+              }
+            };
+            if (this.eventLocation) {
+              this.eventLocation.location.coordinates = eventData.location.location.coordinates;
+              this.eventLocation.name = '';
+            } else {
+              this.eventLocation = {
+                location: {type: "Point", coordinates: eventData.location.location.coordinates},
+                name: this.location
+              }
+            }
+            this.eventService.setAddressByLonLat(eventData, () => {
+              this.location = eventData.location.name;
+              this.eventLocation.name = eventData.location.name;
+            })
+
+          })
+
+
         event.tags.forEach(tag => {
           var tagControl = new FormControl();
           tagControl.setValue(tag.name);
@@ -101,67 +178,7 @@ export class EditComponent implements OnInit {
       }, error1 => this.message = error1);
     })
 
-    this.locationInput.disable();
-    this.formGroup = new FormGroup({
-      name: this.nameInput,
-      description: this.descriptionInput,
-      startTime: this.startTimeInput,
-      endTime: new FormControl(this.endTimeInput.value,[this.endDateValidator().bind(this.formGroup)]),
-      maxGuests: this.maxGuestsCountInput,
-      price: this.priceInput,
-      isPrivate: this.isPrivateInput,
-      isOnline: this.isOnlineInput,
-      location: this.locationInput,
-      url: new FormControl(this.urlInput.value, [this.urlValidator().bind(this.formGroup)]),
-      theme: this.eventThemeInput,
-      type: this.eventTypeInput
-    });
-    this.endTimeInput=this.formGroup.controls['endTime'] as FormControl;
-    this.urlInput = this.formGroup.controls['url'] as FormControl;
-    this.changeBounds.pipe(
-      debounceTime(500)
-    )
-      .subscribe(event => {
-        if (this.isSWandNEmore(event[2], event[3])) {
-          this.eventService.getEventsWithinRadius(event[0], event[1])
-            .subscribe((events: Event[]) => {
-              this.events = events;
-              this.currentLocation = event[0];
-            });
-        }
-      })
-    this.locationChangeSubject.pipe(debounceTime(2000))
-      .subscribe(location => {
-        var eventData: any = {
-          location: {
-            location: {
-              coordinates: location
-            }
-          }
-        };
-        if (this.eventLocation) {
-          this.eventLocation.location.coordinates = eventData.location.location.coordinates;
-          this.eventLocation.name = '';
-        } else {
-          this.eventLocation = {
-            location: {type: "Point", coordinates: eventData.location.location.coordinates},
-            name: this.location
-          }
-        }
-        this.eventService.setAddressByLonLat(eventData, () => {
-          this.location = eventData.location.name;
-          this.eventLocation.name = eventData.location.name;
-        })
 
-      })
-
-    this.isOnlineInput.valueChanges.subscribe((val) => {
-      this.urlInput.updateValueAndValidity();
-    })
-
-    this.startTimeInput.valueChanges.subscribe((value => {
-      this.endTimeInput.updateValueAndValidity();
-    }))
   }
 
 
@@ -178,6 +195,33 @@ export class EditComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
 
+  public emailInvate() {
+    var mail = (<HTMLInputElement>document.getElementById("mailInput")).value;
+    this.userService.getUsersByEmail(mail).subscribe((data) => {
+      this.usersByMailCheck = false;
+      this.usersByMail = data;
+      if (this.usersByMail.length != 0) this.usersByMailCheck = true;
+    });
+  }
+
+  public inviteUserByMail(user: User) {
+    for (var i = 0; i < this.invitedFriendsLogins.length; i++) {
+      if (this.invitedFriendsLogins[i] == (user.login + " (" + user.firstName + " " + user.lastName + ")")) {
+        alert("Данный пользователь уже приглашен!");
+        return;
+      }
+    }
+    if (user.pictureUrl == null) {
+      user.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+    }
+    if (user.pictureUrl == null) {
+      user.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+    }
+    this.invitedFriendsCheck = false;
+    this.invitedFriendsLogins.push((user.login + " (" + user.firstName + " " + user.lastName + ")"));
+    this.invitedFriendsCheck = true;
+  }
+
   endDateValidator():ValidatorFn{
     return (control: AbstractControl): ValidationErrors | null => {
       console.log(control.value)
@@ -186,7 +230,7 @@ export class EditComponent implements OnInit {
         console.log("no begin")
         return {"no begin date":true};
       }
-      if (control.parent?.get('startTime')?.value > control.value ) {
+      if (control.parent?.get('startTime')?.value > control.value && control.value) {
         console.log("less begin")
         return {"end date less begin":true};
       }

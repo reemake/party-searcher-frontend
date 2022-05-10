@@ -22,7 +22,7 @@ export class OauthLoginDialogComponent implements OnInit {
 
   public completeRegister() {
     this.data.id.username = this.userLogin;
-    this.httpClient.post<Jwt>(BACKEND_URL + "/completeOauth", this.data).subscribe((success: Jwt) => {
+    this.httpClient.post<Jwt>(BACKEND_URL + "/completeOauth", this.data,{headers:{'isOauthRegister':'true'}}).subscribe((success: Jwt) => {
         localStorage.setItem("token", success.id.jwt);
         localStorage.setItem("refreshToken", success.refreshToken);
         localStorage.setItem("username", success.id.username || '');

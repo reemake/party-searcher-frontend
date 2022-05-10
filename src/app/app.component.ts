@@ -28,7 +28,7 @@ export class AppComponent {
         this.events = e;
         if (e.length > 0) {
           this.matDialogRef = matDialog.open(ReviewDialogComponent, {
-            width: '250px',
+            width: '350px',
             data: e[this.eventIndex],
             scrollStrategy: new NoopScrollStrategy()
           });
