@@ -76,7 +76,7 @@
                 *ngIf="user.phone && user.phone!=='' && !checkIfHasUnexpiredSmsTokens() && !user.phoneConfirmed">
                  Отправить код
                </button>
-              <p class="dataColumns" style="margin-top: -10px; margin-left: 35px;">                 <!-- PHONE CONFIRMATION -->
+              <p class="dataColumns" style="margin-top: -55px; margin-left: 35px;">                 <!-- PHONE CONFIRMATION -->
                 <input class="form-control" [(ngModel)]="phoneCode" *ngIf="user.phone && user.phone!=='' && !user.phoneConfirmed" placeholder="Код из смс"
                        type="text"/>
                 <button class="btn btn-lg btn-danger contentBtn phoneCodeBtn" (click)="checkCode()" *ngIf="user.phone && user.phone!=='' && !user.phoneConfirmed" id="confirmCodeBtn"
