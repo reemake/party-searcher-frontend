@@ -26,7 +26,7 @@ this.commercialService.getUrlForPaying().subscribe(url=>this.currentPayUrl=url);
 
    public hasReceipt():boolean{
      console.log(`PAY URL: ${this.currentPayUrl}`)
-    return this.currentPayUrl!==null&&this.currentPayUrl!=='';
+    return this.currentPayUrl!==null;
    }
 
    ngOnInit(): void {
