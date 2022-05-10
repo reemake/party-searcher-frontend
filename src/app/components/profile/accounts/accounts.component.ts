@@ -6,6 +6,7 @@ import { Role } from 'src/app/entity/Role';
 import { User } from 'src/app/entity/User';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { UserService } from 'src/app/services/user.service';
+import {CommercialServiceService} from "../../../services/commercial-service.service";
 
 @Component({
   selector: 'app-accounts',
@@ -17,9 +18,15 @@ export class AccountsComponent implements OnInit {
   userLogin: string = localStorage.getItem("username") || '';
   user = new User();
   userEdited = new User();
+  private currentPayUrl:string
 
-  constructor(private userService: UserService, public authService: AuthenticationService, private router: Router) {
-    
+  constructor(private userService: UserService, public authService: AuthenticationService, private router: Router,private commercialService:CommercialServiceService) {
+this.commercialService.getUrlForPaying().subscribe(url=>this.currentPayUrl=url);
+   }
+
+   public hasReceipt():boolean{
+     console.log(this.currentPayUrl)
+    return this.currentPayUrl!==null&&this.currentPayUrl!=='';
    }
 
    ngOnInit(): void {
@@ -42,6 +49,16 @@ export class AccountsComponent implements OnInit {
     this.authService.logOut();
   }
 
+  payForCommercial(){
+    this.commercialService.getUrlForPaying().subscribe(url => {
+      if (url) {
+        location.href = url;
+      } else {
+
+      }
+    }, error => console.log("Произошла ошибка"))
+  }
+
   deleteCommercialUser() {
     this.userEdited.login = this.user.login;
     if (this.userEdited.email == null)
@@ -56,7 +73,7 @@ export class AccountsComponent implements OnInit {
       this.userEdited.pictureUrl = this.user.pictureUrl;
     if (this.userEdited.commercialUser == null)
       this.userEdited.commercialUser = this.user.commercialUser;
-  
+
     this.userEdited.commercialUserCreated = false;
     this.userEdited.organizationName = '';
     this.userEdited.description = '';

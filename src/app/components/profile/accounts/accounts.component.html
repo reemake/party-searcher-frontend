@@ -62,11 +62,13 @@
             <p *ngIf="!this.user.commercialUser" style="text-indent:40px">В данный момент, Вы находитесь на <b>личном</b> аккаунте.</p>
             <p>
                 <button [disabled]="this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" [routerLink]="['/profile/commercialRegister']">Создать коммерческий аккаунт</button>
+              <button  *ngIf="hasReceipt()" class="btn btn-lg btn-danger contentBtn" >Оплатить коммерческий аккаунт</button>
                 <button [disabled]="this.user.commercialUser || !this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToCommercialAcc()">Перейти на коммерческий аккаунт</button>
                 <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" (click)="deleteCommercialUser()">Удалить коммерческий аккаунт</button>
+              <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToDefaultAcc()">Перейти на личный аккаунт</button>
             </p>
             <p style="text-indent:32%">
-                <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToDefaultAcc()">Перейти на личный аккаунт</button>
+
             </p>
         </div>
     </div>
