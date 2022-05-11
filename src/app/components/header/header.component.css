@@ -7,6 +7,7 @@
 
 img:hover {
   background-color: red;
+  border-radius: 50%;
 }
 
 .mycontainer div a {
@@ -16,4 +17,23 @@ img:hover {
 img {
   width: 55px;
   height: 55px;
+}
+
+#logoutBtn {
+  width: 80px;
+  height: 35px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  color: black;
+
+  background: white;
+  border-radius: 10px;
+
+  margin-right: 10px;
+}
+
+#logoutBtn:hover {
+  color: #D15D55;
 }
