@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Complaint} from "../../../../entity/Event/Complaint";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ComplaintStatus} from "../../../../entity/Event/ComplaintStatus";
 import {ComplaintService} from "../../../../services/complaint.service";
 import {MatDialog} from "@angular/material/dialog";
@@ -14,7 +14,7 @@ import {SuccessDialogComponent} from "../../../success-dialog/success-dialog.com
 export class CreateComplaintComponent implements OnInit {
   public complaint: Complaint;
 
-  constructor(private activatedRoute: ActivatedRoute, private complaintService: ComplaintService, private dialog: MatDialog) {
+  constructor(private activatedRoute: ActivatedRoute, private complaintService: ComplaintService, private dialog: MatDialog, private router: Router) {
     activatedRoute.queryParams.subscribe(params => {
       var eventId = params['eventId'];
       var userLogin = localStorage.getItem("username");
@@ -37,6 +37,7 @@ export class CreateComplaintComponent implements OnInit {
   createComplaint() {
     this.complaintService.send(this.complaint).subscribe(success => {
       this.dialog.open(SuccessDialogComponent, {data: "Ваша жалоба успешно отправлена"});
+      this.router.navigate(['/']);
     }, error => {
       this.dialog.open(SuccessDialogComponent, {data: "При отправке жалобы произошла ошибка " + JSON.stringify(error)});
     });

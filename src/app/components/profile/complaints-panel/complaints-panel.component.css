@@ -1,0 +1,54 @@
+.container {
+    max-height: 100%;
+    margin: 0 auto;
+    padding-top: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+.complaints{
+    background: radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #EEEEEE 100%);
+    border-radius: 5px;
+    padding: 30px 40px 30px 40px;
+    height: 800px;
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+.title {
+    position: relative;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+
+    color: #000000;
+}
+
+.selectField {
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.complBtn {
+    margin-right: 15px;
+    height: 50px;
+    width: 220px;
+    background: #D15D55;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 15px;
+    text-align: center;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #FF0000;
+    transition: .7s;
+}
