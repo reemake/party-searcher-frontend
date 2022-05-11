@@ -5,7 +5,7 @@
     <ng-option *ngFor="let status of items" [value]="status.id">{{status.name}}</ng-option>
   </ng-select>
   <div *ngFor="let complaint of currentComplaints">
-    <p><u>Отправитель:</u> {{complaint.id.eventId}}</p>
+    <p><u>Отправитель:</u> {{complaint.id.userId}}</p>
     <p><u>Содержание:</u> {{complaint.text}}</p>
     <a href="events/description?eventId={{complaint.id.eventId}}">Перейти к событию</a><br>
     <div style="margin-top: 20px;">
