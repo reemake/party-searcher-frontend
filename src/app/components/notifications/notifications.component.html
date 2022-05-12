@@ -1,16 +1,22 @@
+<div class="container">
+  <h2 class="notifications_header">Приглашения</h2>
 <div class="notifications">
+    <div *ngIf="!inviteCheck" style="font-size: 24px;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;">Вас ещё не пригласили на мероприятия :(</div>
     <div *ngIf="inviteCheck">
-        <div class="notifications_header">Приглашения</div>
         <tbody class="notifications_selector">
             <tr *ngFor="let invite of invites">
                 <div class="notifications_selector_element">
                     <td class="inviteText">Пользователь {{ invite.owner.login }} приглашает вас на мероприятие "{{ invite.name }}", которое состоится {{ invite.dateTimeStart | date:'dd.MM.YY в HH:mm'}}</td>
                     <td class="inviteButtonArea">
-                        <button class="inviteButton btn-secondary" (click)="acceptClick($event)" id={{invite.id}}>Принять</button>
-                        <button class="inviteButton btn-secondary " (click)="rejectClick($event)" id={{invite.id}}>Отклонить</button>
-                        <button class="inviteButton btn-secondary" (click)="detailsClick(invite)">Подробности</button>
+                        <button class="inviteButton btn-danger" (click)="acceptClick($event)" id={{invite.id}}>Принять</button>
+                        <button class="inviteButton btn-danger " (click)="rejectClick($event)" id={{invite.id}}>Отклонить</button>
+                        <button class="inviteButton btn-danger" (click)="detailsClick(invite)">Подробности</button>
                     </td>
                 </div>
+                <hr>
             </tr>
         </tbody>
         <div class="inviteDescription" *ngIf="inviteDescription">
@@ -34,4 +40,5 @@
     <p>{{notification.description}}</p>
 
   </div>
+</div>
 </div>

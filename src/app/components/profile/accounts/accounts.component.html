@@ -12,8 +12,11 @@
       </p>
 
         <p><button [disabled]="!isAdmin()" [routerLink]="['/profile/admin']" class="btn btn-link menuBtn"><img class="menuImg" alt="admin panel" src="./assets/img/profile/admin-icon.png"/>Панель администратора</button>
-    </div>
+      <p><a class="btn btn-link menuBtn"  href="/pages/survey.test"><img height="33px" width="33px" alt="fill survey" class="menuImg"
+                                                                              src="./assets/img/profile/renew%20survey.png"/>Пройти опросник заново</a>
+      </p>
 
+    </div>
     <div class="account-data">
         <div *ngIf="!this.user.pictureUrl && !this.user.commercialUser" class="leftPart"><img class="accImg" alt="accImg" src="./assets/img/profile/accImgExample.png"/>
             <p *ngIf="this.user.commercialUser" class="accType1">Коммерческий аккаунт</p>
@@ -65,7 +68,7 @@
               <button (click)="payForCommercial()" *ngIf="hasReceipt()" class="btn btn-lg btn-danger contentBtn" >Оплатить коммерческий аккаунт</button>
                 <button [disabled]="this.user.commercialUser || !this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToCommercialAcc()">Перейти на коммерческий аккаунт</button>
                 <button [disabled]="!this.user.commercialUserCreated" type="button" class="btn btn-lg btn-danger contentBtn" (click)="deleteCommercialUser()">Удалить коммерческий аккаунт</button>
-              <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToDefaultAcc()">Перейти на личный аккаунт</button>
+              <button [disabled]="!this.user.commercialUser" type="button" class="btn btn-lg btn-danger contentBtn" (click)="switchToDefaultAcc()" style="margin-left: 375px;">Перейти на личный аккаунт</button>
             </p>
             <p style="text-indent:32%">
 

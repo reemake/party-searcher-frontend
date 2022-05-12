@@ -59,7 +59,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.eventService.assignOnEvent(event.path[0].id).subscribe(sucess=>{
       location.reload();
     });
-
   }
 
   public rejectClick(event: any): void {

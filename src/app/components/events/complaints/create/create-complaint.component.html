@@ -1,10 +1,10 @@
-
-  <div>
+<div class="container">
+  <div class="complaint">
+    <h1 id="title">Жалоба на мероприятие</h1>
     <label for="text">Описание жалобы:</label>
-    <textarea [(ngModel)]="complaint.text" id="text" >
+    <textarea [(ngModel)]="complaint.text" id="text" class="form-control" style="resize: none;" placeholder="Опишите, что вам не понравилось" rows="6">
     </textarea>
     <p *ngIf="complaint.text==''" class="alert-info">Заполните текст жалобы</p>
+    <button class="btn btn-danger submitBtn" (click)="createComplaint()" [disabled]="complaint.text==''">Отправить</button>
   </div>
-  <div>
-    <button (click)="createComplaint()" [disabled]="complaint.text==''">Отправить</button>
-  </div>
+</div>
