@@ -57,8 +57,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   public acceptClick(event: any): void {
     this.inviteCheck = false;
     this.eventService.assignOnEvent(event.path[0].id).subscribe(sucess=>{
-      var id = event.path[0].id;
-    this.invites=this.invites.filter(e=>e.id!==id);
+      location.reload();
     });
 
   }

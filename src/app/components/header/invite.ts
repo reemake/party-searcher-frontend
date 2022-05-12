@@ -1,6 +1,5 @@
 import { EventOwner } from '../../entity/Event/EventOwner';
 import { EventType } from '../../entity/Event/EventType';
-import { Tag } from '../../entity/Event/Tag';
 import { EventAttendance } from '../../entity/Event/EventAttendance';
 import { User } from '../../entity/User';
 
@@ -21,7 +20,7 @@ export class Invite {
     chatId: number
     currentUserEntered: boolean
     theme: string
-    tags: Array<Tag>
+    tags: Array<string>
     guests: Array<EventAttendance>
     invitedGuests: Array<User>
 }

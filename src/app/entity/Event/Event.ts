@@ -1,7 +1,6 @@
 import {EventOwner} from "./EventOwner";
 import {Location} from "../Location";
 import {EventAttendance} from "./EventAttendance";
-import {Tag} from "./Tag";
 import {EventType} from "./EventType";
 import {User} from "../../components/profile/friends/user";
 
@@ -22,7 +21,7 @@ export interface Event {
   chatId?: number
   currentUserEntered?: boolean,
   theme: string,
-  tags: Array<Tag>,
+  tags: Array<string>,
   guests: Array<EventAttendance>,
   invitedGuests: Array<User> ,
   hasChatWithOwner: boolean,

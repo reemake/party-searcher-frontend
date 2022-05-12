@@ -4,7 +4,6 @@ import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, 
 import {debounceTime, Subject} from "rxjs";
 import {EventService} from "../../../services/event.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Tag} from "../../../entity/Event/Tag";
 import {Relationship} from "../../profile/friends/Relationship";
 import {UserService} from "../../profile/friends/user.service";
 import {User} from "../../../entity/User";
@@ -172,7 +171,7 @@ export class EditComponent implements OnInit {
 
         event.tags.forEach(tag => {
           var tagControl = new FormControl();
-          tagControl.setValue(tag.name);
+          tagControl.setValue(tag);
           this.tagsInputs.push(tagControl);
         });
       }, error1 => this.message = error1);
@@ -347,7 +346,7 @@ export class EditComponent implements OnInit {
       hasChatWithOwner: !this.hasChatWithOwnerInput.value
     };
     this.tagsInputs.forEach(val => {
-      let tag: Tag = {name: String(val.value).toUpperCase()};
+      let tag=String(val.value).toUpperCase();
       event.tags.push(tag);
     });
     if (!event.isOnline) {

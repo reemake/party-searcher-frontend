@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Event} from "../../../entity/Event/Event";
 import {EventService} from "../../../services/event.service";
-import {Tag} from "../../../entity/Event/Tag";
 import {debounceTime, Subject} from "rxjs";
 import {Relationship} from '../../profile/friends/Relationship';
 import {User} from 'src/app/entity/User';
@@ -251,7 +250,7 @@ export class EventCreateComponent implements OnInit {
         hasChatWithOwner: !this.hasChatWithOwnerInput.value
       };
       this.tagsInputs.forEach(val => {
-        let tag: Tag = {name: String(val.value).toUpperCase()};
+        let tag=String(val.value).toUpperCase();
         event.tags.push(tag);
       });
       if (!event.isOnline) {
