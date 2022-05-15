@@ -79,7 +79,7 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   public doLocalFiltering(name: string): void {
-    this.filteredEvents = this.events.filter(e => e.name.indexOf(name) == 0);
+    this.filteredEvents = this.events.filter(e => e.name.indexOf(name) != -1);
   }
 
   private filterEvents(): void {

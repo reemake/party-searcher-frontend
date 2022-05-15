@@ -63,7 +63,7 @@ export class EventsIndexComponent implements OnInit {
     } else if (eventsArray.length == 1) {
       this.currentActiveEvent = eventsArray[0];
       this.prevMapSize = this.mapSize;
-      this.mapSize = "80%";
+      this.mapSize = "85%";
     } else {
       this.mapSize = this.prevMapSize;
       this.currentActiveEvent = null;
