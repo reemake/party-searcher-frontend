@@ -266,7 +266,8 @@ export class EventCreateComponent implements OnInit {
             alert("Событие успешно создано");
             this.router.navigateByUrl("/events/map")
           }, error => {
-            alert("При создании эвента произошла ошибка, повторите еще раз");
+            console.log(error)
+            alert("При создании эвента произошла ошибка, "+error.error.message?error.error.message:JSON.stringify(error));
             this.error = error;
           });
         });
@@ -276,6 +277,8 @@ export class EventCreateComponent implements OnInit {
           alert("Событие успешно создано");
           this.router.navigateByUrl("/events/map")
         }, error => {
+          console.log(error)
+          alert("При создании эвента произошла ошибка, "+error.error.message?error.error.message:JSON.stringify(error));
           this.error = error;
         });
     }

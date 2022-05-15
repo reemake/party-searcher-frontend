@@ -39,7 +39,7 @@ export class CreateComplaintComponent implements OnInit {
       this.dialog.open(SuccessDialogComponent, {data: "Ваша жалоба успешно отправлена"});
       this.router.navigate(['/']);
     }, error => {
-      this.dialog.open(SuccessDialogComponent, {data: "При отправке жалобы произошла ошибка " + JSON.stringify(error)});
+      this.dialog.open(SuccessDialogComponent, {data: "При отправке жалобы произошла ошибка " + error.error.message?error.error.message:JSON.stringify(error)});
     });
   }
 

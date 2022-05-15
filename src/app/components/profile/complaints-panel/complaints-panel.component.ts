@@ -70,7 +70,7 @@ export class ComplaintsPanelComponent implements OnInit {
   }
 
   banComplaintAuthor(userId: string, complaintId: any) {
-    this.complaintsService.banComplaintAuthor(userId, complaintId.userId).subscribe(e => {
+    this.complaintsService.banComplaintAuthor(userId, complaintId.eventId).subscribe(e => {
       this.statusesOfOperations.set(complaintId, "Операция успешно выполнена")
     }, error => {
       alert("Произошла ошибка " + JSON.stringify(error));
