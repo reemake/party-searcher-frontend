@@ -28,10 +28,11 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['filter']) {
-      if (changes['filter'].previousValue !== undefined)
-        this.filterEvents();
-    }
+if(changes["events"]){
+  if(changes["events"].previousValue && changes["events"].previousValue.length>0){
+    this.events=changes["events"].previousValue;
+  }
+}
   }
 
   public showDescription(event: Event): void {
@@ -97,6 +98,14 @@ export class ListComponent implements OnInit, OnChanges {
         this.nameInput.setValue(null);
         this.events = events.content;
       });
+
+      this.eventService.getVisitorsStats(this.events).subscribe(stats=>{
+        const map = new Map(Object.entries(stats));
+        this.events.forEach(e=>{
+          if (e.id && map.has(Number(e.id).toString()))
+            e.visitorsCount=map.get(Number(e.id).toString());
+        })
+      })
     }
   }
 
