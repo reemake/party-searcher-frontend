@@ -138,10 +138,10 @@
             <button (click)="goToChat(viewingEvent.chatId)" *ngIf="viewingEvent.chatId!==undefined"><img
               src="./assets/img/mapImages/buttons/group-chat.png"/>&nbsp;&nbsp;&nbsp;Групповой чат</button>
           </div>
-          <div *ngIf="viewingEvent.hasChatWithOwner" class="description-button">
+          <div *ngIf="viewingEvent.hasChatWithOwner && viewingEvent.owner?.login != user.login" class="description-button">
             <button (click)="callEventOwner()"><img src="./assets/img/mapImages/buttons/chat_with_admin.png"/>&nbsp;&nbsp;&nbsp;Связь с организатором</button>
           </div>
-          <div class="description-button">
+          <div *ngIf="viewingEvent.owner?.login != user.login" class="description-button">
             <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/>&nbsp;&nbsp;&nbsp;Пожаловаться на мероприятие</button>
           </div>
         </div>

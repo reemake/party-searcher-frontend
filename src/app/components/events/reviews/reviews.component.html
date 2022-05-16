@@ -1,18 +1,21 @@
-
-<div class="reviews">
+<div class="container">
+  <h2 class="title">Отзывы организатора</h2>
+  <div class="reviews">
 <div *ngFor="let review of reviews">
-<h2>{{review.id.userId}}</h2>
-  <a href="events/description?eventId={{review.id.eventId}}">перейти к событию</a>
-  <p>Оценка мероприятия: {{review.eventMark}}</p>
+<p style="font-size: 22px;">Отзыв пользователя <b>{{review.id.userId}}</b></p>
+  <a href="events/description?eventId={{review.id.eventId}}">Перейти к событию</a>
+  <p style="margin-top: 10px;">Оценка мероприятия: {{review.eventMark}}</p>
   <div *ngIf="review.eventOrganizationMark!==0 && review.recommendToOthersMark!==0 && review.text!=='' && review.eventLengthMark">
-    <pre>{{review.text}}</pre>
-    <div>
-      <img (click)="showImage(review,photo)" *ngFor="let photo of review.reviewImagesUrls" src="{{photo}}" alt="review image" />
-    </div>
-    <p>Оценка организации события:{{review.eventOrganizationMark}}</p>
+    Отзыв: <pre>{{review.text}}</pre>
+    <p>Оценка организации события: {{review.eventOrganizationMark}}</p>
     <p>Готов рекомендовать событие другим: {{review.recommendToOthersMark}}</p>
-    <p>Оценка длительности мероприятия:{{lengthsMarks.get(review.eventLengthMark)}}</p>
+    <p>Оценка длительности мероприятия: {{lengthsMarks.get(review.eventLengthMark)}}</p>
+    <div>Прикреплённые фото:
+      <img style="width: 70px; height: 70px;" (click)="showImage(review,photo)" *ngFor="let photo of review.reviewImagesUrls" src="{{photo}}" alt="review image" />
+    </div>
   </div>
+  <hr>
+</div>
 </div>
 </div>
 

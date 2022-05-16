@@ -112,7 +112,8 @@ export class MyEventsComponent implements OnInit {
 
 
   complainOnEvent(): void {
-
+    if (this.viewingEvent  && this.viewingEvent.id)
+    this.router.navigateByUrl(`events/complaints/create?eventId=${this.viewingEvent.id}`);
   }
 
   createAndGoToChat(): void {
