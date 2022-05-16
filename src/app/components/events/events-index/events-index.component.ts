@@ -39,9 +39,15 @@ export class EventsIndexComponent implements OnInit {
       if (this.isSWandNEmore(event[2], event[3]) && !this.settedFilter) {
         this.eventService.getEventsWithinRadius(event[0], event[1])
           .subscribe((events: Event[]) => {
-            console.log(events);
             this.events = events;
             this.currentLocation = event[0];
+            this.eventService.getVisitorsStats(events).subscribe(stats=>{
+              const map = new Map(Object.entries(stats));
+              this.events.forEach(e=>{
+                if (e.id && map.has(Number(e.id).toString()))
+                e.visitorsCount=map.get(Number(e.id).toString());
+              })
+            })
           });
       }
 

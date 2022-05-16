@@ -48,8 +48,8 @@
       {{event.description}}
     </pre>
   </div>
-  <div class="description-row">
-    <p>{{event.isOnline ? "Этот сайт" : "Эту локацию"}} за все время посетило 0 человек.</p>
+  <div class="description-row" *ngIf="!event.isOnline">
+    <p>Эту локацию за все время посетило {{event.visitorsCount?event.visitorsCount:0}} человек.</p>
   </div>
   <hr>
   <div class="description-row description-buttons">
