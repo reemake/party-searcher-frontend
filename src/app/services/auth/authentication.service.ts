@@ -86,7 +86,6 @@ private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
           return authErrorMarker;
         }
       } else{
-        this.updateAuthStatus.next(true);
         this.hasAuth = true;
       }
     }

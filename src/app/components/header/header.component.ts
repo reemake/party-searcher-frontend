@@ -67,6 +67,10 @@ export class HeaderComponent implements OnInit {
     this.authCheck = false;
   }
 
+  public hasToken():boolean{
+    return localStorage.getItem("token")!=null;
+  }
+
   ngOnInit(): void {
     this._authService.changeAuth().subscribe(res=>{
       console.log(`status change =${res}`);
