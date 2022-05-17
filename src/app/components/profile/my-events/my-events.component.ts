@@ -25,14 +25,17 @@ export class MyEventsComponent implements OnInit {
   descriptionOpened: boolean = false;
   viewingEvent: Event;
 
-  constructor(private userService: UserService, 
-              public authService: AuthenticationService, 
+  constructor(private userService: UserService,
+              public authService: AuthenticationService,
               private router: Router,
               private eventsService: EventService,
               private chatService: ChatService) {
-    
+
    }
 
+  isModer():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ComplaintResolver).length>0;
+  }
   ngOnInit(): void {
     this.getUserInfo();
     this.getUsersCreatedEvents();
@@ -149,7 +152,7 @@ export class MyEventsComponent implements OnInit {
         }
       )
     }
-  
+
   }
 
   removeFromEvent(event: Event): void {
@@ -160,7 +163,7 @@ export class MyEventsComponent implements OnInit {
           console.log("user successfully removed from event");
           alert("Вы успешно отменили свое участие в данном мероприятии");
           window.location.reload();
-        }, 
+        },
         error => {
           alert("Произошла ошибка");
         })

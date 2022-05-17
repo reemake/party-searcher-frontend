@@ -149,6 +149,10 @@ export class DataComponent implements OnInit {
     return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ADMIN).length>0;
   }
 
+  isModer():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ComplaintResolver).length>0;
+  }
+
   updateUser(dataChangeForm: NgForm) {
 
     console.log("CURRENT PASSWORD = " + this.currentPassword);

@@ -1,7 +1,7 @@
 <div *ngIf="surveyButton" class="survey-container" id="survey">
   <h1 class="survey-container-text">Добро пожаловать в Party Searcher!<br>Для определения мероприятий, подходящих
     конкретно вам,<br>рекомендуется пройти опрос.<br>Желаете пройти его?</h1>
-  <button class="btn btn-danger survey-button" id="survey-button-no" (click)="surveyButtonPress()">Нет</button>
+  <button class="btn btn-danger survey-button" id="survey-button-no" (click)="cancelButtonPress()">Нет</button>
   <button routerLink="../pages/survey.test" class="btn btn-danger survey-button" id="survey-button-yes" (click)="surveyButtonPress()">
     Да
   </button>

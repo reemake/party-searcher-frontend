@@ -13,7 +13,7 @@
         <img *ngIf="chat.private" class="miniImage" src="{{imagesMaps.get(chat.id)||'assets/img/profile/accImgExample.png'}}"/>
         <a href="/chat;id={{chat.id}}">{{chat.name}}</a>
         <p style="margin-left: 60px; margin-top: -5px;">{{chat.message?.text}}</p>
-        <div class="unreadMsg" *ngIf="chat.unReadCount && chat.unReadCount>0">{{chat.unReadCount || ''}}</div>
+        <div class="unreadMsg" *ngIf="chat.unReadCount && chat.unReadCount>0">{{chat.unReadCount}}</div>
         <hr/>
       </div>
 

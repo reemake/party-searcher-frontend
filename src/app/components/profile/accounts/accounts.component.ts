@@ -21,16 +21,18 @@ export class AccountsComponent implements OnInit {
   private currentPayUrl:string
 
   constructor(private userService: UserService, public authService: AuthenticationService, private router: Router,private commercialService:CommercialServiceService) {
-this.commercialService.getUrlForPaying().subscribe(url=>{
-  this.currentPayUrl=url.url});
+
    }
 
    public hasReceipt():boolean{
-    return this.currentPayUrl!==null;
+    return this.currentPayUrl!==undefined;
    }
 
    ngOnInit(): void {
     this.getUserInfo();
+  }
+  isModer():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ComplaintResolver).length>0;
   }
 
   getUserInfo() {
@@ -38,6 +40,9 @@ this.commercialService.getUrlForPaying().subscribe(url=>{
       result => {
         this.user = result;
         console.log(this.user);
+        if(!this.user.commercialUserCreated)
+          this.commercialService.getUrlForPaying().subscribe(url=>{
+            this.currentPayUrl=url.url});
       },
       error => {
         console.log(error);

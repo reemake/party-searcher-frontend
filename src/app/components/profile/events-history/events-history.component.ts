@@ -41,7 +41,9 @@ export class EventsHistoryComponent implements OnInit {
       }
     )
   }
-
+  isModer():boolean{
+    return this.user.authorities!==undefined&&this.user.authorities.filter(e=>e===Role.ComplaintResolver).length>0;
+  }
   logOut() {
     this.authService.logOut();
   }

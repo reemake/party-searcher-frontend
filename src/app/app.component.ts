@@ -24,7 +24,7 @@ export class AppComponent {
   constructor(private matDialog: MatDialog, private eventService: EventService, private authService: AuthenticationService,
               private cookieService: CookieService, private reviewService: ReviewService) {
     if (!cookieService.check("reviewsLoaded")) {
-      this.eventService.getEndedEvents().subscribe(e => {
+      this.eventService.getEndedEventsWithoutReviews().subscribe(e => {
         this.events = e;
         if (e.length > 0) {
           this.matDialogRef = matDialog.open(ReviewDialogComponent, {
