@@ -61,6 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     this.authService.updateJWT.next(body.id.jwt);
                     request = request.clone({headers: authorization})
                     this.cookie.delete("refreshError");
+                    location.reload();
                     //  this.authService.setAuth(jwt);
                   }
                   if (localStorage.getItem("token")!=null)
