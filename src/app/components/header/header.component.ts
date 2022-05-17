@@ -14,6 +14,7 @@ import { User } from 'src/app/entity/User';
 export class HeaderComponent implements OnInit {
 
   public invitesCheck: boolean = false;
+  public authCheck: boolean = false;
 
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService, private notificationService: NotificationService, public userService: UserService) {
     if (localStorage.getItem("token")) {
@@ -38,6 +39,17 @@ export class HeaderComponent implements OnInit {
         })
       }
     }, 60000);
+
+    this._authService.checkAuth().subscribe(
+      result => {
+        console.log("auth");
+        this.authCheck = true;
+      },
+      error => {
+        console.log("not auth");
+        this.authCheck = false;
+      }
+    )
   }
 
   public invateCheck(): void {
@@ -50,6 +62,7 @@ export class HeaderComponent implements OnInit {
 
   public logOut(): void {
     this._authService.logOut();
+    this.authCheck = false;
   }
 
   ngOnInit(): void {

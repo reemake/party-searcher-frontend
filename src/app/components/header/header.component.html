@@ -34,7 +34,7 @@
       <img alt="Оповещения" src="./assets/img/header/notifications alert.png" *ngIf="invitesCheck"/>
     </a>
 
-    <span *ngIf="_authService.isAuth()">
+    <span *ngIf="authCheck">
     <button id="logoutBtn" (click)="this.logOut()">Выйти</button>
     </span>
 
