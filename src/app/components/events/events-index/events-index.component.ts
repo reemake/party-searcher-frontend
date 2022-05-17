@@ -31,6 +31,7 @@ export class EventsIndexComponent implements OnInit {
   private maxSW: number[] = [];
   private maxNE: number[] = [];
   private settedFilter = false;
+  private showFilter=false;
 
   constructor(private eventService: EventService) {
     this.changeMapBounds.pipe(
@@ -39,9 +40,15 @@ export class EventsIndexComponent implements OnInit {
       if (this.isSWandNEmore(event[2], event[3]) && !this.settedFilter) {
         this.eventService.getEventsWithinRadius(event[0], event[1])
           .subscribe((events: Event[]) => {
-            console.log(events);
             this.events = events;
             this.currentLocation = event[0];
+            this.eventService.getVisitorsStats(events).subscribe(stats=>{
+              const map = new Map(Object.entries(stats));
+              this.events.forEach(e=>{
+                if (e.id && map.has(Number(e.id).toString()))
+                e.visitorsCount=map.get(Number(e.id).toString());
+              })
+            })
           });
       }
 
@@ -99,8 +106,10 @@ export class EventsIndexComponent implements OnInit {
         this.filter.eventFormats = ['OFFLINE'];
       this.filter.userLocation = this.currentLocation
       this.showMap = false;
+      this.isSearchActive=true;
     } else {
       this.showMap = true;
+      this.isSearchActive=false;
     }
   }
 
@@ -108,6 +117,14 @@ export class EventsIndexComponent implements OnInit {
     this.eventService.filter(event).subscribe(
       events => {
         this.events = events;
+        this.eventService.getVisitorsStats(events).subscribe(stats=>{
+          const map = new Map(Object.entries(stats));
+          this.events.forEach(e=>{
+            if (e.id && map.has(Number(e.id).toString()))
+              e.visitorsCount=map.get(Number(e.id).toString());
+          })
+        })
+
         this.events.forEach(event => {
           if (event.location) {
             var centerToSW = olSphere.getDistance(event.location?.location.coordinates, this.currentLocation);

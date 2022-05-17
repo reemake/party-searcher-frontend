@@ -77,6 +77,10 @@ export class EventService {
     return this.httpClient.post(BACKEND_URL + "/api/events/assignOnEvent", null, {params: param});
   }
 
+  public getVisitorsStats(events:Array<Event>):Observable<Map<number,number>>{
+    return this.httpClient.post<Map<number,number>>(BACKEND_URL + "/api/events/getVisitorsStats", events);
+  }
+
   public removeEvent(id: number): Observable<any> {
     return this.httpClient.delete(BACKEND_URL + "/api/events", {params: {eventId: id}});
   }
