@@ -33,8 +33,12 @@ private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
   }
 
   public refreshToken(): Observable<HttpResponse<Jwt>> {
+
     console.log("TRY TO UPDATE")
-    if (!this.hasAuth ) {
+    if (!this.hasAuth && !this.cookie.check("refresh")) {
+      var date=new Date();
+      date.setMinutes(date.getMinutes()+5);
+      this.cookie.set("refresh","yes",date);
       var refresh = localStorage.getItem("refreshToken");
       var token = localStorage.getItem("token");
       if (refresh !== null && token !== null) {

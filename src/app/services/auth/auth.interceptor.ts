@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {
+  HttpClient,
   HttpErrorResponse,
   HttpEvent,
-  HttpHandler,
+  HttpHandler, HttpHeaders,
   HttpInterceptor,
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import {catchError, Observable, switchMap, tap, throwError} from 'rxjs';
+import {catchError, Observable, retryWhen, Subscriber, switchMap, tap, throwError} from 'rxjs';
 import {AuthenticationService} from './authentication.service';
 import {Jwt} from "../../entity/Jwt";
 import {CookieService} from "ngx-cookie-service";
@@ -15,8 +16,10 @@ import {CookieService} from "ngx-cookie-service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private retryRequest = Symbol('reload');
+  private map:Map<Subscriber<any>, HttpRequest<any>> =new Map<Subscriber<any>, HttpRequest<any>>();
 
-  constructor(private authService: AuthenticationService,private cookie:CookieService) {
+  constructor(private authService: AuthenticationService,private cookie:CookieService,private http:HttpClient) {
   }
   public refreshFailed=false;
 
@@ -35,6 +38,11 @@ export class AuthInterceptor implements HttpInterceptor {
               localStorage.setItem("username", username);
             this.authService.setAuth(val);
           }
+        },error => {
+        console.log("CREATE SUB")
+        return new Observable(subscriber => {
+          this.map=this.map.set(subscriber,request);
+        })
         }), catchError(error => {
           console.log(error);
           if (error instanceof HttpErrorResponse && (error.status == 403 || error.status == 401) && !this.refreshFailed) {
@@ -55,6 +63,8 @@ export class AuthInterceptor implements HttpInterceptor {
                     this.cookie.delete("refreshError");
                     //  this.authService.setAuth(jwt);
                   }
+                  if (localStorage.getItem("token")!=null)
+                  this.resend(localStorage.getItem("token")||'');
                   return next.handle(request);
                 }
               ), catchError((error) => {
@@ -69,6 +79,13 @@ export class AuthInterceptor implements HttpInterceptor {
               this.refreshFailed = true;
             }));
           }
+        }),retryWhen(errors => {
+          return errors.pipe(tap(err=>{
+            if (err===this.retryRequest){
+              return
+            }
+            throw err;
+          }))
         })
       );
     }
@@ -83,5 +100,14 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       }));
     }
+  }
+
+
+  private resend(token:string){
+    console.log(this.map);
+    this.map.forEach((value, key) => {
+      var request = value.clone({headers: new HttpHeaders().set("Authorization",token)});
+      this.http.request(request).subscribe(val=>{ key.next(val);})
+    })
   }
 }
