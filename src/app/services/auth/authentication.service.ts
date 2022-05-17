@@ -13,6 +13,8 @@ export class AuthenticationService {
 
   public updateJWT: Subject<string> = new Subject<string>();
   private hasAuth: boolean = false;
+public refreshFailed=false;
+private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
 
   constructor(private httpClient: HttpClient, private router: Router) {
     console.log("AUTH SERVICE CREATED")
@@ -20,7 +22,13 @@ export class AuthenticationService {
 
   public checkAuth(): Observable<boolean> {
     console.log("DO CHECK")
-    return this.httpClient.get(BACKEND_URL + "/api/users/checkUser").pipe(map((res: any) => !(res.status === 403 || res.status == 401)));
+    return this.httpClient.get(BACKEND_URL + "/api/users/checkUser").pipe(map((res: any) => !(res.status === 403 || res.status == 401))).pipe(map((res:boolean)=>{
+      console.log(`I CHECK AUTH STATUS ${res}`)
+      if(res){
+        this.updateAuthStatus.next(true);
+      }
+      return res;
+    }));
   }
 
   public refreshToken(): Observable<HttpResponse<Jwt>> {
@@ -44,6 +52,10 @@ export class AuthenticationService {
     console.log("NOT UPDATE")
     return new Observable<HttpResponse<Jwt>>();
 
+  }
+
+  public changeAuth():Observable<boolean>{
+    return this.updateAuthStatus;
   }
 
   public getUserData():Observable<User>{
@@ -73,7 +85,10 @@ export class AuthenticationService {
 
           return authErrorMarker;
         }
-      } else this.hasAuth = true;
+      } else{
+        this.updateAuthStatus.next(true);
+        this.hasAuth = true;
+      }
     }
     return new Observable<HttpResponse<Jwt>>();
   }

@@ -40,6 +40,8 @@ export class HeaderComponent implements OnInit {
       }
     }, 60000);
 
+
+
     this._authService.checkAuth().subscribe(
       result => {
         console.log("auth");
@@ -66,6 +68,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._authService.changeAuth().subscribe(res=>{
+      console.log(`status change =${res}`);
+      if (res){
+        this.authCheck=true;
+      }
+    })
   }
 
 }
