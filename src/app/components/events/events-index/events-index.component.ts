@@ -70,10 +70,14 @@ export class EventsIndexComponent implements OnInit {
     } else if (eventsArray.length == 1) {
       this.currentActiveEvent = eventsArray[0];
       this.prevMapSize = this.mapSize;
-      this.mapSize = "85%";
+      this.mapSize = "80%";
     } else {
       this.mapSize = this.prevMapSize;
       this.currentActiveEvent = null;
+      if (!this.isSearchActive){
+        this.mapSize="100%"
+        this.prevMapSize="100%"
+      }
     }
   }
 
@@ -88,6 +92,10 @@ export class EventsIndexComponent implements OnInit {
     } else {
       this.isSearchActive = false;
       this.mapSize = this.prevMapSize;
+      if (this.currentActiveEvent===null){
+        this.mapSize="100%"
+        this.prevMapSize="100%"
+      }
     }
   }
 
