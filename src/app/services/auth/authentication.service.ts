@@ -1,10 +1,11 @@
 import {HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {map, Observable, Subject} from 'rxjs';
+import {catchError, map, Observable, Subject, throwError} from 'rxjs';
 import {BACKEND_URL} from 'src/app/app.module';
 import {Jwt} from 'src/app/entity/Jwt';
 import {Router} from "@angular/router";
 import {User} from "../../entity/User";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class AuthenticationService {
 
   public updateJWT: Subject<string> = new Subject<string>();
   private hasAuth: boolean = false;
-public refreshFailed=false;
+
 private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
 
-  constructor(private httpClient: HttpClient, private router: Router) {
+  constructor(private httpClient: HttpClient, private router: Router,private cookie:CookieService) {
     console.log("AUTH SERVICE CREATED")
   }
 
@@ -33,7 +34,7 @@ private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
 
   public refreshToken(): Observable<HttpResponse<Jwt>> {
     console.log("TRY TO UPDATE")
-    if (!this.hasAuth) {
+    if (!this.hasAuth ) {
       var refresh = localStorage.getItem("refreshToken");
       var token = localStorage.getItem("token");
       if (refresh !== null && token !== null) {
@@ -46,7 +47,10 @@ private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
         }
 
 
-        return this.httpClient.post<HttpResponse<Jwt>>(BACKEND_URL + "/refreshToken", jwt);
+        return this.httpClient.post<HttpResponse<Jwt>>(BACKEND_URL + "/refreshToken", jwt).pipe(map((res)=>{
+          console.log(res);
+          return res;
+        }));
       }
     }
     console.log("NOT UPDATE")
@@ -67,6 +71,7 @@ private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
   }
 
   public setAuth(httpEvent: HttpResponseBase): Observable<HttpResponse<Jwt>> {
+
     var authErrorMarker: Subject<any> = new Subject();
     authErrorMarker.error("false");
     if (httpEvent instanceof HttpErrorResponse) {
@@ -86,6 +91,7 @@ private updateAuthStatus:Subject<boolean>=new Subject<boolean>();
           return authErrorMarker;
         }
       } else{
+        this.cookie.delete("refreshError");
         this.hasAuth = true;
       }
     }
