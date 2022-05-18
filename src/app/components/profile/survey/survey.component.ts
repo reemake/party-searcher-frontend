@@ -13,7 +13,7 @@ export class SurveyComponent {
   surveyButton: boolean = false;
 
   constructor(private http: HttpClient, private authService: AuthenticationService,private cookie:CookieService) {
-    if (this.cookie.get("surveyCancel"))
+    if (!this.cookie.check("surveyCancel"))
     this.authService.checkAuth().subscribe(e => {
       this.http.get<boolean>(BACKEND_URL + "/api/surveyCheck")
         .subscribe((checkResult: boolean) => {

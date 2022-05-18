@@ -58,8 +58,8 @@ import {ComplaintsPanelComponent} from './components/profile/complaints-panel/co
 import {WarningCreateDialogComponent} from './components/warning-create-dialog/warning-create-dialog.component';
 import {ComplaintsResolverGuard} from "./services/auth/complaints-resolver.guard";
 
-//export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
-export const BACKEND_URL: string = "http://localhost:8080";
+export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
+//export const BACKEND_URL: string = "http://localhost:8080";
 export var INVITE_CHECK: boolean = false;
 
 const ROUTES: Routes = [
@@ -81,7 +81,7 @@ const ROUTES: Routes = [
   {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuardService]},
   {path: 'reviews', component: ReviewsComponent},
   {path: 'events/description', component: EventDescriptionComponent},
-  {path: 'events/complaints/create', component: CreateComplaintComponent},
+  {path: 'events/complaints/create', component: CreateComplaintComponent,canActivate:[AuthGuardService]},
   {path: 'profile/admin', component: AdminPageComponent, canActivate: [AdminGuard]},
   {path: 'profile/complaintsPanel', component: ComplaintsPanelComponent, canActivate: [ComplaintsResolverGuard]},
   {path: 'profile/eventsHistory', component: EventsHistoryComponent, canActivate: [AuthGuardService]},
