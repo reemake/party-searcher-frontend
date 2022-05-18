@@ -25,7 +25,7 @@ export class AccountsComponent implements OnInit {
    }
 
    public hasReceipt():boolean{
-    return this.currentPayUrl!==undefined && this.currentPayUrl!=="";
+    return this.currentPayUrl!==undefined ;
    }
 
    ngOnInit(): void {
