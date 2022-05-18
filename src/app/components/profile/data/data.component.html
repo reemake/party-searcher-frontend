@@ -71,7 +71,7 @@
                 <p class="dataColumns">E-mail: <b>{{user.email}}</b></p>
                 <p class="dataColumns">Телефон: <b>{{user.phone}} </b>             </p>
                 <button class="btn btn-lg btn-danger contentBtn phoneCodeBtn" (click)="sendCode()" id="sendCodeBtn"
-                *ngIf="user.phone && user.phone!=='' && !checkIfHasUnexpiredSmsTokens() && !user.phoneConfirmed">
+                [disabled]="!(user.phone && user.phone!=='' && !checkIfHasUnexpiredSmsTokens() && !user.phoneConfirmed)">
                  Отправить код
                </button>
               <p class="dataColumns" style="margin-top: -55px; margin-left: 35px;">                 <!-- PHONE CONFIRMATION -->
