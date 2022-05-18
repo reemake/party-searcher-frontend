@@ -61,16 +61,16 @@
 .notification {
     position: absolute;
     width: 1120px;
-    height: 350px;
-    margin-top: 40px;
+    height: 220px;
+    margin-top: 70px;
     margin-left: 40px;
 
     font-style: normal;
     font-weight: 320;
     font-size: 24px;
-    line-height: 28px;
+    line-height: 35px;
     text-align: justify;
-    text-indent: 40px;
+    text-indent: 2px;
     box-sizing: border-box;
     padding: 20px;
 
@@ -92,7 +92,7 @@
 
 #control-title {
     left: 40px;
-    top: 410px;
+    top: 370px;
     position: relative;
 }
 
@@ -100,7 +100,7 @@
     position: relative;
     width: 1120px;
     height: 240px;
-    top: 415px;
+    top: 375px;
     left: 40px;
 
     font-style: normal;
