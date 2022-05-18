@@ -14,6 +14,6 @@
            [zoom]="14.5"
            class="map"></app-map>
   <app-event-search (closeSearch)="onCallSearch($event)" (eventsSearched)="search($event)"
-                    (filterChanged)="filter=$event" *ngIf="isSearchActive" [isPagingUsed]="!showMap"
+                    (filterChanged)="filter=$event" *ngIf="isSearchActive"
                     [userLocation]="currentLocation"></app-event-search>
 </div>

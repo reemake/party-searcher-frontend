@@ -28,11 +28,7 @@ export class ListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-if(changes["events"]){
-  if(changes["events"].previousValue && changes["events"].previousValue.length>0){
-    this.events=changes["events"].previousValue;
-  }
-}
+
   }
 
   public showDescription(event: Event): void {

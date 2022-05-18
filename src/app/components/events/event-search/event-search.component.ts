@@ -93,6 +93,7 @@ export class EventSearchComponent implements OnInit {
       eventFormats: formats,
       freeEvents: !this.paidEventInput.value
     };
+    console.log(filterData)
     if (this.isPagingUsed) {
       this.filterChanged.emit(filterData);
     } else
