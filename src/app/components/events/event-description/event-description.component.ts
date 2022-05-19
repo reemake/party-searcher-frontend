@@ -33,16 +33,19 @@ export class EventDescriptionComponent implements OnInit {
 
   assignOnEvent(): void {
     if (this.event?.id !== undefined)
-      this.eventService.assignOnEvent(this.event?.id).subscribe(
+      this.eventService.assignOnEvent(this.event?.id,this.event.isOnline).subscribe(
         resp => {
           if (this.event !== null) {
+            if(resp.url&&this.event.isOnline){
+              this.event.url=resp.url;
+            }
             this.event.currentUserEntered = true;
             var user = new User();
             user.login = localStorage.getItem("username") || '';
             this.event.guests.push({id: {userId: user.login, eventId: this.event.id || -1}})
           }
         }, error => {
-          this.error = "Произошла ошибка при записи на событие";
+          this.error = error.error.message?error.error.message:"Произошла ошибка при записи на событие";
         }
       )
   }

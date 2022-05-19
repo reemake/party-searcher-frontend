@@ -73,7 +73,7 @@
       <button (click)="complainOnEvent()"><img src="./assets/img/mapImages/buttons/complaint_btn.png"/>&nbsp;&nbsp;&nbsp;Пожаловаться на мероприятие</button>
     </div>
   </div>
-  <p *ngIf="error!==''">{{error}}</p>
+  <p class="alert-warning" *ngIf="error!==''">{{error}}</p>
 
   <div class="description-row tags">
     <h3 *ngFor="let tag of event.tags" class="description-tag">#{{tag}}&nbsp;&nbsp;</h3>

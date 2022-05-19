@@ -94,10 +94,13 @@ export class MyEventsComponent implements OnInit {
 
   assignOnEvent(): void {
     if (this.viewingEvent?.id !== undefined)
-      this.eventsService.assignOnEvent(this.viewingEvent?.id).subscribe(
+      this.eventsService.assignOnEvent(this.viewingEvent?.id,this.viewingEvent.isOnline).subscribe(
         resp => {
           if (this.viewingEvent !== null) {
             this.viewingEvent.currentUserEntered = true;
+            if(resp.url&&this.viewingEvent.isOnline){
+              this.viewingEvent.url=resp.url;
+            }
             var user = new User();
             user.login = localStorage.getItem("username") || '';
             this.viewingEvent.guests.push({id: {userId: user.login, eventId: this.viewingEvent.id || -1}})

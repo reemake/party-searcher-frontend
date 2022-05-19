@@ -71,9 +71,9 @@ export class EventService {
     return this.httpClient.post<EventPage>(BACKEND_URL + "/api/events/filterWithPaging", filter, {params: params});
   }
 
-  public assignOnEvent(id: number): Observable<any> {
+  public assignOnEvent(id: number,isOline:boolean): Observable<any> {
     var param: HttpParams = new HttpParams();
-    param = param.set("eventId", id);
+    param = param.set("eventId", id).set("isOnline",isOline);
     return this.httpClient.post(BACKEND_URL + "/api/events/assignOnEvent", null, {params: param});
   }
 
