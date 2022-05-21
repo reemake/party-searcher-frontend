@@ -100,7 +100,9 @@
           <div class="owner-container">
             <p>{{viewingEvent.owner?.login}}</p>
             <img src="./assets/img/rating-star-icon.png"/>
-            <p>{{viewingEvent.owner?.rating}}</p>
+
+            <img *ngFor="let item of [].constructor(viewingEvent.avgMark||0); let i = index"
+                 src="./assets/img/rating-star-icon.png"/>
           </div>
         </div>
         <div class="description-row owner">
