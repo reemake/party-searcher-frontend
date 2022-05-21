@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
           }
         })
       }
-    }, 60000);
+    }, 300000);
 
 
 

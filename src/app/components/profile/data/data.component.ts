@@ -217,7 +217,7 @@ this.update(dataChangeForm);
         this.getUserInfo();
       },
       error => {
-        console.log(error);
+        alert("произошла ошибка "+error.error.message)
       }
     )
   }

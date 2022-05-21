@@ -50,7 +50,6 @@ export class ReviewDialogComponent implements OnInit {
       this.lengthsKeys.push(val);
     }
 
-    this.onChange(5);
 
     const uploaderOptions: FileUploaderOptions = {
       url: `https://api.cloudinary.com/v1_1/${this.cloudinary.config().cloud_name}/upload`,
@@ -151,11 +150,11 @@ export class ReviewDialogComponent implements OnInit {
         },
         eventMark: mark,
         reviewWeight: 0.8,
-        recommendToOthersMark: 1,
-        eventOrganizationMark: 1
+        recommendToOthersMark: 0,
+        eventOrganizationMark: 0
         , eventLengthMark: undefined
       }
-      this.deepReview=true;
+
     } else if (this.review) {
       this.review.eventMark = mark;
     }

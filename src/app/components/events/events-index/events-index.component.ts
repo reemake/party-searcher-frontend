@@ -42,6 +42,7 @@ export class EventsIndexComponent implements OnInit {
           .subscribe((events: Event[]) => {
             this.events = events;
             this.currentLocation = event[0];
+            if (events && events.length>0)
             this.eventService.getVisitorsStats(events).subscribe(stats=>{
               const map = new Map(Object.entries(stats));
               this.events.forEach(e=>{
@@ -116,6 +117,7 @@ export class EventsIndexComponent implements OnInit {
       this.showMap = false;
       this.isSearchActive=true;
     } else {
+
       this.showMap = true;
       this.isSearchActive=false;
     }
