@@ -67,11 +67,11 @@ export class EventCreateComponent implements OnInit {
         console.log("waiting friends");
         this.friends = data;
         for (let i = 0; i < this.friends.length; i++) {
-          if (this.friends[i].id.friend.pictureUrl == null) {
-            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.friends[i].friend.pictureUrl == null) {
+            this.friends[i].friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
-          if (this.friends[i].id.owner.pictureUrl == null) {
-            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.friends[i].owner.pictureUrl == null) {
+            this.friends[i].owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
       }
       if (this.friends.length > 0) this.friendsCheck = true;

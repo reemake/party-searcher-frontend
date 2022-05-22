@@ -1,6 +1,6 @@
 export class Relationship {
-    isFriend: boolean;
-    id: {
+    isItFriend: boolean;
+
         owner: {
             pictureUrl: string;
             login: string;
@@ -13,5 +13,5 @@ export class Relationship {
             firstName: string;
             lastName: string;
         }
-    }
+
 }

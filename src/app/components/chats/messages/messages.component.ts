@@ -128,23 +128,23 @@ export class MessagesComponent implements OnInit, OnDestroy {
     var privateChats = this.searchedChats.filter(chat => chat.private);
     friends.map(friend => {
 
-      if (privateChats.filter(chat => chat.chatUsers.filter(user => user.user.login === friend.id.owner.login).length != 0).length == 0) {
-        if (`${friend.id.owner.firstName} ${friend.id.owner.lastName}`.toLowerCase().startsWith(this.searchString.toLowerCase()) ||
-          friend.id.owner.login.toLowerCase().startsWith(this.searchString.toLowerCase()))
+      if (privateChats.filter(chat => chat.chatUsers.filter(user => user.user.login === friend.owner.login).length != 0).length == 0) {
+        if (`${friend.owner.firstName} ${friend.owner.lastName}`.toLowerCase().startsWith(this.searchString.toLowerCase()) ||
+          friend.owner.login.toLowerCase().startsWith(this.searchString.toLowerCase()))
           this.searchedChats.push({
             isNewFriendChat: true,
             private: true,
-            name: `${friend.id.owner.firstName?friend.id.owner.firstName:''} ${friend.id.owner.lastName?friend.id.owner.lastName:''} ${friend.id.owner.lastName&&!friend.id.owner.firstName?friend.id.owner.login:''}`,
+            name: `${friend.owner.firstName?friend.owner.firstName:''} ${friend.owner.lastName?friend.owner.lastName:''} ${friend.owner.lastName&&!friend.owner.firstName?friend.owner.login:''}`,
             id: -1,
             chatUsers:
               [{
                 user: {
-                  login: friend.id.owner.login,
+                  login: friend.owner.login,
                   commercialUser: false,
                   commercialUserCreated: false,
-                  pictureUrl: friend.id.owner.pictureUrl,
-                  firstName: friend.id.owner.firstName,
-                  lastName: friend.id.owner.lastName,
+                  pictureUrl: friend.owner.pictureUrl,
+                  firstName: friend.owner.firstName,
+                  lastName: friend.owner.lastName,
                   email: '',
                   password: '',
                   phone: '',

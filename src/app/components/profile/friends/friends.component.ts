@@ -31,11 +31,11 @@ export class FriendsComponent implements OnInit {
         console.log("waiting requests");
         this.requests = data;
         for (let i = 0; i < this.requests.length; i++) {
-          if (this.requests[i].id.friend.pictureUrl == null) {
-            this.requests[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.requests[i].friend.pictureUrl == null) {
+            this.requests[i].friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
-          if (this.requests[i].id.owner.pictureUrl == null) {
-            this.requests[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.requests[i].owner.pictureUrl == null) {
+            this.requests[i].owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
         }
         if (this.requests.length > 0) this.requestsCheck = true;
@@ -44,11 +44,11 @@ export class FriendsComponent implements OnInit {
         console.log("waiting friends");
         this.friends = data;
         for (let i = 0; i < this.friends.length; i++) {
-          if (this.friends[i].id.friend.pictureUrl == null) {
-            this.friends[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.friends[i].friend.pictureUrl == null) {
+            this.friends[i].friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
-          if (this.friends[i].id.owner.pictureUrl == null) {
-            this.friends[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.friends[i].owner.pictureUrl == null) {
+            this.friends[i].owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
         }
         if (this.friends.length > 0) this.friendsCheck = true;
@@ -58,11 +58,11 @@ export class FriendsComponent implements OnInit {
         console.log("waiting sended requests");
         this.sendedRequests = data;
         for (let i = 0; i < this.sendedRequests.length; i++) {
-          if (this.sendedRequests[i].id.friend.pictureUrl == null) {
-            this.sendedRequests[i].id.friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.sendedRequests[i].friend.pictureUrl == null) {
+            this.sendedRequests[i].friend.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
-          if (this.sendedRequests[i].id.owner.pictureUrl == null) {
-            this.sendedRequests[i].id.owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
+          if (this.sendedRequests[i].owner.pictureUrl == null) {
+            this.sendedRequests[i].owner.pictureUrl = "./../../../../assets/img/profile/accImgExample.png";
           }
         }
         console.log(this.sendedRequests);

@@ -16,19 +16,19 @@
     <tbody *ngIf="friendsCheck">
         <div class="tableRow">
             <tr *ngFor=" let friend of friends">
-                <td class="listSelectorField"><img src={{friend.id.owner.pictureUrl}} class="listSelectorImage" /></td>
+                <td class="listSelectorField"><img src={{friend.owner.pictureUrl}} class="listSelectorImage" /></td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> {{ friend.id.owner.login}}</td>
+                <td class="listSelectorField"> {{ friend.owner.login}}</td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> ({{ friend.id.owner.firstName}}</td>
+                <td class="listSelectorField"> ({{ friend.owner.firstName}}</td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> {{ friend.id.owner.lastName}})</td>
+                <td class="listSelectorField"> {{ friend.owner.lastName}})</td>
                 <td class="listSelectorField">   </td>
                 <td class="dropDown">
                     <button class="dropBtn"><img src="../../../../assets/img/friends/Menu.png" /></button>
                     <div class="dropContent">
-                        <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Отправить сообщение</button>
-                        <button class="dropContentFields" id={{friend.id.owner.login}} (click)="clickAddedFriendButton($event)">Удалить из друзей</button>
+                        <button class="dropContentFields" id={{friend.owner.login}} (click)="clickAddedFriendButton($event)">Отправить сообщение</button>
+                        <button class="dropContentFields" id={{friend.owner.login}} (click)="clickAddedFriendButton($event)">Удалить из друзей</button>
                     </div>
                 </td>
             </tr>
@@ -38,19 +38,19 @@
     <tbody *ngIf="requestsCheck">
         <div class="tableRow">
             <tr *ngFor=" let request of requests">
-                <td class="listSelectorField"><img src={{request.id.owner.pictureUrl}} class="listSelectorImage" /></td>
+                <td class="listSelectorField"><img src={{request.owner.pictureUrl}} class="listSelectorImage" /></td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> {{ request.id.owner.login}}</td>
+                <td class="listSelectorField"> {{ request.owner.login}}</td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> ({{ request.id.owner.firstName}}</td>
+                <td class="listSelectorField"> ({{ request.owner.firstName}}</td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> {{ request.id.owner.lastName}})</td>
+                <td class="listSelectorField"> {{ request.owner.lastName}})</td>
                 <td class="listSelectorField">   </td>
                 <td class="dropDown">
                     <button class="dropBtn"><img src="../../../../assets/img/friends/Menu.png" /></button>
                     <div class="dropContent">
-                        <button class="dropContentFields" id={{request.id.owner.login}} (click)="clickRequestButton($event)">Принять заявку</button>
-                        <button class="dropContentFields" id={{request.id.owner.login}} (click)="clickRequestButton($event)">Отклонить заявку</button>
+                        <button class="dropContentFields" id={{request.owner.login}} (click)="clickRequestButton($event)">Принять заявку</button>
+                        <button class="dropContentFields" id={{request.owner.login}} (click)="clickRequestButton($event)">Отклонить заявку</button>
                     </div>
                 </td>
             </tr>
@@ -60,18 +60,18 @@
     <tbody *ngIf="sendedRequestsCheck">
         <div class="tableRow">
             <tr *ngFor=" let request of sendedRequests">
-                <td class="listSelectorField"><img src={{request.id.friend.pictureUrl}} class="listSelectorImage" /></td>
+                <td class="listSelectorField"><img src={{request.friend.pictureUrl}} class="listSelectorImage" /></td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> {{ request.id.friend.login}}</td>
+                <td class="listSelectorField"> {{ request.friend.login}}</td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> ({{ request.id.friend.firstName}}</td>
+                <td class="listSelectorField"> ({{ request.friend.firstName}}</td>
                 <td class="listSelectorField">   </td>
-                <td class="listSelectorField"> {{ request.id.friend.lastName}})</td>
+                <td class="listSelectorField"> {{ request.friend.lastName}})</td>
                 <td class="listSelectorField">   </td>
                 <td class="dropDown">
                     <button class="dropBtn"><img src="../../../../assets/img/friends/Menu.png" /></button>
                     <div class="dropContent">
-                        <button class="dropContentFields" id={{request.id.friend.login}} (click)="clickSendedRequestButton($event)">Отклонить заявку</button>
+                        <button class="dropContentFields" id={{request.friend.login}} (click)="clickSendedRequestButton($event)">Отклонить заявку</button>
                     </div>
                 </td>
             </tr>

@@ -72,8 +72,8 @@
       <select (change)="friendInvate()" *ngIf="friendsCheck" [formControl]="invateUser" class="form-select invateUser"
               style="margin-top: 20px;">
         <option class="">Пригласить пользователя</option>
-        <option *ngFor="let friend of friends" id={{friend.id.owner.login}}>{{ friend.id.owner.login}}
-          ({{ friend.id.owner.firstName}} {{ friend.id.owner.lastName}})
+        <option *ngFor="let friend of friends" id={{friend.owner.login}}>{{ friend.owner.login}}
+          ({{ friend.owner.firstName}} {{ friend.owner.lastName}})
         </option>
       </select>
 
