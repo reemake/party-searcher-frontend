@@ -166,8 +166,8 @@ export class MapComponent implements AfterViewInit{
     buttonsContainer.className='mapButtons'
     let buttonElement: HTMLButtonElement = document.createElement('button');
     buttonElement.className = "mapBtn";
-    buttonElement.innerHTML = ' <img style="margin-left: 40px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> ' +
-      '<small style="margin-left: 40px; font-weight: 700;">Моё местоположение</small>';
+    buttonElement.innerHTML = ' <img style="margin-left: 45px; margin-top: 5px;" alt="определить локацию" src="./assets/img/mapImages/getLocation.png"/> <br> ' +
+      '<small style="margin-left: 45px; font-weight: 700;">Моё местоположение</small>';
     buttonElement.addEventListener('click', () => {
       this.setUserLocation();
     })
@@ -175,8 +175,8 @@ export class MapComponent implements AfterViewInit{
     if (this.hasSearch) {
       let buttonSearchElement: any = document.createElement('button')
       buttonSearchElement.className = "mapBtn searchBtn"
-      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 30px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/>' +
-        ' <br> <small style="margin-left: 30px; font-weight: 700;">Поиск мероприятий</small>';
+      buttonSearchElement.innerHTML = ' <img style="width: 50px; height: 50px; margin-left: 240px" alt="поиск"  src="./assets/img/mapImages/search-btn.png"/>' +
+        ' <br> <small style="margin-left: 240px; font-weight: 700;">Поиск мероприятий</small>';
       buttonSearchElement.addEventListener('click', () => {
         this.callSearch.emit(true);
       })
@@ -186,8 +186,8 @@ export class MapComponent implements AfterViewInit{
 
 
       switchMap.className = "mapBtn switchBtn"
-      switchMap.innerHTML = ' <img style="width: 57px; height: 50px; margin-top: 5px; margin-left: 30px" alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" /> ' +
-        '<br> <small style="margin-left: 30px; font-weight: 700;">Список доступных мероприятий</small>';
+      switchMap.innerHTML = ' <img style="width: 57px; height: 50px; margin-top: 5px;" alt="перейти к списку эвентов"   src="./assets/img/mapImages/list-image.png" /> ' +
+        '<br> <small style="font-weight: 700;">Список доступных мероприятий</small>';
       switchMap.addEventListener('click', () => {
         this.callListItem.emit(true);
       })
