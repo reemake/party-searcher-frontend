@@ -54,7 +54,7 @@ export class AdminPageComponent implements OnInit {
 
   deletePhoto(user: User) {
     this.userService.deleteUserPhoto(user).subscribe(e => {
-
+user.pictureUrl="";
     }, error => alert("ошибка при удалении фотографии плользователя"));
   }
 
