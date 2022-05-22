@@ -23,11 +23,14 @@ export class EventsHistoryComponent implements OnInit {
   dateStart: Date;
   dateEnd: Date;
 
-  constructor(private userService: UserService, public authService: AuthenticationService, private router: Router, private eventsService: EventService) { }
-
-  ngOnInit(): void {
+  constructor(private userService: UserService, public authService: AuthenticationService, private router: Router, private eventsService: EventService) {
     this.getUserInfo();
     this.getAllTimeEvents();
+  }
+
+
+  ngOnInit(): void {
+
   }
 
   getUserInfo() {
