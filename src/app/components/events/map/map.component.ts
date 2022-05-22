@@ -36,6 +36,18 @@ export class MapComponent implements AfterViewInit{
   @ViewChild('mapElementRef', {static: true}) mapElementRef: ElementRef
   map: MyMap | undefined;
   @Output() selectEvents: EventEmitter<Array<Event>> = new EventEmitter<Array<Event>>();
+  _editEvent:Event|null;
+ @Input() public set editEvent(event:Event|null){
+    this._editEvent=event;
+   console.log(event);
+   if (event) {
+     this.events.push(event)
+     this.updateEventsOnMap();
+   }
+  }
+  public get editEvent():Event|null{
+    return this._editEvent;
+  }
 
   _events: Array<Event> = new Array<Event>();
 
@@ -46,6 +58,9 @@ export class MapComponent implements AfterViewInit{
   @Input()
   public set events(events: Array<Event>) {
     this._events = events;
+    if (this.editEvent){
+      events.push(this.editEvent)
+    }
     this.updateEventsOnMap();
   }
 
@@ -241,7 +256,6 @@ export class MapComponent implements AfterViewInit{
     let featuresMap = new Map()
     let features: Array<any> = new Array<any>();
     if (this.previousEventsMarkersLayer.getSource() === null) {
-      console.log(this.events);
       this.events.forEach(event => {
         if (event.location !== undefined) {
           let feature: any = null;
@@ -256,6 +270,10 @@ export class MapComponent implements AfterViewInit{
               event: event
             });
             var imageSrc=event.recommendedBySurvey?'../assets/img/mapImages/favourite-event-icon.png':'../assets/img/mapImages/landmark.png';
+            if (this.editEvent&&this.editEvent.id===event.id){
+              console.log(" i found edit event")
+              imageSrc='../assets/img/mapImages/edit-event-location.png';
+            }
             feature.setStyle(new Style({
               image: new Icon(({
                 crossOrigin: 'anonymous',
@@ -296,6 +314,10 @@ export class MapComponent implements AfterViewInit{
               });
 
               var imageSrc=event.recommendedBySurvey?'../assets/img/mapImages/favourite-event-icon.png':'../assets/img/mapImages/landmark.png';
+              if (this.editEvent&&this.editEvent.id===event.id){
+                console.log(" i found edit event")
+                imageSrc='../assets/img/mapImages/edit-event-location.png';
+              }
               feature.setStyle(new Style({
                 image: new Icon(({
                   crossOrigin: 'anonymous',

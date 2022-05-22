@@ -93,7 +93,7 @@
 
   <div class="mycontainer">
     <app-event-description (closeDescription)="closeEvent()" [event]="event"></app-event-description>
-    <app-map
+    <app-map [editEvent]="currentEvent"
       [isEdit]="true"
       (changeLocation)="locationChangeSubject.next($event)"
       (selectEvents)="selectEvents($event)"

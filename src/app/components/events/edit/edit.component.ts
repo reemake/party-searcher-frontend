@@ -45,7 +45,7 @@ export class EditComponent implements OnInit {
   public tagsInputs: Array<FormControl> = new Array<FormControl>();
   private maxSW: number[] = [];
   private maxNE: number[] = [];
-  private currentEvent: Event;
+  public currentEvent: Event;
   public invateUser: FormControl = new FormControl();
   public friends: Relationship[];
   public friendsCheck: boolean = false;
