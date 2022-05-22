@@ -57,6 +57,7 @@ import {AdminGuard} from "./services/auth/admin.guard";
 import {ComplaintsPanelComponent} from './components/profile/complaints-panel/complaints-panel.component';
 import {WarningCreateDialogComponent} from './components/warning-create-dialog/warning-create-dialog.component';
 import {ComplaintsResolverGuard} from "./services/auth/complaints-resolver.guard";
+import { EventDescriptionDialogComponent } from './components/events/event-description-dialog/event-description-dialog.component';
 
 export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
 //export const BACKEND_URL: string = "http://localhost:8080";
@@ -121,7 +122,8 @@ const ROUTES: Routes = [
     AdminPageComponent,
     ComplaintsPanelComponent,
     WarningCreateDialogComponent,
-    EventsHistoryComponent
+    EventsHistoryComponent,
+    EventDescriptionDialogComponent
   ],
   imports: [
     BrowserModule,

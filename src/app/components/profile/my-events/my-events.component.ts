@@ -8,6 +8,10 @@ import { UserService } from 'src/app/services/user.service';
 import { FilterData } from 'src/app/entity/filterData';
 import { ChatService } from 'src/app/services/chat.service';
 import { Role } from 'src/app/entity/Role';
+import {MatDialog} from "@angular/material/dialog";
+import {
+  EventDescriptionDialogComponent
+} from "../../events/event-description-dialog/event-description-dialog.component";
 
 @Component({
   selector: 'app-my-events',
@@ -29,7 +33,7 @@ export class MyEventsComponent implements OnInit {
               public authService: AuthenticationService,
               private router: Router,
               private eventsService: EventService,
-              private chatService: ChatService) {
+              private chatService: ChatService,private matDialog: MatDialog) {
 
    }
 
@@ -84,6 +88,7 @@ export class MyEventsComponent implements OnInit {
 
 
   showDescription(event: Event) {
+    this.matDialog.open(EventDescriptionDialogComponent,{data:event})
     this.viewingEvent = event;
     this.descriptionOpened = true;
   }
