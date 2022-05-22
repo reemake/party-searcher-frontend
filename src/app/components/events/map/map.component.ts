@@ -41,8 +41,14 @@ export class MapComponent implements AfterViewInit{
     this._editEvent=event;
    console.log(event);
    if (event) {
+     if (!event.isOnline && event.location?.location.coordinates){
+       this.center=[event.location?.location.coordinates[0],event.location?.location.coordinates[1]]
+       this.view?.setCenter(transform(this.center, 'EPSG:4326', 'EPSG:3857'))
+     }
+     this.isEdit=false;
      this.events.push(event)
      this.updateEventsOnMap();
+
    }
   }
   public get editEvent():Event|null{
@@ -253,59 +259,60 @@ export class MapComponent implements AfterViewInit{
 
 
   private updateEventsOnMap(): void {
-    let featuresMap = new Map()
-    let features: Array<any> = new Array<any>();
-    if (this.previousEventsMarkersLayer.getSource() === null) {
-      this.events.forEach(event => {
-        if (event.location !== undefined) {
-          let feature: any = null;
+    if (!this.isEdit) {
+      let featuresMap = new Map()
+      let features: Array<any> = new Array<any>();
+      if (this.previousEventsMarkersLayer.getSource() === null) {
+        this.events.forEach(event => {
+          if (event.location !== undefined) {
+            let feature: any = null;
 
-          var locationStr = JSON.stringify(event.location.location);
+            var locationStr = JSON.stringify(event.location.location);
 
-          if (featuresMap.has(locationStr)) {
-            feature = featuresMap.get(locationStr);
-          } else {
-            feature = new Feature({
-              geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
-              event: event
-            });
-            var imageSrc=event.recommendedBySurvey?'../assets/img/mapImages/favourite-event-icon.png':'../assets/img/mapImages/landmark.png';
-            if (this.editEvent&&this.editEvent.id===event.id){
-              console.log(" i found edit event")
-              imageSrc='../assets/img/mapImages/edit-event-location.png';
+            if (featuresMap.has(locationStr) &&!(this.editEvent && this.editEvent.id === event.id)) {
+              feature = featuresMap.get(locationStr);
+            } else {
+              feature = new Feature({
+                geometry: new Point(fromLonLat([event.location.location.coordinates[0], event.location.location.coordinates[1]], 'EPSG:3857')),
+                event: event
+              });
+              var imageSrc = event.recommendedBySurvey ? '../assets/img/mapImages/favourite-event-icon.png' : '../assets/img/mapImages/landmark.png';
+              if (this.editEvent && this.editEvent.id === event.id) {
+                console.log(" i found edit event")
+                imageSrc = '../assets/img/mapImages/edit-event-location.png';
+              }
+              feature.setStyle(new Style({
+                image: new Icon(({
+                  crossOrigin: 'anonymous',
+                  src: imageSrc
+                }))
+              }));
+              featuresMap = featuresMap.set(locationStr, feature)
+              features.push(feature);
             }
-            feature.setStyle(new Style({
-              image: new Icon(({
-                crossOrigin: 'anonymous',
-                src: imageSrc
-              }))
-            }));
-            featuresMap = featuresMap.set(locationStr, feature)
-            features.push(feature);
-          }
-          if (this.eventsMap.get(feature) === undefined) {
-            let arr: Array<Event> = new Array<Event>(event);
-            this.eventsMap = this.eventsMap.set(feature, arr);
-          } else {
-            this.eventsMap.get(feature)?.push(event);
+            if (this.eventsMap.get(feature) === undefined) {
+              let arr: Array<Event> = new Array<Event>(event);
+              this.eventsMap = this.eventsMap.set(feature, arr);
+            } else {
+              this.eventsMap.get(feature)?.push(event);
+            }
+
+
           }
 
-
-        }
-
-      })
-      let vectorSource: VectorSource<any> = new VectorSource({
-        features: features
-      });
-      this.previousEventsMarkersLayer.setSource(vectorSource);
-    } else {
-      var source: VectorSource<any> = this.previousEventsMarkersLayer.getSource();
-      var features1 = new Array<Feature<any>>();
-      this.events.forEach(event => {
+        })
+        let vectorSource: VectorSource<any> = new VectorSource({
+          features: features
+        });
+        this.previousEventsMarkersLayer.setSource(vectorSource);
+      } else {
+        var source: VectorSource<any> = this.previousEventsMarkersLayer.getSource();
+        var features1 = new Array<Feature<any>>();
+        this.events.forEach(event => {
           if (event.location !== undefined) {
             var locationStr = JSON.stringify(event.location.location);
             var feature = null;
-            if (featuresMap.has(locationStr)) {
+            if (featuresMap.has(locationStr) &&!(this.editEvent && this.editEvent.id === event.id)) {
               feature = featuresMap.get(locationStr);
             } else {
               feature = new Feature({
@@ -313,10 +320,10 @@ export class MapComponent implements AfterViewInit{
                 event: event
               });
 
-              var imageSrc=event.recommendedBySurvey?'../assets/img/mapImages/favourite-event-icon.png':'../assets/img/mapImages/landmark.png';
-              if (this.editEvent&&this.editEvent.id===event.id){
+              var imageSrc = event.recommendedBySurvey ? '../assets/img/mapImages/favourite-event-icon.png' : '../assets/img/mapImages/landmark.png';
+              if (this.editEvent && this.editEvent.id === event.id) {
                 console.log(" i found edit event")
-                imageSrc='../assets/img/mapImages/edit-event-location.png';
+                imageSrc = '../assets/img/mapImages/edit-event-location.png';
               }
               feature.setStyle(new Style({
                 image: new Icon(({
@@ -335,9 +342,10 @@ export class MapComponent implements AfterViewInit{
               this.eventsMap.get(feature)?.push(event);
             }
           }
-      });
-      source.clear();
-      source.addFeatures(features1);
+        });
+        source.clear();
+        source.addFeatures(features1);
+      }
     }
 
     this.previousEventsMarkersLayer.changed();
