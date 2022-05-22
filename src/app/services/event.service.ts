@@ -109,17 +109,10 @@ export class EventService {
 
 
   public getEndedEvents(): Observable<Array<Event>> {
-    if (this.endedEvents === undefined) {
       console.log("REQUEST FOR ENDED EVENTS")
       return this.httpClient.get<Array<Event>>(BACKEND_URL + "/api/events/getEndedEvents").pipe(tap((events) => {
         this.endedEvents = events;
       }));
-    } else {
-      console.log("NO REQUEST")
-      var subject = new Subject();
-      subject.next(this.endedEvents);
-      return subject as Observable<Array<Event>>;
-    }
   }
 
   public getEndedEventsInInterval(date1: string, date2: string): Observable<Array<Event>> {
