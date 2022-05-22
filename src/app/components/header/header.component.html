@@ -1,37 +1,39 @@
 <div class="mycontainer">
   <div class="left-part">
 
+    <a><img alt="Логотип" src="./assets/img/header/logo.png"/></a>
+    <a style="border-width: 0 1px 0 0; border-style: solid; padding-right: 1px;"></a>
 
     <a *ngIf="_authService.isAuth()" [routerLink]="['/profile/me']">
-      <img alt="Личный кабинет" src="./assets/img/header/profile.png"/>
+      <img class="headerBtn" alt="Личный кабинет" src="./assets/img/header/profile.png"/>
     </a>
     <a *ngIf="!_authService.isAuth()" [routerLink]="['/login']">
-      <img alt="Личный кабинет" src="./assets/img/header/profile.png"/>
+      <img class="headerBtn" alt="Личный кабинет" src="./assets/img/header/profile.png"/>
     </a>
     <a href="./friends">
-      <img alt="Друзья" src="./assets/img/header/friends.png"/>
+      <img class="headerBtn" alt="Друзья" src="./assets/img/header/friends.png"/>
     </a>
 
     <a href="./events/map">
-      <img alt="Карта" src="./assets/img/header/map.png"/>
+      <img class="headerBtn" alt="Карта" src="./assets/img/header/map.png"/>
     </a>
 
     <a href="./messages">
-      <img alt="Сообщения" src="./assets/img/header/messages.png"/>
+      <img class="headerBtn" alt="Сообщения" src="./assets/img/header/messages.png"/>
     </a>
   </div>
 
   <div class="middle" [hidden]="!_authService.isAuth()">
     <a href="./events/add">
-      <img alt="Добавить событие" src="./assets/img/header/add-sign.png"/>
+      <img class="headerBtn" alt="Добавить событие" src="./assets/img/header/add-sign.png"/>
     </a>
   </div>
 
   <div class="right-part">
 
     <a href="./notifications" >
-      <img alt="Оповещения" src="./assets/img/header/notifications.png" *ngIf="!invitesCheck"/>
-      <img alt="Оповещения" src="./assets/img/header/notifications alert.png" *ngIf="invitesCheck"/>
+      <img class="headerBtn" alt="Оповещения" src="./assets/img/header/notifications.png" *ngIf="!invitesCheck"/>
+      <img class="headerBtn" alt="Оповещения" src="./assets/img/header/notifications alert.png" *ngIf="invitesCheck"/>
     </a>
 
     <span *ngIf="hasToken()">
