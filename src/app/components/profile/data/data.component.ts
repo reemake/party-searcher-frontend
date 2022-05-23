@@ -234,7 +234,7 @@ this.update(dataChangeForm);
         phone: this.user.phone
       }
       this.user.tokens?.push(token);
-    }, error => alert("Произошла ошибка " + error.message && error.message !== '' ? error.message : JSON.stringify(error.error)))
+    }, error => alert("Произошла ошибка " + error.error.message !== '' ? error.error.message : JSON.stringify(error.error)))
   }
 
   public checkCode() {
