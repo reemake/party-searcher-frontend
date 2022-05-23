@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Notification} from "../entity/Notification";
 import {BACKEND_URL} from "../app.module";
 
@@ -10,6 +10,12 @@ import {BACKEND_URL} from "../app.module";
 export class NotificationService {
 
   constructor(private httpService: HttpClient) {
+  }
+
+  public allShown:Subject<boolean>=new Subject();
+
+  public setAllAsShown(){
+    this.allShown.next(true);
   }
 
   public load(): Observable<Notification[]> {

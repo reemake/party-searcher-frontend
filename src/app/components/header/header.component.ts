@@ -18,6 +18,11 @@ export class HeaderComponent implements OnInit {
   public authCheck: boolean = false;
 
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService, private notificationService: NotificationService, public userService: UserService) {
+this.notificationService.allShown.subscribe(e=>{
+  if(e){
+    this.notificationCheck=false;
+  }
+})
     if (localStorage.getItem("token")) {
       this.notificationService.hasNew().subscribe(e => {
           this.notificationCheck = e;

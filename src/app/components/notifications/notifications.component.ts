@@ -35,6 +35,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.notifications = notifications;
     })
     this.updateShown.pipe(debounceTime(5000)).subscribe(notifications => {
+      if(notifications.filter(e=>e.shown).length===notifications.length){
+        this.notificationService.setAllAsShown();
+      }
       console.log(notifications)
       this.shownNotification = [];
       this.notificationService.setAsShown(notifications).subscribe(e => {
@@ -48,6 +51,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   setNotificationAsRead(notification: Notification) {
     if (!this.notificationsSet.has(notification) && !notification.shown) {
+      notification.shown=true;
       this.notificationsSet = this.notificationsSet.add(notification)
       this.shownNotification.push(notification);
       this.updateShown.next(this.shownNotification);
