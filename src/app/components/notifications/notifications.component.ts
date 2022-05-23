@@ -35,13 +35,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       this.notifications = notifications;
     })
     this.updateShown.pipe(debounceTime(5000)).subscribe(notifications => {
-      if(notifications.filter(e=>e.shown).length===notifications.length){
-        this.notificationService.setAllAsShown();
-      }
+
       console.log(notifications)
       this.shownNotification = [];
       this.notificationService.setAsShown(notifications).subscribe(e => {
-
+        if(notifications.filter(e=>e.shown).length===notifications.length){
+          this.notificationService.setAllAsShown();
+        }
       }, error => alert("Ошибка при подключении к серверу"));
     })
   }
