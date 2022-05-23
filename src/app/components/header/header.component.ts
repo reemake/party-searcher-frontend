@@ -19,9 +19,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService, private notificationService: NotificationService, public userService: UserService) {
     if (localStorage.getItem("token")) {
-      inviteService.isInvated().subscribe((data) => {
-        this.invitesCheck = data;
-      });
       this.notificationService.hasNew().subscribe(e => {
         if (e) {
           this.notificationCheck = e;
@@ -30,9 +27,6 @@ export class HeaderComponent implements OnInit {
     }
     setInterval(() => {
       if (localStorage.getItem("token")) {
-        inviteService.isInvated().subscribe((data) => {
-          this.invitesCheck = data;
-        });
         this.notificationService.hasNew().subscribe(e => {
           if (e) {
             this.notificationCheck = e;
