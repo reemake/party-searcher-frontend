@@ -20,17 +20,13 @@ export class HeaderComponent implements OnInit {
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService, private notificationService: NotificationService, public userService: UserService) {
     if (localStorage.getItem("token")) {
       this.notificationService.hasNew().subscribe(e => {
-        if (e) {
           this.notificationCheck = e;
-        }
       })
     }
     setInterval(() => {
       if (localStorage.getItem("token")) {
         this.notificationService.hasNew().subscribe(e => {
-          if (e) {
             this.notificationCheck = e;
-          }
         })
       }
     }, 60000);
