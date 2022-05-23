@@ -14,6 +14,7 @@ import { User } from 'src/app/entity/User';
 export class HeaderComponent implements OnInit {
 
   public invitesCheck: boolean = false;
+  public notificationCheck=false;
   public authCheck: boolean = false;
 
   constructor(private _router: Router, public _authService: AuthenticationService, private inviteService: InviteService, private notificationService: NotificationService, public userService: UserService) {
@@ -23,7 +24,7 @@ export class HeaderComponent implements OnInit {
       });
       this.notificationService.hasNew().subscribe(e => {
         if (e) {
-          this.invitesCheck = e;
+          this.notificationCheck = e;
         }
       })
     }
@@ -34,7 +35,7 @@ export class HeaderComponent implements OnInit {
         });
         this.notificationService.hasNew().subscribe(e => {
           if (e) {
-            this.invitesCheck = e;
+            this.notificationCheck = e;
           }
         })
       }

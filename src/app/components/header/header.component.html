@@ -33,7 +33,7 @@
 
     <a href="./notifications" >
       <img class="headerBtn" alt="Оповещения" src="./assets/img/header/notifications.png" *ngIf="!invitesCheck"/>
-      <img class="headerBtn" alt="Оповещения" src="./assets/img/header/notifications alert.png" *ngIf="invitesCheck"/>
+      <img class="headerBtn" alt="Оповещения" src="./assets/img/header/notifications alert.png" *ngIf="invitesCheck || notificationCheck"/>
     </a>
 
     <span *ngIf="hasToken()">
