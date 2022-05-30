@@ -59,8 +59,8 @@ import {WarningCreateDialogComponent} from './components/warning-create-dialog/w
 import {ComplaintsResolverGuard} from "./services/auth/complaints-resolver.guard";
 import { EventDescriptionDialogComponent } from './components/events/event-description-dialog/event-description-dialog.component';
 
-export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
-//export const BACKEND_URL: string = "http://localhost:8080";
+//export const BACKEND_URL: string = "https://event-teammates-backend.herokuapp.com";
+export const BACKEND_URL: string = "http://localhost:8080";
 export var INVITE_CHECK: boolean = false;
 
 const ROUTES: Routes = [
